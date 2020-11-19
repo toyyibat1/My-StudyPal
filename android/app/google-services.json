@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "59409505153",
+    "firebase_url": "https://mystudypal-6af28.firebaseio.com",
+    "project_id": "mystudypal-6af28",
+    "storage_bucket": "mystudypal-6af28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59409505153:android:e15db79634297d152a6680",
+        "android_client_info": {
+          "package_name": "com.example.my_study_pal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "59409505153-ubqm0cr7pu5h1lgt62rnnlvvoq07s855.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.my_study_pal",
+            "certificate_hash": "b5aee2ee92dea46bedd4a0f3515b4f7078dc9ab8"
+          }
+        },
+        {
+          "client_id": "59409505153-mkjf9oir4geq0ral0i2k3e1l3cn0jj75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkUjaT8YhQffg-OUll9FQ8rm4uwsEpdfU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "59409505153-mkjf9oir4geq0ral0i2k3e1l3cn0jj75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
