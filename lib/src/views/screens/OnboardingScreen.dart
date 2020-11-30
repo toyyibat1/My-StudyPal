@@ -139,7 +139,6 @@ class OnboardColumn extends StatelessWidget {
       children: <Widget>[
         Image.asset(
           imgPath,
-          matchTextDirection: false,
           width: MediaQuery.of(context).size.width * 0.9,
         ),
         Container(
