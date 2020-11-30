@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:my_study_pal/src/views/screens/splash.dart';
+
+import 'src/views/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,11 +14,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Ivory Cloud',
-      theme: ThemeData(
-        //primaryColor: ,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      title: 'My Study Pal',
       home: SplashScreen(),
     );
   }
