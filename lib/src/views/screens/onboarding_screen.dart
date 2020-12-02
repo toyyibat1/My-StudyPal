@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_study_pal/src/views/screens/signin_screen.dart';
 
 import '../../core/constants.dart';
 import '../../core/images.dart';
@@ -58,7 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               TextSpan(
                 text: 'Padi',
                 style: GoogleFonts.montserratAlternates(
-                  color: Color(0xFF225ADC),
+                  color: kPrimaryColor,
                 ),
               ),
             ],
@@ -139,7 +140,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 label: "Get Started",
                 color: kPrimaryColor,
                 textColor: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => SigninScreen()));
+                },
               )
             ],
           ),
