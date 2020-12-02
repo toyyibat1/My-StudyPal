@@ -45,11 +45,11 @@ class _SigninScreenState extends State<SigninScreen> {
               obscureText: true,
               validator: validatePassword,
             ),
-            kMediumVerticalSpacing,
+            kTinyVerticalSpacing,
             Row(
               children: [
                 Expanded(
-                                  child: Text('Forgot Password?',
+                  child: Text('Forgot Password?',
                     textAlign: TextAlign.right,
                    style: TextStyle(
                     decoration: TextDecoration.underline
@@ -78,6 +78,7 @@ class _SigninScreenState extends State<SigninScreen> {
             AppFlatButton(
               image: facebook,
               text: 'Login with facebook',
+              onPressed: () {},
             ),
             kMediumVerticalSpacing,
             AppFlatButton(
@@ -137,11 +138,11 @@ class AppFlatButton extends StatelessWidget {
           children: [
             Image.asset(image),
             SizedBox(
-              width: 30,
+              width: 40,
             ),
             Text(
               text,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 18),
             )
           ],
         ),
