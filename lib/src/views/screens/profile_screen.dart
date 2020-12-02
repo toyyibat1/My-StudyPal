@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
+
+import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -58,7 +61,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: kHeadingTextStyle,
                       ),
                       ProfileCard(
-                        ontap: () {},
+                        ontap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> EditProfileScreen()));
+                        },
                         text: 'Edit Profile',
                         icon: Icon(
                           Icons.edit_outlined,
