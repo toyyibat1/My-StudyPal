@@ -4,6 +4,8 @@ const welcome = 'assets/man.png';
 const task = 'assets/task.png';
 const timetable = 'assets/timetable.png';
 const goal = 'assets/goals.png';
+const invite = 'assets/invites.png';
+const mark = 'assets/mark.png';
 
 const onboarding1 = 'assets/onboarding1.svg';
 const onboarding2 = 'assets/onboarding2.svg';
