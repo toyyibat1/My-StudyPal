@@ -33,8 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _children[_currentIndex],
       bottomNavigationBar: NavBar(
         backgroundColor: Colors.white,
-        color: kBlackColor,
-        selectedColor: kPrimaryColor,
+        color: Colors.black54,
+        selectedColor: kPrimaryColor2,
         onTabSelected: _onTabSelected,
         items: [
           NavBarItem(iconData: Icons.home, text: 'Home'),

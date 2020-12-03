@@ -80,7 +80,11 @@ class NavBarState extends State<NavBar> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(item.iconData, color: color, size: widget.iconSize),
+                Icon(
+                  item.iconData,
+                  color: color,
+                  size: widget.iconSize,
+                ),
                 Text(
                   item.text,
                   style: TextStyle(color: color, fontWeight: FontWeight.w500),
