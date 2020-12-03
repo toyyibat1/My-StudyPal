@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 /// App Colors
 const kPrimaryColor = Color(0xFF225ADC);
 
+const kPrimaryColor2 = Color(0xFF102A67);
+
 const kSecondaryColor = Color(0x36C4C4C4);
 
 const kBlackColor = Colors.black;

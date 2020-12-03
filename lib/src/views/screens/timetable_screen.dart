@@ -12,6 +12,11 @@ class _TimetableScreenState extends State<TimetableScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Center(child: Text('Timetable')),
+        backgroundColor: kPrimaryColor2,
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryColor,
         child: Icon(Icons.add),
@@ -19,46 +24,22 @@ class _TimetableScreenState extends State<TimetableScreen> {
             MaterialPageRoute(builder: (context) => CreateTimetableScreen())),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      color: kPrimaryColor,
-                      child: Center(
-                          child: Text(
-                        'Timetable',
-                        style: kHeadingTextStyle.copyWith(color: Colors.white),
-                      )),
-                    ),
-                  ),
-                ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Image.asset(
+                timetable,
+                width: 100,
+                color: Colors.grey,
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 4,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    timetable,
-                    width: 100,
-                    color: Colors.grey,
-                  ),
-                  kSmallVerticalSpacing,
-                  Text(
-                    'No Timetable',
-                    style: kLabelText,
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+            kSmallVerticalSpacing,
+            Text(
+              'No Timetable',
+              style: kLabelText,
+            ),
+          ],
         ),
       ),
     );
