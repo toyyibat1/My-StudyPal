@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
+import 'package:my_study_pal/src/views/screens/badges_screen.dart';
+import 'package:my_study_pal/src/views/screens/study_goals.dart';
 
 import 'edit_profile_screen.dart';
 
@@ -72,7 +74,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       kExtraSmallVerticalSpacing,
                       ProfileCard(
-                        ontap: () {},
+                        ontap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> BadgesScreen()));
+                        },
                         text: 'Badges',
                         icon: Icon(
                           Icons.badge,
@@ -81,7 +85,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       kExtraSmallVerticalSpacing,
                       ProfileCard(
-                        ontap: () {},
+                        ontap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> StudyGoalsScreen()));
+                        },
                         text: 'Study Goals',
                         icon: Icon(
                           Icons.control_point_rounded,
