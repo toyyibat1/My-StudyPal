@@ -44,6 +44,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 ),
                 kMediumVerticalSpacing,
                 AppTextField(
+                  height: 7,
                   text: 'Task Description',
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
