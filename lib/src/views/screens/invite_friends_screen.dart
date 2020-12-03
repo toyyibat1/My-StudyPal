@@ -39,7 +39,7 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                 kLargeVerticalSpacing,
                 AppTextField(
                 text: 'Email',
-                hintText: 'Email Address',
+                hintText: 'Enter email address',
                 ),
                 kLargeVerticalSpacing,
                 Row(
