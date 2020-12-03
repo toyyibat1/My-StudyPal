@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
+import 'package:my_study_pal/src/views/screens/add_schedule_screen.dart';
+import 'package:my_study_pal/src/views/screens/badges_screen.dart';
+import 'package:my_study_pal/src/views/screens/invite_friends_screen.dart';
+import 'package:my_study_pal/src/views/screens/study_goals.dart';
 
 import 'edit_profile_screen.dart';
 
@@ -72,7 +76,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       kExtraSmallVerticalSpacing,
                       ProfileCard(
-                        ontap: () {},
+                        ontap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> BadgesScreen()));
+                        },
                         text: 'Badges',
                         icon: Icon(
                           Icons.badge,
@@ -81,7 +87,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       kExtraSmallVerticalSpacing,
                       ProfileCard(
-                        ontap: () {},
+                        ontap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> StudyGoalsScreen()));
+                        },
                         text: 'Study Goals',
                         icon: Icon(
                           Icons.control_point_rounded,
@@ -90,7 +98,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       kExtraSmallVerticalSpacing,
                       ProfileCard(
-                        ontap: () {},
+                        ontap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> AddScheduleScreen()));
+                        },
                         text: 'School Schedule',
                         icon: Icon(
                           Icons.next_plan,
@@ -99,7 +109,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       kExtraSmallVerticalSpacing,
                       ProfileCard(
-                        ontap: () {},
+                        ontap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> InviteFriendScreen()));
+                        },
                         text: 'Invite Friends',
                         icon: Icon(
                           Icons.people,
