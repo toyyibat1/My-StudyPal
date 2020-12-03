@@ -38,7 +38,7 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                 Image.asset(invite,),
                 kLargeVerticalSpacing,
                 AppTextField(
-                text: 'Email',
+                text: '',
                 hintText: 'Enter email address',
                 ),
                 kLargeVerticalSpacing,
