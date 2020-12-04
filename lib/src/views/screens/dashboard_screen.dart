@@ -54,32 +54,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               children: [
                 kMediumVerticalSpacing,
-//                  Row(
-//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                    children: [
-//                      Text.rich(
-//                        TextSpan(
-//                            text: "Welcome,\n",
-//                            style: TextStyle(
-//                              color: Colors.grey,
-//                              fontSize: 20.0,
-//                            ),
-//                            children: [
-//                              TextSpan(
-//                                text: 'Nike Adeniran',
-//                                style: TextStyle(
-//                                    color: kBlackColor,
-//                                    fontSize: 25.0,
-//                                    fontWeight: FontWeight.w600),
-//                              ),
-//                            ]),
-//                      ),
-//                      CircleAvatar(
-//                        radius: 40,
-//                        backgroundImage: AssetImage(welcome),
-//                      ),
-//                    ],
-//                  ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -101,63 +75,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
                 kMediumVerticalSpacing,
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AppContainer(
-                            title: 'Pending',
-                            color: kPrimaryColor,
-                            date: 'Mon\n18',
-                            year: '2020',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AppContainer(
-                            title: '',
-                            color: kPrimaryColor2,
-                            date: 'Mon\n18',
-                            year: '2020',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                _pending(),
                 kMediumVerticalSpacing,
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AppContainer(
-                            title: 'Completed',
-                            color: kPrimaryColor,
-                            date: 'Mon\n18',
-                            year: '2020',
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AppContainer(
-                            title: '',
-                            color: kPrimaryColor2,
-                            date: 'Mon\n18',
-                            year: '2020',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                _completed(),
                 kMediumVerticalSpacing,
               ],
             ),
@@ -166,31 +86,94 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
+  Widget _pending() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Pending',
+          style: kLabelText,
+        ),
+        Container(
+          constraints:
+              BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 3),
+          child: ListView.builder(
+            itemCount: 10,
+            itemBuilder: (context, index) => Row(
+              children: [
+                Expanded(
+                  child: AppContainer(
+                    date: 'Mon\n 18',
+                    year: '2020',
+                    color: kPrimaryColor,
+                    tasktitle: 'Reading About Ethics',
+                    icon: Icon(
+                      Icons.pending,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _completed() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Completed',
+          style: kLabelText,
+        ),
+        Container(
+          constraints:
+              BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 3),
+          child: ListView.builder(
+            itemCount: 10,
+            itemBuilder: (context, index) => Row(
+              children: [
+                Expanded(
+                  child: AppContainer(
+                    date: 'Mon\n 18',
+                    year: '2020',
+                    color: kPrimaryColor2,
+                    tasktitle: 'Finish MTH Assignment',
+                    icon: Icon(
+                      Icons.done_outline,
+                      color: kPrimaryColor2,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class AppContainer extends StatelessWidget {
   final Color color;
-  final String title;
+  final Icon icon;
   final String date;
   final String year;
+  final String tasktitle;
 
-  const AppContainer({
-    Key key,
-    this.color,
-    this.title,
-    this.date,
-    this.year,
-  }) : super(key: key);
+  const AppContainer(
+      {Key key, this.color, this.icon, this.date, this.year, this.tasktitle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: kLabelText,
-        ),
         kExtraSmallVerticalSpacing,
         Container(
           decoration: BoxDecoration(
@@ -218,6 +201,34 @@ class AppContainer extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              kSmallHorizontalSpacing,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        tasktitle,
+                        style: kBodyText2TextStyle,
+                      ),
+                      kSmallVerticalSpacing,
+                      Row(
+                        children: [
+                          Icon(Icons.timer),
+                          Text(
+                            '01:00 PM - 02:00 PM',
+                            style: kLabelText,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 5,
+                  ),
+                  icon,
+                ],
               ),
             ],
           ),

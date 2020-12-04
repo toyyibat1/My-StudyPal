@@ -32,7 +32,7 @@ class _CreateTimetableScreenState extends State<CreateTimetableScreen> {
             onTap: () => Navigator.pop(context),
             child: Icon(Icons.arrow_back_ios, color: kBlackColor)),
         title: Text(
-          'Create New Task',
+          'Create Timetable',
           style: TextStyle(color: kBlackColor),
         ),
         elevation: 0.0,
@@ -142,7 +142,7 @@ class _CreateTimetableScreenState extends State<CreateTimetableScreen> {
                   children: [
                     Expanded(
                       child: AppButton(
-                          label: 'Create Task',
+                          label: 'Create Timetable',
                           textColor: Colors.white,
                           color: kPrimaryColor,
                           onPressed: () {
