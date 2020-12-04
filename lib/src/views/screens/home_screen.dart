@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/views/screens/dashboard_screen.dart';
 import 'package:my_study_pal/src/views/screens/profile_screen.dart';
@@ -29,7 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GetBuilder<AuthController>(
+      init: AuthController(),
+       builder: (controller) => controller?.firestoreUser?.value?.firstName == null
+          ? Center(
+              child: CircularProgressIndicator(),
+      )
+          : Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: NavBar(
         backgroundColor: Colors.white,
@@ -43,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
           NavBarItem(iconData: Icons.person_outline, text: 'Profile'),
         ],
       ),
-    );
+    ));
+    
   }
 }

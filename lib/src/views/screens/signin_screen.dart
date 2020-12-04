@@ -2,6 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
 import 'package:my_study_pal/src/core/validation_mixin.dart';
@@ -9,6 +12,7 @@ import 'package:my_study_pal/src/views/screens/home_screen.dart';
 import 'package:my_study_pal/src/views/screens/signup_screen.dart';
 import 'package:my_study_pal/src/views/widgets/app_button.dart';
 import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
+import '../../services/google_signin.dart';
 
 class SigninScreen extends StatefulWidget {
   @override
@@ -16,7 +20,8 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  final _formKey = GlobalKey<FormState>();
+    final AuthController authController = AuthController.to;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +29,7 @@ class _SigninScreenState extends State<SigninScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: SingleChildScrollView(
         child: Form(
-          key: _formKey,
+          key: authController.loginformKey,
           child: Column(
             children: [
               Container(
@@ -43,14 +48,22 @@ class _SigninScreenState extends State<SigninScreen> {
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   text: 'Email Address',
-                  validator: ValidationMixin().validateEmail),
+                  controller: authController.emailController,
+                 validator: ValidatorMixin().validateEmail,
+                  onSaved: (value) =>
+                        authController.emailController.text = value,
+                  
+               ),
               kMediumVerticalSpacing,
               AppTextField(
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
                 text: 'Password',
                 obscureText: true,
-                validator: ValidationMixin().validatePassword,
+                onSaved: (value) =>
+                        authController.passwordController.text = value,
+                controller: authController.passwordController,
+                validator: ValidatorMixin().validatePassword,
               ),
               kTinyVerticalSpacing,
               Row(
@@ -72,9 +85,11 @@ class _SigninScreenState extends State<SigninScreen> {
                       label: 'Sign in',
                       color: kPrimaryColor,
                       textColor: Colors.white,
-                      onPressed: () {
-                        _signin();
-                      },
+                      onPressed: () async {
+                       authController
+                                    .signInWithEmailAndPassword(context);
+                                    Get.toNamed('/home');
+                      }
                     ),
                   ),
                 ],
@@ -91,7 +106,12 @@ class _SigninScreenState extends State<SigninScreen> {
               AppFlatButton(
                 image: google,
                 text: 'Login with Google',
-                onPressed: () {},
+                onPressed: () {
+                   signInWithGoogle().then((result) => {
+              if (result != null) {
+                Get.to(HomeScreen())}
+            });
+             },
               ),
               kSmallVerticalSpacing,
               Text.rich(
@@ -104,10 +124,7 @@ class _SigninScreenState extends State<SigninScreen> {
                             fontWeight: FontWeight.w700, color: kPrimaryColor),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignupScreen()));
+                            Get.to(SignupScreen());
                           })
                   ],
                 ),
@@ -119,16 +136,6 @@ class _SigninScreenState extends State<SigninScreen> {
       ),
     ));
   }
-
-  void _signin() {
-    FocusScope.of(context).unfocus();
-    if(_formKey.currentState.validate()){
-      if (_formKey.currentState.validate()) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => HomeScreen()));
-      }
-    }
-  }
 }
 
 class AppFlatButton extends StatelessWidget {
@@ -137,11 +144,10 @@ class AppFlatButton extends StatelessWidget {
   final String image;
 
   const AppFlatButton({
-    Key key,
     this.onPressed,
     this.text,
     this.image,
-  }) : super(key: key);
+  }) ;
 
   @override
   Widget build(BuildContext context) {

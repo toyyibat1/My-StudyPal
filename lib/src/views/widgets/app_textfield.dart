@@ -14,6 +14,7 @@ class AppTextField extends StatelessWidget {
   final Function(String) validator;
   final bool enabled;
   final Function(String) onFieldSubmitted;
+  final Function(String) onSaved;
   final TextInputAction textInputAction;
   final int maxlength;
   final InputBorder border;
@@ -50,7 +51,7 @@ class AppTextField extends StatelessWidget {
     this.maxlength,
     this.border,
     this.enabledBorder,
-    this.title, this.height,
+    this.title, this.height, this.onSaved,
   }) : super(key: key);
 
   @override
@@ -66,6 +67,7 @@ class AppTextField extends StatelessWidget {
         ),
         kExtraSmallVerticalSpacing,
         TextFormField(
+          onSaved: onSaved,
           controller: controller,
           style: TextStyle(color: textColor, fontSize: 18, height: height),
           onChanged: onChanged,

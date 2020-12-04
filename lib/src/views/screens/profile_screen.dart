@@ -6,6 +6,7 @@ import 'package:my_study_pal/src/views/screens/add_schedule_screen.dart';
 import 'package:my_study_pal/src/views/screens/badges_screen.dart';
 import 'package:my_study_pal/src/views/screens/invite_friends_screen.dart';
 import 'package:my_study_pal/src/views/screens/study_goals.dart';
+import '../../services/google_signin.dart';
 
 import 'edit_profile_screen.dart';
 
@@ -49,12 +50,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Card(
                         child: ListTile(
                           title: Text(
-                            'Tope Adeniran',
+                            name,
                             style: kHeadingTextStyle,
                           ),
-                          subtitle: Text('topeadeniran@gmail.com'),
+                          subtitle: Text('email'),
                           leading: CircleAvatar(
                             radius: 40,
+                            
                             backgroundImage: AssetImage(welcome),
                           ),
                         ),
@@ -120,7 +122,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       kExtraSmallVerticalSpacing,
                       ProfileCard(
-                        ontap: () {},
+                        ontap: () {
+                          signOutGoogle();
+                        },
                         text: 'Log Out',
                         icon: Icon(
                           Icons.logout,

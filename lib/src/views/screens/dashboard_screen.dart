@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
+import '../../services/google_signin.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: 'Nike Adeniran',
+                              text: name,
                               style: TextStyle(
                                   color: kBlackColor,
                                   fontSize: 25.0,
