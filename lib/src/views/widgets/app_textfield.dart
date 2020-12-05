@@ -14,6 +14,7 @@ class AppTextField extends StatelessWidget {
   final Function(String) validator;
   final bool enabled;
   final Function(String) onFieldSubmitted;
+  final Function(String) onSaved;
   final TextInputAction textInputAction;
   final int maxlength;
   final InputBorder border;
@@ -25,6 +26,7 @@ class AppTextField extends StatelessWidget {
   final void Function(String) onChanged;
   final Color borderColor;
   final Color textColor;
+  final double height;
 
   const AppTextField({
     Key key,
@@ -49,7 +51,7 @@ class AppTextField extends StatelessWidget {
     this.maxlength,
     this.border,
     this.enabledBorder,
-    this.title,
+    this.title, this.height, this.onSaved,
   }) : super(key: key);
 
   @override
@@ -65,8 +67,9 @@ class AppTextField extends StatelessWidget {
         ),
         kExtraSmallVerticalSpacing,
         TextFormField(
+          onSaved: onSaved,
           controller: controller,
-          style: TextStyle(color: textColor, fontSize: 18),
+          style: TextStyle(color: textColor, fontSize: 18, height: height),
           onChanged: onChanged,
           maxLines: maxLines ?? 1,
           validator: validator,

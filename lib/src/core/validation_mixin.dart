@@ -1,9 +1,10 @@
-class ValidationMixin {
+import 'package:my_study_pal/src/controller/auth_controller.dart';
+
+class ValidatorMixin {
+  final AuthController authController = AuthController.to;
+  
   String validateNotEmpty(String value) =>
       value.isEmpty ? 'Field cannot be empty' : null;
-
-  String validateFullName(String value) =>
-      value.split(' ').length < 2 ? 'Enter a valid Full Name' : null;
 
   String validateEmail(String value) {
     bool emailValid = RegExp(

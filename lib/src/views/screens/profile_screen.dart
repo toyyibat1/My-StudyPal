@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
 import 'package:my_study_pal/src/views/screens/add_schedule_screen.dart';
@@ -14,128 +15,147 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String name = "Mubarak Shuaib";
+  String email = "mubarakshuaib3@gmail.com";
+
+  final AuthController authController = AuthController.to;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Center(child: Text('My Profile')),
-        backgroundColor: kPrimaryColor2,
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    kMediumVerticalSpacing,
-                    Card(
-                      child: ListTile(
-                        title: Text(
-                          'Tope Adeniran',
-                          style: kHeadingTextStyle,
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      color: kPrimaryColor,
+                      child: Center(
+                          child: Text(
+                        'My Profile',
+                        style: kHeadingTextStyle.copyWith(color: Colors.white),
+                      )),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      kMediumVerticalSpacing,
+                      Card(
+                        child: ListTile(
+                          title: Text(
+                            name,
+                            style: kHeadingTextStyle,
+                          ),
+                          subtitle: Text(email),
+                          leading: CircleAvatar(
+                            radius: 40,
+                            backgroundImage: AssetImage(welcome),
+                          ),
                         ),
-                        subtitle: Text('topeadeniran@gmail.com'),
-                        leading: CircleAvatar(
-                          radius: 40,
-                          backgroundImage: AssetImage(welcome),
+                      ),
+                      kSmallVerticalSpacing,
+                      Text(
+                        'General',
+                        style: kHeadingTextStyle,
+                      ),
+                      ProfileCard(
+                        ontap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditProfileScreen()));
+                        },
+                        text: 'Edit Profile',
+                        icon: Icon(
+                          Icons.person,
+                          color: kPrimaryColor,
                         ),
                       ),
-                    ),
-                    kSmallVerticalSpacing,
-                    Text(
-                      'General',
-                      style: kHeadingTextStyle,
-                    ),
-                    ProfileCard(
-                      ontap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditProfileScreen()));
-                      },
-                      text: 'Edit Profile',
-                      icon: Icon(
-                        Icons.person,
-                        color: kPrimaryColor,
+                      kExtraSmallVerticalSpacing,
+                      ProfileCard(
+                        ontap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BadgesScreen()));
+                        },
+                        text: 'Badges',
+                        icon: Icon(
+                          Icons.badge,
+                          color: kPrimaryColor,
+                        ),
                       ),
-                    ),
-                    kExtraSmallVerticalSpacing,
-                    ProfileCard(
-                      ontap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BadgesScreen()));
-                      },
-                      text: 'Badges',
-                      icon: Icon(
-                        Icons.badge,
-                        color: kPrimaryColor,
+                      kExtraSmallVerticalSpacing,
+                      ProfileCard(
+                        ontap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StudyGoalsScreen()));
+                        },
+                        text: 'Study Goals',
+                        icon: Icon(
+                          Icons.control_point_rounded,
+                          color: kPrimaryColor,
+                        ),
                       ),
-                    ),
-                    kExtraSmallVerticalSpacing,
-                    ProfileCard(
-                      ontap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StudyGoalsScreen()));
-                      },
-                      text: 'Study Goals',
-                      icon: Icon(
-                        Icons.control_point_rounded,
-                        color: kPrimaryColor,
+                      kExtraSmallVerticalSpacing,
+                      ProfileCard(
+                        ontap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddScheduleScreen()));
+                        },
+                        text: 'School Schedule',
+                        icon: Icon(
+                          Icons.next_plan,
+                          color: kPrimaryColor,
+                        ),
                       ),
-                    ),
-                    kExtraSmallVerticalSpacing,
-                    ProfileCard(
-                      ontap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddScheduleScreen()));
-                      },
-                      text: 'School Schedule',
-                      icon: Icon(
-                        Icons.next_plan,
-                        color: kPrimaryColor,
+                      kExtraSmallVerticalSpacing,
+                      ProfileCard(
+                        ontap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InviteFriendScreen()));
+                        },
+                        text: 'Invite Friends',
+                        icon: Icon(
+                          Icons.people,
+                          color: kPrimaryColor,
+                        ),
                       ),
-                    ),
-                    kExtraSmallVerticalSpacing,
-                    ProfileCard(
-                      ontap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => InviteFriendScreen()));
-                      },
-                      text: 'Invite Friends',
-                      icon: Icon(
-                        Icons.people,
-                        color: kPrimaryColor,
+                      kExtraSmallVerticalSpacing,
+                      ProfileCard(
+                        ontap: () async {
+                          await authController.signOut();
+                        },
+                        text: 'Log Out',
+                        icon: Icon(
+                          Icons.logout,
+                          color: kPrimaryColor,
+                        ),
                       ),
-                    ),
-                    kExtraSmallVerticalSpacing,
-                    ProfileCard(
-                      ontap: () {},
-                      text: 'Log Out',
-                      icon: Icon(
-                        Icons.logout,
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                    kExtraSmallVerticalSpacing,
-                  ],
+                      kExtraSmallVerticalSpacing,
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

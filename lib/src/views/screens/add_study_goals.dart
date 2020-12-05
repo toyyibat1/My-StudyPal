@@ -30,6 +30,7 @@ class _AddStudyGoalsState extends State<AddStudyGoals> {
             children: [
                kMediumVerticalSpacing,
               AppTextField(
+                height: 7,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   text: 'What are your study goals',
