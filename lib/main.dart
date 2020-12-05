@@ -18,18 +18,15 @@ void main() async {
   runApp(App());
 }
 
-GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
-
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        navigatorKey: mainNavigatorKey,
-        debugShowCheckedModeBanner: false,
-        title: 'My Study Pal',
-        //home: SplashScreen(),
-        initialRoute: "/",
-        routes: {
+      debugShowCheckedModeBanner: false,
+      title: 'My Study Pal',
+      //home: SplashScreen(),
+      initialRoute: "/",
+       routes: {
           '/': (context) => SplashScreen(),
           '/login': (context) => SigninScreen(),
           '/signup': (context) => SignupScreen(),

@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
+import 'package:my_study_pal/src/services/google_signin.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final AuthController authController = AuthController.to;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,7 +34,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                       children: [
                         TextSpan(
-                          text: 'Nike Adeniran',
+                          text: name ?? 
+                              (authController.firestoreUser.value.firstName + ' ' + authController.firestoreUser.value.lastName ),
                           style: TextStyle(
                               color: kBlackColor,
                               fontSize: 25.0,
@@ -57,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
+                  Expanded(
                       child: AppContainer2(
                         text: '06',
                         headText: 'Number of Pending Task',

@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(
       init: AuthController(),
-       builder: (controller) => controller?.firestoreUser?.value?.firstName == null
+       builder: (controller) => controller?.firestoreUser?.value?.uid == null
           ? Center(
               child: CircularProgressIndicator(),
       )
