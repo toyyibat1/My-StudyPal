@@ -11,6 +11,7 @@ import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 
 class SignupScreen extends StatelessWidget {
   final AuthController authController = AuthController.to;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
  @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class SignupScreen extends StatelessWidget {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Form(
-            key: authController.signupformKey,
+            key: _formKey,
             child: Column(
               children: [
                 Container(
@@ -51,6 +52,8 @@ class SignupScreen extends StatelessWidget {
                   text: 'First Name',
                   controller: authController.firstNameController,
                   validator: ValidatorMixin().validateNotEmpty,
+                  onSaved: (value) =>
+                        authController.firstNameController.text = value,
                 ),
                 kMediumVerticalSpacing,
                 AppTextField(
@@ -59,6 +62,8 @@ class SignupScreen extends StatelessWidget {
                   text: 'Last Name',
                   controller: authController.lastNameController,
                   validator: ValidatorMixin().validateNotEmpty,
+                  onSaved: (value) =>
+                        authController.lastNameController.text = value,
                 ),
                 kMediumVerticalSpacing,
                 AppTextField(
@@ -66,7 +71,9 @@ class SignupScreen extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   text: 'E-mail',
                   controller: authController.emailController,
-                  validator: ValidatorMixin().validateEmail
+                  validator: ValidatorMixin().validateEmail,
+                  onSaved: (value) =>
+                        authController.emailController.text = value,
                 ),
                 kMediumVerticalSpacing,
                 AppTextField(
@@ -76,6 +83,8 @@ class SignupScreen extends StatelessWidget {
                   controller: authController.passwordController,
                   obscureText: true,
                   validator: ValidatorMixin().validatePassword,
+                  onSaved: (value) =>
+                        authController.passwordController.text = value,
                   onFieldSubmitted: (value){
                    // authController.signupUser();
                   },
@@ -89,10 +98,12 @@ class SignupScreen extends StatelessWidget {
                         color: kPrimaryColor,
                         textColor: Colors.white,
                         onPressed: () async {
-                          SystemChannels.textInput
-                              .invokeMethod('TextInput.hide'); 
-                              authController.registerWithEmailAndPassword(context);
-                            }
+                        if (_formKey.currentState.validate()) {
+                          SystemChannels.textInput.invokeMethod(
+                              'TextInput.hide'); //to hide the keyboard - if any
+                          authController.registerWithEmailAndPassword(context);
+                        }
+                      }
                       ),
                     ),
                   ],

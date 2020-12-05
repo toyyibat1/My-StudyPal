@@ -1,5 +1,6 @@
 class Error {
   String wrongPasswordNoticeTitle = 'Login failed';
+  String wrongPasswordNotice = 'Wrong password';
   String unknownError = "Unknown Error";
   String  resetPasswordNoticeTitle ="Password Reset Email Sent";
   String resetPasswordNotice=

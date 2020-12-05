@@ -18,13 +18,11 @@ void main() async {
   Get.put<AuthController>(AuthController());
   runApp(App());
 }
- GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-     navigatorKey: mainNavigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'My Study Pal',
       //home: SplashScreen(),

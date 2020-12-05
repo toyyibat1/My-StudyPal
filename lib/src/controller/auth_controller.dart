@@ -23,8 +23,7 @@ class AuthController extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   Rx<User> firebaseUser = Rx<User>();
   Rx<UserModel> firestoreUser = Rx<UserModel>();
-  final _loginformKey = GlobalKey<FormState>();
-  final _signupformKey = GlobalKey<FormState>();
+
   //final RxBool admin = false.obs;
 
   @override
@@ -64,10 +63,6 @@ class AuthController extends GetxController {
   // Firebase user a realtime stream
   Stream<User> get user => _auth.authStateChanges();
 
-
-  GlobalKey<FormState> get loginformKey => _loginformKey;
-  GlobalKey<FormState> get signupformKey => _signupformKey;
-
   //Streams the firestore user from the firestore collection
   Stream<UserModel> streamFirestoreUser() {
     print('streamFirestoreUser()');
@@ -91,7 +86,6 @@ class AuthController extends GetxController {
 
   //Method to handle user sign in using email and password
   signInWithEmailAndPassword(BuildContext context) async {
-    if (_loginformKey.currentState.validate()) {
     try {
       await _auth.signInWithEmailAndPassword(
           email: emailController.text.trim(),
@@ -107,7 +101,7 @@ class AuthController extends GetxController {
           duration: Duration(seconds: 7),
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
-    // Get.to(HomeScreen());
+     Get.to(HomeScreen());
     } catch (error) {
       Get.snackbar(Error().signInErrorTitle, Error().signInError,
           snackPosition: SnackPosition.BOTTOM,
@@ -115,12 +109,11 @@ class AuthController extends GetxController {
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
     }
-    }
+    
   }
 
   // User registration using email and password
   registerWithEmailAndPassword(BuildContext context) async {
-    if (_signupformKey.currentState.validate()) {
     try {
       await _auth
           .createUserWithEmailAndPassword(
@@ -150,7 +143,7 @@ class AuthController extends GetxController {
         emailController.clear();
         passwordController.clear();
       });
-      Get.off(HomeScreen());
+      //Get.off(HomeScreen());
     } catch (error) {  
       Get.snackbar(Error().signUpErrorTitle, error.message,
           snackPosition: SnackPosition.BOTTOM,
@@ -158,7 +151,7 @@ class AuthController extends GetxController {
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
     }
-  }
+  
 }
 
   //create the firestore user in users collection

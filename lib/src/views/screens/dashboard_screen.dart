@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
 import '../../services/google_signin.dart';
@@ -10,6 +11,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final AuthController authController = AuthController.to;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +35,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: name,
+                              text: name ?? 
+                              (authController.firestoreUser.value.firstName + ' ' + authController.firestoreUser.value.lastName ),
                               style: TextStyle(
                                   color: kBlackColor,
                                   fontSize: 25.0,
