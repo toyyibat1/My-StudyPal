@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
-import 'package:my_study_pal/src/views/screens/home_screen.dart';
+import 'package:my_study_pal/src/core/validation_mixin.dart';
 import 'package:my_study_pal/src/views/widgets/app_button.dart';
 import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 
-class SignupScreen extends StatefulWidget {
-  @override
-  _SignupScreenState createState() => _SignupScreenState();
-}
+class SignupScreen extends StatelessWidget {
+  final AuthController authController = AuthController.to;
 
-class _SignupScreenState extends State<SignupScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      // key: _scaffoldKey,
       body: SafeArea(
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Form(
-              key: _formKey,
+              key: authController.signupformKey,
               child: Column(
                 children: [
                   Container(
@@ -50,42 +47,50 @@ class _SignupScreenState extends State<SignupScreen> {
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
                     text: 'First Name',
-                    validator: validateNotEmpty,
+                    controller: authController.firstNameController,
+                    validator: ValidatorMixin().validateNotEmpty,
                   ),
                   kMediumVerticalSpacing,
                   AppTextField(
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.next,
                     text: 'Last Name',
-                    validator: validateNotEmpty,
+                    controller: authController.lastNameController,
+                    validator: ValidatorMixin().validateNotEmpty,
                   ),
                   kMediumVerticalSpacing,
                   AppTextField(
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    text: 'E-mail',
-                    validator: validateEmail,
-                  ),
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      text: 'E-mail',
+                      controller: authController.emailController,
+                      validator: ValidatorMixin().validateEmail),
                   kMediumVerticalSpacing,
                   AppTextField(
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.done,
                     text: 'Password',
+                    controller: authController.passwordController,
                     obscureText: true,
-                    validator: validatePassword,
+                    validator: ValidatorMixin().validatePassword,
+                    onFieldSubmitted: (value) {
+                      // authController.signupUser();
+                    },
                   ),
                   kLargeVerticalSpacing,
                   Row(
                     children: [
                       Expanded(
                         child: AppButton(
-                          label: 'Sign Up',
-                          color: kPrimaryColor,
-                          textColor: Colors.white,
-                          onPressed: () {
-                            _signup();
-                          },
-                        ),
+                            label: 'Sign Up',
+                            color: kPrimaryColor,
+                            textColor: Colors.white,
+                            onPressed: () async {
+                              SystemChannels.textInput
+                                  .invokeMethod('TextInput.hide');
+                              authController
+                                  .registerWithEmailAndPassword(context);
+                            }),
                       ),
                     ],
                   ),
@@ -98,27 +103,4 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
-
-  void _signup() {
-    FocusScope.of(context).unfocus();
-
-    if (_formKey.currentState.validate()) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => HomeScreen(),
-      ));
-    }
-  }
 }
-
-String validateNotEmpty(String value) =>
-    value.isEmpty ? 'Field cannot be empty' : null;
-
-String validateEmail(String value) {
-  bool emailValid = RegExp(
-          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-      .hasMatch(value);
-  return !emailValid ? 'Enter a Valid Email Address' : null;
-}
-
-String validatePassword(String value) =>
-    value.length < 6 ? 'Password should be more than 6Characters' : null;
