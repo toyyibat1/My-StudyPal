@@ -1,5 +1,13 @@
 const logo = 'assets/logo.png';
 const logo2 = 'assets/logo2.png';
+const welcome = 'assets/man.png';
+const task = 'assets/task.png';
+const timetable = 'assets/timetable.png';
+const goal = 'assets/goals.png';
+const invite = 'assets/invites.png';
+const mark = 'assets/mark.png';
+const badge = 'assets/badge.png';
+
 const onboarding1 = 'assets/onboarding1.svg';
 const onboarding2 = 'assets/onboarding2.svg';
 const onboarding3 = 'assets/onboarding3.svg';
