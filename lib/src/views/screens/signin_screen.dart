@@ -69,10 +69,15 @@ class _SigninScreenState extends State<SigninScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      'Forgot Password?',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(decoration: TextDecoration.underline),
+                    child: GestureDetector(
+                      onTap: ()async{
+                        await authController.sendPasswordResetEmail(context);
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
                     ),
                   ),
                 ],

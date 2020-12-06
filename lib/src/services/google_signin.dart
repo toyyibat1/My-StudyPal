@@ -11,6 +11,7 @@ String name;
 String emailAddress;
 String imageUrl;
 
+//sign in with google
 Future<String> signInWithGoogle() async {
   await Firebase.initializeApp();
 

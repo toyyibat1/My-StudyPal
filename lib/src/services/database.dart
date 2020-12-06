@@ -47,4 +47,34 @@ class DatabaseService {
       'taskName': taskName,
     });
   }
+
+//  //task list from snapshot
+//  List<TaskData> _taskListFromSnapshot(QuerySnapshot snapshot) {
+//    return snapshot.docs.map((doc) {
+//      return TaskData(
+//        taskName: doc.data()['taskName'] ?? '',
+//        taskDate: doc.data()['taskDate'] ?? '',
+//        taskStart: doc.data()['taskStart'] ?? '',
+//        taskEnd: doc.data()['taskEnd'] ?? '',
+//        taskDescription: doc.data()['taskDescription'] ?? '',
+//      );
+//    }).toList();
+//  }
+//
+//  //3user data fom snapshot
+//  TaskData _userTaskFromSnapshot(DocumentSnapshot snapshot) {
+//    return TaskData(
+//      uid: uid,
+//      taskName: snapshot.data()['taskName'],
+//      taskDescription: snapshot.data()['taskDescription'],
+//      taskDate: snapshot.data()['taskDate'],
+//      taskStart: snapshot.data()['taskStart'],
+//      taskEnd: snapshot.data()['taskEnd'],
+//    );
+//  }
+//
+//  //1 get user doc string
+//  Stream<TaskData> get taskData {
+//    return studyPadiCollection.doc(uid).snapshots().map(_userTaskFromSnapshot);
+//  }
 }

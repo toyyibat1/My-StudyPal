@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/validation_mixin.dart';
+import 'package:my_study_pal/src/models/user.dart';
 import 'package:my_study_pal/src/views/widgets/app_button.dart';
 import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 
@@ -14,6 +15,14 @@ class CreateTaskScreen extends StatefulWidget {
 
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
   final AuthController authController = AuthController.to;
+  final user = GetxController();
+
+//  Form values
+  String _taskName;
+  String _taskDescription;
+  String _taskDate;
+  String _taskStart;
+  String _taskEnd;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +38,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         elevation: 0.0,
         backgroundColor: Colors.transparent,
       ),
-      body: GetBuilder<AuthController>(
-        init: AuthController(),
+      body: GetBuilder<UserModel>(
         builder: (controller) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: SingleChildScrollView(

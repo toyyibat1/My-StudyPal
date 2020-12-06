@@ -40,7 +40,6 @@ class AuthController extends GetxController {
   final _loginformKey = GlobalKey<FormState>();
   final _signupformKey = GlobalKey<FormState>();
   final _formKey = GlobalKey<FormState>();
-
   //final RxBool admin = false.obs;
 
   @override
@@ -80,9 +79,9 @@ class AuthController extends GetxController {
   // Firebase user a realtime stream
   Stream<User> get user => _auth.authStateChanges();
 
-
+  GlobalKey<FormState> get loginformKey => _loginformKey;
+  GlobalKey<FormState> get signupformKey => _signupformKey;
   GlobalKey<FormState> get formKey => _formKey;
-
 
   //Streams the firestore user from the firestore collection
   Stream<UserModel> streamFirestoreUser() {
@@ -107,6 +106,7 @@ class AuthController extends GetxController {
 
   //Method to handle user sign in using email and password
   signInWithEmailAndPassword(BuildContext context) async {
+    if (_loginformKey.currentState.validate()) {
       try {
         await _auth
             .signInWithEmailAndPassword(
@@ -131,10 +131,12 @@ class AuthController extends GetxController {
             backgroundColor: Get.theme.snackBarTheme.backgroundColor,
             colorText: Get.theme.snackBarTheme.actionTextColor);
       }
-    
+    }
   }
+
   // User registration using email and password
   registerWithEmailAndPassword(BuildContext context) async {
+    if (_signupformKey.currentState.validate()) {
       try {
         await _auth
             .createUserWithEmailAndPassword(
@@ -172,8 +174,29 @@ class AuthController extends GetxController {
             backgroundColor: Get.theme.snackBarTheme.backgroundColor,
             colorText: Get.theme.snackBarTheme.actionTextColor);
       }
+    }
+  }
 
-}
+  //password reset email
+  Future<void> sendPasswordResetEmail(BuildContext context) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: emailController.text);
+
+      Get.snackbar(
+          Error().resetPasswordNoticeTitle, Error().resetPasswordNotice,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 5),
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+          colorText: Get.theme.snackBarTheme.actionTextColor);
+    } catch (error) {
+      Get.snackbar(Error().resetPasswordFailed, error.message,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 10),
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+          colorText: Get.theme.snackBarTheme.actionTextColor);
+    }
+  }
+
   //create the firestore user in users collection
   void _createUserFirestore(UserModel user, User _firebaseUser) {
     _db.doc('/users/${_firebaseUser.uid}').set(user.toJson());
