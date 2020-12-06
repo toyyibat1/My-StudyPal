@@ -8,7 +8,7 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 // Add these three variables to store the info
 // retrieved from the FirebaseUser
 String name;
-String email;
+String emailAddress;
 String imageUrl;
 
 Future<String> signInWithGoogle() async {
@@ -33,7 +33,7 @@ Future<String> signInWithGoogle() async {
     assert(user.photoURL != null);
 
     name = user.displayName;
-    email = user.email;
+    emailAddress = user.email;
     imageUrl = user.photoURL;
 
     // if(name.contains(" ")){
