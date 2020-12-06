@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
+import 'package:my_study_pal/src/models/user.dart';
+import 'package:my_study_pal/src/views/screens/profile_screen.dart';
 import 'package:my_study_pal/src/views/widgets/app_button.dart';
 import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +19,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  final AuthController authController = AuthController.to;
   File _image;
   final ImagePicker picker = ImagePicker();
 
@@ -130,7 +136,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _edit() {
     FocusScope.of(context).unfocus();
     if(_formKey.currentState.validate()){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> null));
+     // Get.snackbar("Success", "updated suceessfully");
+      //Get.to(ProfileScreen());
     }
   }
 }

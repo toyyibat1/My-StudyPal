@@ -22,6 +22,7 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   final AuthController authController = AuthController.to;
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class _SigninScreenState extends State<SigninScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: SingleChildScrollView(
         child: Form(
-          key: authController.loginformKey,
+          key: _formKey,
           child: Column(
             children: [
               Container(
@@ -88,6 +89,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           authController.signInWithEmailAndPassword(context);
                           Get.toNamed('/home');
                         }),
+
                   ),
                 ],
               ),
