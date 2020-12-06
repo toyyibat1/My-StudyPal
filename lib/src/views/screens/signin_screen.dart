@@ -22,7 +22,7 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   final AuthController authController = AuthController.to;
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +70,8 @@ class _SigninScreenState extends State<SigninScreen> {
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      onTap: ()async{
-                        await authController.sendPasswordResetEmail(context);
+                      onTap: () {
+                        authController.sendPasswordResetEmail(context);
                       },
                       child: Text(
                         'Forgot Password?',
@@ -94,7 +94,6 @@ class _SigninScreenState extends State<SigninScreen> {
                           authController.signInWithEmailAndPassword(context);
                           Get.toNamed('/home');
                         }),
-
                   ),
                 ],
               ),

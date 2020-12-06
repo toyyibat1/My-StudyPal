@@ -1,24 +1,22 @@
-import 'package:get/get.dart';
-
-class UserModel extends GetxController {
-  final String uid;
-  final String email;
-  final String firstName;
-  final String lastName;
-  final String photoUrl;
-  final String institution;
-  final String course;
-  final String studyGoals;
-  final String periodToBeAchieved;
-  final String endOfSemester;
-  final String startOfSemester;
-  final String startOfExam;
-  final String endOfExam;
-  final String taskName;
-  final String taskDescription;
-  final String taskDate;
-  final String taskStart;
-  final String taskEnd;
+class UserModel {
+  String uid;
+  String email;
+  String firstName;
+  String lastName;
+  String photoUrl;
+  String institution;
+  String course;
+  String studyGoals;
+  String periodToBeAchieved;
+  String endOfSemester;
+  String startOfSemester;
+  String startOfExam;
+  String endOfExam;
+  String taskName;
+  String taskDescription;
+  String taskDate;
+  String taskStart;
+  String taskEnd;
 
   UserModel(
       {this.uid,

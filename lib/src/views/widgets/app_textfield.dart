@@ -4,7 +4,6 @@ import '../../core/constants.dart';
 
 class AppTextField extends StatelessWidget {
   final String hintText;
-  final String initialValue;
   final String text;
   final bool filled;
   final bool showCounterText;
@@ -32,7 +31,6 @@ class AppTextField extends StatelessWidget {
   const AppTextField({
     Key key,
     this.label,
-    this.initialValue,
     this.hintText,
     this.text,
     this.controller,
@@ -53,9 +51,7 @@ class AppTextField extends StatelessWidget {
     this.maxlength,
     this.border,
     this.enabledBorder,
-    this.title,
-    this.height,
-    this.onSaved,
+    this.title, this.height, this.onSaved,
   }) : super(key: key);
 
   @override
@@ -71,7 +67,6 @@ class AppTextField extends StatelessWidget {
         ),
         kExtraSmallVerticalSpacing,
         TextFormField(
-          initialValue: initialValue,
           onSaved: onSaved,
           controller: controller,
           style: TextStyle(color: textColor, fontSize: 18, height: height),
