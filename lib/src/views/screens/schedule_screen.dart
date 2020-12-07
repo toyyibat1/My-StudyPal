@@ -19,8 +19,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryColor,
         child: Icon(Icons.add),
-        onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => CreateTaskScreen())),
+        onPressed: () {},
+        // onPressed: () => Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => CreateTaskScreen())),
       ),
       body: SafeArea(
         child: Padding(

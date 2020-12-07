@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
+import 'package:my_study_pal/src/models/app_user.dart';
 import 'package:my_study_pal/src/views/screens/dashboard_screen.dart';
 import 'package:my_study_pal/src/views/screens/profile_screen.dart';
 import 'package:my_study_pal/src/views/screens/schedule_screen.dart';
@@ -9,6 +10,9 @@ import 'package:my_study_pal/src/views/screens/timetable_screen.dart';
 import 'package:my_study_pal/src/views/widgets/nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
+  final AppUser user;
+  const HomeScreen({Key key, @required this.user}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -32,26 +36,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(
-      init: AuthController(),
-       builder: (controller) => controller?.firestoreUser?.value?.uid == null
-          ? Center(
-              child: CircularProgressIndicator(),
-      )
-          : Scaffold(
-      body: _children[_currentIndex],
-      bottomNavigationBar: NavBar(
-        backgroundColor: Colors.white,
-        color: Colors.black54,
-        selectedColor: kPrimaryColor2,
-        onTabSelected: _onTabSelected,
-        items: [
-          NavBarItem(iconData: Icons.home, text: 'Home'),
-          NavBarItem(iconData: Icons.today, text: 'Schedule'),
-          NavBarItem(iconData: Icons.timelapse_rounded, text: 'Timetable'),
-          NavBarItem(iconData: Icons.person_outline, text: 'Profile'),
-        ],
-      ),
-    ));
-    
+        init: AuthController(),
+        builder: (controller) => controller?.firestoreUser?.value?.uid == null
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Scaffold(
+                body: _children[_currentIndex],
+                bottomNavigationBar: NavBar(
+                  backgroundColor: Colors.white,
+                  color: Colors.black54,
+                  selectedColor: kPrimaryColor2,
+                  onTabSelected: _onTabSelected,
+                  items: [
+                    NavBarItem(iconData: Icons.home, text: 'Home'),
+                    NavBarItem(iconData: Icons.today, text: 'Schedule'),
+                    NavBarItem(
+                        iconData: Icons.timelapse_rounded, text: 'Timetable'),
+                    NavBarItem(iconData: Icons.person_outline, text: 'Profile'),
+                  ],
+                ),
+              ));
   }
 }

@@ -51,7 +51,9 @@ class AppTextField extends StatelessWidget {
     this.maxlength,
     this.border,
     this.enabledBorder,
-    this.title, this.height, this.onSaved,
+    this.title,
+    this.height,
+    this.onSaved,
   }) : super(key: key);
 
   @override
@@ -95,7 +97,7 @@ class AppTextField extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderSide:
-                  BorderSide(color: borderColor ?? kPrimaryColor, width: 0.5),
+                  BorderSide(color: borderColor ?? Colors.grey, width: 0.5),
               borderRadius: BorderRadius.circular(5),
             ),
             focusedBorder: OutlineInputBorder(
