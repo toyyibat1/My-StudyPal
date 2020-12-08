@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/controller/auth_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
+import 'package:my_study_pal/src/models/app_user.dart';
 import 'package:my_study_pal/src/services/google_signin.dart';
 import 'package:my_study_pal/src/views/screens/add_schedule_screen.dart';
 import 'package:my_study_pal/src/views/screens/badges_screen.dart';
@@ -11,6 +12,9 @@ import 'package:my_study_pal/src/views/screens/study_goals.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
+  final AppUser user;
+  const ProfileScreen({Key key, this.user}) : super(key: key);
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -55,11 +59,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Card(
                         child: ListTile(
                           title: Text(
-                            name ?? 
-                              (authController.firestoreUser.value.firstName + ' ' + authController.firestoreUser.value.lastName ),
+                            name ??
+                                (authController.firestoreUser.value.firstName +
+                                    ' ' +
+                                    authController
+                                        .firestoreUser.value.lastName),
                             style: kHeadingTextStyle,
                           ),
-                          subtitle: Text(emailAddress ?? 
+                          subtitle: Text(emailAddress ??
                               (authController.firestoreUser.value.email)),
                           leading: CircleAvatar(
                             radius: 40,

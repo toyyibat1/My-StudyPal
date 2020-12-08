@@ -8,7 +8,7 @@ import '../views/screens/home_screen.dart';
 import '../views/screens/onboarding_screen.dart';
 import '../views/screens/signin_screen.dart';
 
-class SplashScreenController extends GetxController {
+class SplashController extends GetxController {
   @override
   void onInit() {
     decideNavigation();

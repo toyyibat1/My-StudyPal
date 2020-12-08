@@ -9,8 +9,8 @@ import '../../core/images.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<SplashScreenController>(
-      init: SplashScreenController(),
+    return GetBuilder<SplashController>(
+      init: SplashController(),
       builder: (controller) => Scaffold(
         body: Container(
           decoration: BoxDecoration(

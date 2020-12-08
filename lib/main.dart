@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'src/controller/auth_controller.dart';
 import 'src/services/service_locator.dart';
 import 'src/views/screens/splash_screen.dart';
 
@@ -11,7 +12,8 @@ void main() async {
 
   await Firebase.initializeApp();
   await GetStorage.init();
-  // Get.put<AuthController>(AuthController());
+
+  Get.put<AuthController>(AuthController());
   runApp(App());
 }
 
@@ -23,13 +25,6 @@ class App extends StatelessWidget {
       title: 'My Study Pal',
       initialBinding: ServicesBinding(),
       home: SplashScreen(),
-      // initialRoute: "/",
-      // routes: {
-      //   '/': (context) => SplashScreen(),
-      //   '/login': (context) => SigninScreen(),
-      //   '/signup': (context) => SignupScreen(),
-      //   // '/home': (context) => HomeScreen()
-      // });
     );
   }
 }

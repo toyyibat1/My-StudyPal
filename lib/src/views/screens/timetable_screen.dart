@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:my_study_pal/src/core/constants.dart';
-import 'package:my_study_pal/src/views/screens/create_timetable_screen.dart';
+import '../../core/constants.dart';
+import '../../models/app_user.dart';
+import 'create_timetable_screen.dart';
 
 class TimetableScreen extends StatefulWidget {
+  final AppUser user;
+  const TimetableScreen({Key key, this.user}) : super(key: key);
+
   @override
   _TimetableScreenState createState() => _TimetableScreenState();
 }

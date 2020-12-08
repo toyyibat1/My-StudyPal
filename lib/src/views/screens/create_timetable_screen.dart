@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/core/constants.dart';
-import 'package:my_study_pal/src/views/screens/schedule_screen.dart';
+import 'package:my_study_pal/src/views/screens/task_screen.dart';
 import 'package:my_study_pal/src/views/widgets/app_button.dart';
 import 'package:my_study_pal/src/views/widgets/app_dropdown.dart';
 import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
@@ -146,7 +146,7 @@ class _CreateTimetableScreenState extends State<CreateTimetableScreen> {
                           textColor: Colors.white,
                           color: kPrimaryColor,
                           onPressed: () {
-                            _createTimetable();
+                            // _createTimetable();
                           }),
                     )
                   ],
@@ -160,15 +160,15 @@ class _CreateTimetableScreenState extends State<CreateTimetableScreen> {
     );
   }
 
-  void _createTimetable() {
-    FocusScope.of(context).unfocus();
+  // void _createTimetable() {
+  //   FocusScope.of(context).unfocus();
 
-    if (_formKey.currentState.validate()) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => ScheduleScreen(),
-      ));
-    }
-  }
+  //   if (_formKey.currentState.validate()) {
+  //     Navigator.of(context).pushReplacement(MaterialPageRoute(
+  //       builder: (context) => ScheduleScreen(),
+  //     ));
+  //   }
+  // }
 }
 
 String validateNotEmpty(String value) =>
