@@ -90,4 +90,44 @@ class FirebaseFirestoreService implements DatabaseService {
 
     return cards;
   }
+
+  @override
+  Future<List<Task>> getPendingTasks() async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    List<Task> cards = [];
+
+    List<QueryDocumentSnapshot> snapshot = (await userCollection
+            .doc(user.uid)
+            .collection("tasks")
+            .where('completed', isEqualTo: false)
+            .get())
+        .docs;
+
+    snapshot.forEach(
+      (card) => cards.add(Task.fromDocumentSnapshot(card)),
+    );
+
+    return cards;
+  }
+
+  @override
+  Future<List<Task>> getCompletedTasks() async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    List<Task> cards = [];
+
+    List<QueryDocumentSnapshot> snapshot = (await userCollection
+            .doc(user.uid)
+            .collection("tasks")
+            .where('completed', isEqualTo: true)
+            .get())
+        .docs;
+
+    snapshot.forEach(
+      (card) => cards.add(Task.fromDocumentSnapshot(card)),
+    );
+
+    return cards;
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/controller/dashboard_controller.dart';
 
 import '../../core/constants.dart';
 import '../../models/task.dart';
@@ -9,12 +10,14 @@ class TaskList extends StatelessWidget {
   final String title;
   final Color tagColor;
   final List<Task> tasks;
+  final DashboardController controller;
 
   const TaskList({
     Key key,
     @required this.title,
     @required this.tasks,
     @required this.tagColor,
+    @required this.controller,
   }) : super(key: key);
 
   @override
@@ -54,9 +57,10 @@ class TaskList extends StatelessWidget {
                   ],
                 ),
               )
-            : SizedBox(
-                height: 324,
+            : Container(
+                constraints: BoxConstraints(maxHeight: 324),
                 child: ListView.builder(
+                  shrinkWrap: true,
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
                     return Padding(
@@ -138,8 +142,21 @@ class TaskList extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        Icon(Icons.panorama_fish_eye,
-                                            color: tagColor),
+                                        GestureDetector(
+                                          onTap: () =>
+                                              controller.changeTaskStatus(
+                                                  tasks[index].id,
+                                                  !tasks[index].completed),
+                                          child: tasks[index].completed
+                                              ? Icon(
+                                                  Icons.check_circle,
+                                                  color: kPrimaryColor,
+                                                )
+                                              : Icon(
+                                                  Icons.panorama_fish_eye,
+                                                  color: kPrimaryColor,
+                                                ),
+                                        ),
                                       ],
                                     ),
                                   ),

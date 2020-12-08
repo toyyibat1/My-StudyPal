@@ -19,10 +19,7 @@ class TaskScreen extends StatelessWidget {
               header,
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 16.0,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
                   child: controller.state == NotifierState.isLoading
                       ? Center(child: CircularProgressIndicator())
                       : controller.tasks.isEmpty
@@ -57,6 +54,7 @@ class TaskScreen extends StatelessWidget {
                                 return TaskTile(
                                   index: index,
                                   tasks: controller.tasks,
+                                  controller: controller,
                                 );
                               },
                             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:my_study_pal/src/controller/task_controller.dart';
 
 import '../../core/constants.dart';
@@ -75,8 +76,17 @@ class TaskTile extends StatelessWidget {
                           ],
                         ),
                         GestureDetector(
-                          child: Icon(Icons.panorama_fish_eye,
-                              color: kPrimaryColor),
+                          onTap: () => controller.changeTaskStatus(
+                              tasks[index].id, !tasks[index].completed),
+                          child: tasks[index].completed
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: kPrimaryColor,
+                                )
+                              : Icon(
+                                  Icons.panorama_fish_eye,
+                                  color: kPrimaryColor,
+                                ),
                         ),
                       ],
                     ),

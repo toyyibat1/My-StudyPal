@@ -16,4 +16,8 @@ abstract class DatabaseService {
   Future<void> changeTaskStatus(String taskId, bool status);
 
   Future<List<Task>> getAllTasks();
+
+  Future<List<Task>> getPendingTasks();
+
+  Future<List<Task>> getCompletedTasks();
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/dashboard_controller.dart';
 
 import '../../controller/home_controller.dart';
 import '../../core/constants.dart';
@@ -20,24 +21,29 @@ class DashboardScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    children: [
-                      kMediumVerticalSpacing,
-                      taskSnapshot(),
-                      kMediumVerticalSpacing,
-                      TaskList(
-                        tagColor: kPrimaryColor,
-                        title: 'Pending',
-                        tasks: pendingTasks,
-                      ),
-                      kMediumVerticalSpacing,
-                      TaskList(
-                        tagColor: kPrimaryColor2,
-                        title: 'Completed',
-                        tasks: [],
-                      ),
-                      kMediumVerticalSpacing,
-                    ],
+                  child: GetBuilder<DashboardController>(
+                    init: DashboardController(),
+                    builder: (dashboardController) => Column(
+                      children: [
+                        kMediumVerticalSpacing,
+                        taskSnapshot(dashboardController),
+                        kMediumVerticalSpacing,
+                        TaskList(
+                          controller: dashboardController,
+                          tagColor: kPrimaryColor,
+                          title: 'Pending',
+                          tasks: dashboardController.pendingTasks,
+                        ),
+                        kMediumVerticalSpacing,
+                        TaskList(
+                          controller: dashboardController,
+                          tagColor: kPrimaryColor2,
+                          title: 'Completed',
+                          tasks: dashboardController.completedTasks,
+                        ),
+                        kMediumVerticalSpacing,
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -88,13 +94,13 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget taskSnapshot() {
+  Widget taskSnapshot(DashboardController dashboardController) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: TaskTag(
-            text: '06',
+            text: '${dashboardController.pendingTasks.length}',
             headText: 'Number of Pending Task',
             color: kPrimaryColor2,
           ),
@@ -102,7 +108,7 @@ class DashboardScreen extends StatelessWidget {
         kSmallHorizontalSpacing,
         Expanded(
           child: TaskTag(
-            text: '10',
+            text: '${dashboardController.completedTasks.length}',
             headText: 'Number of Completed Task',
             color: kPrimaryColor,
           ),

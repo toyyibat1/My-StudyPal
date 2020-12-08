@@ -6,21 +6,24 @@ import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../models/task.dart';
 import '../services/database/database_service.dart';
-import '../views/screens/create_task_screen.dart';
 
-class TaskController extends Notifier {
-  List<Task> _tasks = [];
+class DashboardController extends Notifier {
+  List<Task> _pendingTasks = [];
+  List<Task> _completedTasks = [];
 
-  List<Task> get tasks => _tasks;
+  List<Task> get pendingTasks => _pendingTasks;
+  List<Task> get completedTasks => _completedTasks;
 
   @override
   void onInit() {
-    getAllTasks();
+    getPendingTasks();
+    getCompletedTasks();
     super.onInit();
   }
 
   FutureOr onGoBack(dynamic value) async {
-    getAllTasks();
+    getPendingTasks();
+    getCompletedTasks();
     update();
   }
 
@@ -49,10 +52,10 @@ class TaskController extends Notifier {
     setState(NotifierState.isIdle);
   }
 
-  void getAllTasks() async {
+  void getPendingTasks() async {
     setState(NotifierState.isLoading);
     try {
-      _tasks = await Get.find<DatabaseService>().getAllTasks();
+      _pendingTasks = await Get.find<DatabaseService>().getPendingTasks();
 
       setState(NotifierState.isIdle);
     } on Failure catch (f) {
@@ -68,7 +71,22 @@ class TaskController extends Notifier {
     setState(NotifierState.isIdle);
   }
 
-  void navigateToCreateTask() => Get.to(CreateTaskScreen()).then(onGoBack);
+  void getCompletedTasks() async {
+    setState(NotifierState.isLoading);
+    try {
+      _completedTasks = await Get.find<DatabaseService>().getCompletedTasks();
 
-  void goBack() => Get.back();
+      setState(NotifierState.isIdle);
+    } on Failure catch (f) {
+      setState(NotifierState.isIdle);
+      Get.snackbar(
+        'Error',
+        f.message,
+        colorText: Get.theme.colorScheme.onError,
+        backgroundColor: Get.theme.errorColor,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+    setState(NotifierState.isIdle);
+  }
 }
