@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controller/create_task_controller.dart';
+import '../../controller/edit_timetable_controller.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
+import '../../models/timetable.dart';
 import '../widgets/app_button.dart';
+import '../widgets/app_dropdown.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
 
-class CreateTaskScreen extends StatelessWidget {
+class EditTimetableScreen extends StatelessWidget {
+  final Timetable timetable;
+  EditTimetableScreen({Key key, @required this.timetable}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
       child: Scaffold(
         body: SafeArea(
-          child: GetBuilder<CreateTaskController>(
-            init: CreateTaskController(),
+          child: GetBuilder<EditTimetableController>(
+            init: EditTimetableController(timetable)..formatTimes(context),
             builder: (controller) => Column(
               children: [
                 header(context, controller),
@@ -28,12 +33,12 @@ class CreateTaskScreen extends StatelessWidget {
     );
   }
 
-  Widget header(BuildContext context, CreateTaskController controller) =>
+  Widget header(BuildContext context, EditTimetableController controller) =>
       Container(
         width: double.infinity,
         padding: EdgeInsets.only(
           left: 16.0,
-          right: MediaQuery.of(context).size.width * 0.33,
+          right: MediaQuery.of(context).size.width * 0.25,
         ),
         height: 40,
         color: kPrimaryColor,
@@ -46,7 +51,7 @@ class CreateTaskScreen extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Create New Task',
+                'Create New Timetable',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -58,7 +63,7 @@ class CreateTaskScreen extends StatelessWidget {
         ),
       );
 
-  Widget form(BuildContext context, CreateTaskController controller) {
+  Widget form(BuildContext context, EditTimetableController controller) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -69,35 +74,39 @@ class CreateTaskScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 kMediumVerticalSpacing,
+                AppDropdown(
+                  items: [
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                    'Sunday',
+                  ],
+                  text: 'Day of the week',
+                  onChanged: (val) =>
+                      controller.timetableDayController.text = val,
+                  value: 'Monday',
+                  validator: (val) =>
+                      val == 'Select Day' ? 'Please select a valid day' : null,
+                ),
+                kMediumVerticalSpacing,
                 AppTextField(
-                  text: 'Task Name',
+                  text: 'Subject',
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
-                  controller: controller.taskNameController,
+                  controller: controller.timetableSubjectController,
                   validator: controller.validateNotEmpty,
                 ),
                 kMediumVerticalSpacing,
                 AppTextField(
                   maxLines: 3,
-                  text: 'Task Description',
+                  text: 'Location',
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
-                  controller: controller.taskDescriptionController,
+                  controller: controller.timetableLocationController,
                   validator: controller.validateNotEmpty,
-                ),
-                kMediumVerticalSpacing,
-                GestureDetector(
-                  onTap: () {
-                    controller.selectDate(context);
-                  },
-                  child: AppTextField(
-                    text: 'Date',
-                    hintText: 'Select Date',
-                    controller: controller.dateController,
-                    validator: controller.validateNotEmpty,
-                    enabled: false,
-                    prefixIcon: Icon(Icons.calendar_today),
-                  ),
                 ),
                 kMediumVerticalSpacing,
                 Row(
@@ -137,13 +146,13 @@ class CreateTaskScreen extends StatelessWidget {
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Create Task',
+                  label: 'Update Timetable',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,
                   onPressed: controller.state == NotifierState.isLoading
                       ? null
-                      : controller.createTask,
+                      : () => controller.updateTimetable(timetable.id),
                 ),
               ],
             ),

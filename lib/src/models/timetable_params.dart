@@ -7,7 +7,6 @@ class TimetableParams {
   final String location;
   final TimeOfDay startTime;
   final TimeOfDay endTime;
-//  final String notification;
 
   TimetableParams({
     @required this.day,
@@ -15,7 +14,5 @@ class TimetableParams {
     @required this.location,
     @required this.startTime,
     @required this.endTime,
-
-//      @required this.notification,
   });
 }
