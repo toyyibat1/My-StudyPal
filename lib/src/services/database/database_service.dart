@@ -13,8 +13,12 @@ abstract class DatabaseService {
 
   Future<void> updateUserWithId(String userId,
       {String emailAddress, String firstName, String phoneNumber});
-//task
+  // task
   Future<Task> createTask(TaskParams params);
+
+  Future<void> updateTask(String timetableId, TaskParams params);
+
+  Future<void> deleteTask(String taskId);
 
   Future<void> changeTaskStatus(String taskId, bool status);
 

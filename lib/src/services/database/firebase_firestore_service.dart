@@ -70,6 +70,35 @@ class FirebaseFirestoreService implements DatabaseService {
   }
 
   @override
+  Future<void> updateTask(String taskId, TaskParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    DateTime startTime = DateTime(params.date.year, params.date.month,
+        params.date.day, params.startTime.hour, params.startTime.minute);
+    DateTime endTime = DateTime(params.date.year, params.date.month,
+        params.date.day, params.endTime.hour, params.endTime.minute);
+
+    return await userCollection
+        .doc(user.uid)
+        .collection('tasks')
+        .doc(taskId)
+        .update({
+      'name': params.name,
+      'description': params.description,
+      'date': params.date.toIso8601String(),
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
+    });
+  }
+
+  @override
+  Future<void> deleteTask(String taskId) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    await userCollection.doc(user.uid).collection('tasks').doc(taskId).delete();
+  }
+
+  @override
   Future<void> changeTaskStatus(String taskId, bool status) async {
     User user = FirebaseAuth.instance.currentUser;
 

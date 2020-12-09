@@ -7,6 +7,7 @@ import '../core/notifier.dart';
 import '../models/task.dart';
 import '../services/database/database_service.dart';
 import '../views/screens/create_task_screen.dart';
+import '../views/screens/task_info_screen.dart';
 
 class TaskController extends Notifier {
   List<Task> _tasks = [];
@@ -70,5 +71,10 @@ class TaskController extends Notifier {
 
   void navigateToCreateTask() => Get.to(CreateTaskScreen()).then(onGoBack);
 
-  void goBack() => Get.back();
+  void openTaskInfoScreen(Task task) {
+    Get.bottomSheet(TaskInfoScreen(
+      task: task,
+      onGoBackCallback: onGoBack,
+    )).then((onGoBack));
+  }
 }

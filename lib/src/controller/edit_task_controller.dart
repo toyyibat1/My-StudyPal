@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -8,11 +7,15 @@ import 'package:intl/intl.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/task.dart';
 import '../models/task_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database/database_service.dart';
 
-class CreateTaskController extends Notifier with ValidationMixin {
+class EditTaskController extends Notifier with ValidationMixin {
+  EditTaskController(this.task);
+  final Task task;
+
   TimeOfDay _pickedStartTime;
   TimeOfDay _pickedEndTime;
   DateTime _pickedDate;
@@ -36,10 +39,19 @@ class CreateTaskController extends Notifier with ValidationMixin {
 
   @override
   void onInit() {
-    _pickedStartTime = TimeOfDay.now();
-    _pickedEndTime = TimeOfDay.now();
-    _pickedDate = DateTime.now();
+    _pickedStartTime = task.startTime;
+    _pickedEndTime = task.endTime;
+    _pickedDate = task.date;
+    _taskNameController.text = task.name;
+    _taskDescriptionController.text = task.description;
+    _dateController.text = DateFormat.yMMMMEEEEd().format(_pickedDate);
+
     super.onInit();
+  }
+
+  void formatTimes(BuildContext context) {
+    _startTimeController.text = task.startTime.format(context);
+    _endTimeController.text = task.endTime.format(context);
   }
 
   Future<Null> selectStartTime(BuildContext context) async {
@@ -91,7 +103,7 @@ class CreateTaskController extends Notifier with ValidationMixin {
 
   void goBack() => Get.back();
 
-  void createTask() async {
+  void updateTask(String taskId) async {
     Get.focusScope.unfocus();
 
     if (_formKey.currentState.validate()) {
@@ -108,7 +120,7 @@ class CreateTaskController extends Notifier with ValidationMixin {
           startTime: _pickedStartTime,
         );
 
-        await Get.find<DatabaseService>().createTask(params);
+        await Get.find<DatabaseService>().updateTask(taskId, params);
 
         setState(NotifierState.isIdle);
 
