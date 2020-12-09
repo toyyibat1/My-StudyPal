@@ -82,17 +82,15 @@ class StudyGoalTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: SizedBox(
-        height: 120,
+        height: 80,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(50),
           child: Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  goal,
-                  width: 100,
-                  // height: 60,
+              CircleAvatar(
+                backgroundColor: kPrimaryColor,
+                radius: 40,
+                backgroundImage: AssetImage(goal1,
                 ),
               ),
               Expanded(
@@ -119,12 +117,18 @@ class StudyGoalTile extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 16),
-                              Text(
-                                '${localizations.formatFullDate(studyGoals[index].date)}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                              Row(
+                                children: [
+                                  Icon(Icons.calendar_today),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    '${localizations.formatFullDate(studyGoals[index].date)}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 16),
                             ],
