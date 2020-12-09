@@ -127,13 +127,6 @@ class TaskTile extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () => _showBottomSheet(),
-//                              Get.bottomSheet(_showBottomSheet(),
-//                              shape: BeveledRectangleBorder(
-//                                borderRadius: BorderRadius.only(
-//                                    topLeft: Radius.circular(40.0),
-//                                    topRight: Radius.circular(40.0)),
-//
-//                              )),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
