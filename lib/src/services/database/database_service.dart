@@ -1,9 +1,10 @@
-import 'package:my_study_pal/src/models/timetable.dart';
-import 'package:my_study_pal/src/models/timetable_params.dart';
-
 import '../../models/app_user.dart';
+import '../../models/school_schedule.dart';
+import '../../models/school_schedule_params.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
+import '../../models/timetable.dart';
+import '../../models/timetable_params.dart';
 
 abstract class DatabaseService {
   Future<AppUser> getUserWithId(String userId);
@@ -42,4 +43,13 @@ abstract class DatabaseService {
   Future<void> deleteTimetable(String timetableId);
 
   Future<List<Timetable>> getAllTimetables();
+
+  // Schedules
+  Future<SchoolSchedule> createSchedule(SchoolScheduleParams params);
+
+  Future<void> updateSchedule(String scheduleId, SchoolScheduleParams params);
+
+  Future<void> deleteSchedule(String scheduleId);
+
+  Future<List<SchoolSchedule>> getAllSchedules();
 }
