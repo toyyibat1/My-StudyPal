@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
             ? Center(child: CircularProgressIndicator())
             : Column(
                 children: [
-                  header(controller),
+                  header(context, controller),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
@@ -53,31 +53,34 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget header(DashboardController controller) {
+  Widget header(BuildContext context, DashboardController controller) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text.rich(
-            TextSpan(
-              text: "Welcome,\n",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w600,
-                height: 1.3,
-              ),
-              children: [
-                TextSpan(
-                  text:
-                      '${controller.user.firstName} ${controller.user.lastName}',
-                  style: TextStyle(
-                    color: kBlackColor,
-                    fontSize: 25.0,
-                  ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.78,
+            child: Text.rich(
+              TextSpan(
+                text: "Welcome,\n",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w600,
+                  height: 1.3,
                 ),
-              ],
+                children: [
+                  TextSpan(
+                    text:
+                        '${controller.user.firstName} ${controller.user.lastName}',
+                    style: TextStyle(
+                      color: kBlackColor,
+                      fontSize: 25.0,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           // ClipRRect(

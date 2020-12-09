@@ -110,6 +110,11 @@ class ProfileScreen extends StatelessWidget {
             trailing: Icons.arrow_forward_ios,
           ),
           kExtraSmallVerticalSpacing,
+          Center(
+              child: Text(
+            'Powered by Side Hustle',
+            style: TextStyle(color: Colors.grey),
+          )),
         ],
       ),
     );
