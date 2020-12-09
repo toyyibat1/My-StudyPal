@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_study_pal/src/controller/study_goal_controller.dart';
+import 'package:my_study_pal/src/controller/schedule_controller.dart';
 import 'package:my_study_pal/src/core/images.dart';
 
 import '../../core/constants.dart';
-import '../../models/study_goals.dart';
+import '../../models/schedule.dart';
 import 'app_button.dart';
 
-class StudyGoalTile extends StatelessWidget {
+class ScheduleTile extends StatelessWidget {
   final int index;
-  final List<StudyGoal> studyGoals;
-  final StudyGoalController controller;
+  final List<Schedule> schedules;
+  final ScheduleController controller;
 
-  const StudyGoalTile({
+  const ScheduleTile({
     Key key,
     this.index,
-    this.studyGoals,
+    this.schedules,
     this.controller,
   }) : super(key: key);
 
@@ -42,7 +42,7 @@ class StudyGoalTile extends StatelessWidget {
                       Icon(Icons.map_rounded),
                       SizedBox(width: 6),
                       Text(
-                        studyGoals[index].studyGoalname,
+                        schedules[index].semesterName,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
@@ -56,7 +56,7 @@ class StudyGoalTile extends StatelessWidget {
                       Icon(Icons.calendar_today),
                       SizedBox(width: 6),
                       Text(
-                        '${localizations.formatFullDate(studyGoals[index].date)}',
+                        '${localizations.formatFullDate(schedules[index].startDate)}',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
@@ -129,7 +129,7 @@ class StudyGoalTile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                studyGoals[index].studyGoalname,
+                                schedules[index].semesterName,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -141,7 +141,7 @@ class StudyGoalTile extends StatelessWidget {
                                   Icon(Icons.calendar_today),
                                   SizedBox(width: 6),
                                   Text(
-                                    '${localizations.formatFullDate(studyGoals[index].date)}',
+                                    '${localizations.formatFullDate(schedules[index].startDate)}',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,

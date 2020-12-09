@@ -7,6 +7,8 @@ import '../../models/task.dart';
 import '../../models/task_params.dart';
 import '../../models/study_goals.dart';
 import '../../models/study_goals_params.dart';
+import '../../models/schedule_params.dart';
+import '../../models/schedule.dart';
 
 abstract class DatabaseService {
   Future<AppUser> getUserWithId(String userId);
@@ -42,4 +44,9 @@ abstract class DatabaseService {
   // Future<List<StudyGoal>> getPendingStudyGoals();
 
   // Future<List<StudyGoal>> getCompletedStudyGoals();
+  Future<Schedule> createSchedule(ScheduleParams params);
+
+   Future<void> changeScheduleStatus(String scheduleId, bool status);
+
+  Future<List<Schedule>> getAllSchedules();
 }

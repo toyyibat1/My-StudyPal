@@ -4,11 +4,11 @@ import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
 import 'package:my_study_pal/src/models/app_user.dart';
 import 'package:my_study_pal/src/services/google_signin.dart';
-import 'package:my_study_pal/src/views/screens/add_schedule_screen.dart';
 import 'package:my_study_pal/src/views/screens/badges_screen.dart';
 import 'package:my_study_pal/src/views/screens/invite_friends_screen.dart';
 import 'package:my_study_pal/src/views/screens/study_goals.dart';
 
+import 'schedule.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -123,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddScheduleScreen()));
+                                  builder: (context) => ScheduleScreen()));
                         },
                         text: 'School Schedule',
                         icon: Icon(
