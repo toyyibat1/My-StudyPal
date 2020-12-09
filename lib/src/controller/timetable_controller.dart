@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/models/timetable.dart';
-import 'package:my_study_pal/src/views/screens/create_timetable_screen.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
+import '../models/timetable.dart';
 import '../services/database/database_service.dart';
+import '../views/screens/create_timetable_screen.dart';
+import '../views/screens/timetable_info_screen.dart';
 
 class TimetableController extends Notifier {
   List<Timetable> _timetables = [];
@@ -46,5 +47,10 @@ class TimetableController extends Notifier {
   void navigateToCreateTimetable() =>
       Get.to(CreateTimetableScreen()).then(onGoBack);
 
-  void goBack() => Get.back();
+  void openTimetableInfoScreen(Timetable timetable) {
+    Get.bottomSheet(TimetableInfoScreen(
+      timetable: timetable,
+      onGoBackCallback: onGoBack,
+    )).then((onGoBack));
+  }
 }
