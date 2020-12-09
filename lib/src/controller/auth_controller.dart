@@ -37,8 +37,7 @@ class AuthController extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   Rx<User> firebaseUser = Rx<User>();
   Rx<UserModel> firestoreUser = Rx<UserModel>();
-  final _loginformKey = GlobalKey<FormState>();
-  final _signupformKey = GlobalKey<FormState>();
+
   final _formKey = GlobalKey<FormState>();
 
   //final RxBool admin = false.obs;
@@ -165,26 +164,6 @@ class AuthController extends GetxController {
       Get.off(HomeScreen());
     } catch (error) {
       Get.snackbar(Error().signUpErrorTitle, error.message,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 10),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
-    }
-  }
-
-//forgot password
-  Future<void> sendPasswordResetEmail(BuildContext context) async {
-    try {
-      await _auth.sendPasswordResetEmail(email: emailController.text);
-
-      Get.snackbar(
-          Error().resetPasswordNoticeTitle, Error().resetPasswordNotice,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 5),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
-    } catch (error) {
-      Get.snackbar(Error().resetPasswordFailed, error.message,
           snackPosition: SnackPosition.BOTTOM,
           duration: Duration(seconds: 10),
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,

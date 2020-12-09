@@ -1,116 +1,133 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:my_study_pal/src/controller/auth_controller.dart';
-import 'package:my_study_pal/src/core/constants.dart';
-import 'package:my_study_pal/src/core/images.dart';
-import 'package:my_study_pal/src/core/validation_mixin.dart';
-import 'package:my_study_pal/src/views/widgets/app_button.dart';
-import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
+import 'package:get/get.dart';
+import 'package:my_study_pal/src/core/notifier.dart';
+
+import '../../controller/signup_controller.dart';
+import '../../core/constants.dart';
+import '../../core/images.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_textfield.dart';
+import '../widgets/transparent_statusbar.dart';
 
 class SignupScreen extends StatelessWidget {
-  final AuthController authController = AuthController.to;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // key: _scaffoldKey,
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 80),
-                  child: Center(
-                      child: Image.asset(
-                    logo2,
-                    width: 65.0,
-                  )),
-                ),
-                kMediumVerticalSpacing,
-                Text(
-                  "Create an account",
-                  textAlign: TextAlign.center,
-                  style: kHeadingTextStyle,
-                ),
-                kSmallVerticalSpacing,
-                Text(
-                  'Create a task and plan your study time',
-                  style: kBodyText1TextStyle,
-                ),
-                kLargeVerticalSpacing,
-                AppTextField(
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  text: 'First Name',
-                  controller: authController.firstNameController,
-                  validator: ValidatorMixin().validateNotEmpty,
-                  onSaved: (value) =>
-                        authController.firstNameController.text = value,
-                ),
-                kMediumVerticalSpacing,
-                AppTextField(
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  text: 'Last Name',
-                  controller: authController.lastNameController,
-                  validator: ValidatorMixin().validateNotEmpty,
-                  onSaved: (value) =>
-                        authController.lastNameController.text = value,
-                ),
-                kMediumVerticalSpacing,
-                AppTextField(
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  text: 'E-mail',
-                  controller: authController.emailController,
-                  validator: ValidatorMixin().validateEmail,
-                  onSaved: (value) =>
-                        authController.emailController.text = value,
-                ),
-                kMediumVerticalSpacing,
-                AppTextField(
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                  text: 'Password',
-                  controller: authController.passwordController,
-                  obscureText: true,
-                  validator: ValidatorMixin().validatePassword,
-                  onSaved: (value) =>
-                        authController.passwordController.text = value,
-                  onFieldSubmitted: (value){
-                   // authController.signupUser();
-                  },
-                ),
-                kLargeVerticalSpacing,
-                Row(
+    return TransparentStatusbar(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: GetBuilder<SignupController>(
+            init: SignupController(),
+            builder: (controller) => Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Expanded(
-                      child: AppButton(
-                        label: 'Sign Up',
-                        color: kPrimaryColor,
-                        textColor: Colors.white,
-                        onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          SystemChannels.textInput.invokeMethod(
-                              'TextInput.hide'); //to hide the keyboard - if any
-                          authController.registerWithEmailAndPassword(context);
-                        }
-                      }
-                      ),
-                    )],
-                  ),
-                  kLargeVerticalSpacing,
-                ],
+                    kExtraLargeVerticalSpacing,
+                    header,
+                    kLargeVerticalSpacing,
+                    form(controller),
+                    kMediumVerticalSpacing,
+                    haveAnAccount(controller),
+                    kLargeVerticalSpacing,
+                  ],
+                ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget get header => Column(
+        children: [
+          Image.asset(
+            logo2,
+            width: 65.0,
+          ),
+          kMediumVerticalSpacing,
+          Text(
+            "Create an account",
+            textAlign: TextAlign.center,
+            style: kHeadingTextStyle,
+          ),
+          kSmallVerticalSpacing,
+          Text(
+            'Create a task and plan your study time',
+            style: kBodyText1TextStyle,
+          ),
+        ],
+      );
+
+  Widget form(SignupController controller) {
+    return Form(
+      key: controller.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AppTextField(
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            text: 'First Name',
+            controller: controller.firstNameController,
+            validator: controller.validateNotEmpty,
+          ),
+          kMediumVerticalSpacing,
+          AppTextField(
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            text: 'Last Name',
+            controller: controller.lastNameController,
+            validator: controller.validateNotEmpty,
+          ),
+          kMediumVerticalSpacing,
+          AppTextField(
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            text: 'E-mail',
+            controller: controller.emailAddressController,
+            validator: controller.validateEmail,
+          ),
+          kMediumVerticalSpacing,
+          AppTextField(
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            text: 'Password',
+            controller: controller.passwordController,
+            obscureText: true,
+            validator: controller.validatePassword,
+          ),
+          kLargeVerticalSpacing,
+          AppButton(
+            label: 'Sign Up',
+            isLoading: controller.state == NotifierState.isLoading,
+            color: kPrimaryColor,
+            textColor: Colors.white,
+            onPressed: controller.state == NotifierState.isLoading
+                ? null
+                : controller.signupUser,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget haveAnAccount(SignupController controller) {
+    return Text.rich(
+      TextSpan(
+        text: 'Already have an account?',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: ' Sign In',
+            style: TextStyle(color: kPrimaryColor),
+            recognizer: controller.signIn,
+          )
+        ],
       ),
     );
   }

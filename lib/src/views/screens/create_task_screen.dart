@@ -1,112 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/controller/auth_controller.dart';
-import 'package:my_study_pal/src/core/constants.dart';
-import 'package:my_study_pal/src/core/validation_mixin.dart';
-import 'package:my_study_pal/src/views/widgets/app_button.dart';
-import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
+import 'package:my_study_pal/src/core/notifier.dart';
+import 'package:my_study_pal/src/models/app_user.dart';
 
-class CreateTaskScreen extends StatefulWidget {
-  @override
-  _CreateTaskScreenState createState() => _CreateTaskScreenState();
-}
+import '../../controller/create_task_controller.dart';
+import '../../core/constants.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_textfield.dart';
+import '../widgets/transparent_statusbar.dart';
 
-class _CreateTaskScreenState extends State<CreateTaskScreen> {
-  final AuthController authController = AuthController.to;
+class CreateTaskScreen extends StatelessWidget {
+  final AppUser user;
+  CreateTaskScreen({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Icon(Icons.arrow_back_ios, color: kBlackColor)),
-        title: Text(
-          'Create New Task',
-          style: TextStyle(color: kBlackColor),
-        ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-      ),
-      body: GetBuilder<AuthController>(
-        init: AuthController(),
-        builder: (controller) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Form(
-              key: authController.formKey,
-              child: Column(
-                children: [
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    text: 'Task Name',
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                    controller: authController.taskNameController,
-                    validator: ValidatorMixin().validateNotEmpty,
-                    onSaved: (value) =>
-                        authController.taskNameController.text = value,
-                  ),
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    height: 7,
-                    text: 'Task Description',
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                    controller: authController.taskDescriptionController,
-                    validator: ValidatorMixin().validateNotEmpty,
-                    onSaved: (value) =>
-                        authController.taskDescriptionController.text = value,
-                  ),
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    text: 'Date',
-                    keyboardType: TextInputType.datetime,
-                    textInputAction: TextInputAction.next,
-                    controller: authController.taskDateController,
-                    validator: ValidatorMixin().validateNotEmpty,
-                    onSaved: (value) =>
-                        authController.taskDateController.text = value,
-                  ),
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    text: 'Start Time',
-                    keyboardType: TextInputType.datetime,
-                    textInputAction: TextInputAction.next,
-                    controller: authController.taskStartController,
-                    validator: ValidatorMixin().validateNotEmpty,
-                    onSaved: (value) =>
-                        authController.taskStartController.text = value,
-                  ),
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    text: 'End Time',
-                    keyboardType: TextInputType.datetime,
-                    textInputAction: TextInputAction.next,
-                    controller: authController.taskEndController,
-                    validator: ValidatorMixin().validateNotEmpty,
-                    onSaved: (value) =>
-                        authController.taskEndController.text = value,
-                  ),
-                  kLargeVerticalSpacing,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: AppButton(
-                            label: 'Create Task',
-                            textColor: Colors.white,
-                            color: kPrimaryColor,
-                            onPressed: () {
-//                              _createTask();
-                            }),
-                      )
-                    ],
-                  ),
-                  kLargeVerticalSpacing,
-                ],
-              ),
+    return TransparentStatusbar(
+      child: Scaffold(
+        body: SafeArea(
+          child: GetBuilder<CreateTaskController>(
+            init: CreateTaskController(),
+            builder: (controller) => Column(
+              children: [
+                header(context, controller),
+                form(context, controller),
+              ],
             ),
           ),
         ),
@@ -114,13 +32,128 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     );
   }
 
-//  void _createTask() {
-//    FocusScope.of(context).unfocus();
-//
-//    if (formKey.currentState.validate()) {
-//      Navigator.of(context).pushReplacement(MaterialPageRoute(
-//        builder: (context) => ScheduleScreen(),
-//      ));
-//    }
-//  }
+  Widget header(BuildContext context, CreateTaskController controller) =>
+      Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          left: 16.0,
+          right: MediaQuery.of(context).size.width * 0.33,
+        ),
+        height: 40,
+        color: kPrimaryColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: controller.goBack,
+              child: Icon(Icons.arrow_back_ios, color: Colors.white),
+            ),
+            Center(
+              child: Text(
+                'Create New Task',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget form(BuildContext context, CreateTaskController controller) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: controller.formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                kMediumVerticalSpacing,
+                AppTextField(
+                  text: 'Task Name',
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  controller: controller.taskNameController,
+                  validator: controller.validateNotEmpty,
+                ),
+                kMediumVerticalSpacing,
+                AppTextField(
+                  maxLines: 3,
+                  text: 'Task Description',
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  controller: controller.taskDescriptionController,
+                  validator: controller.validateNotEmpty,
+                ),
+                kMediumVerticalSpacing,
+                GestureDetector(
+                  onTap: () {
+                    controller.selectDate(context);
+                  },
+                  child: AppTextField(
+                    text: 'Date',
+                    hintText: 'Select Date',
+                    controller: controller.dateController,
+                    validator: controller.validateNotEmpty,
+                    enabled: false,
+                    prefixIcon: Icon(Icons.calendar_today),
+                  ),
+                ),
+                kMediumVerticalSpacing,
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.selectStartTime(context);
+                        },
+                        child: AppTextField(
+                          text: 'Start Time',
+                          hintText: 'Select Time',
+                          validator: controller.validateNotEmpty,
+                          controller: controller.startTimeController,
+                          enabled: false,
+                          prefixIcon: Icon(Icons.history),
+                        ),
+                      ),
+                    ),
+                    kMediumHorizontalSpacing,
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.selectEndTime(context);
+                        },
+                        child: AppTextField(
+                          text: 'End Time',
+                          hintText: 'Set Time',
+                          validator: controller.validateNotEmpty,
+                          controller: controller.endTimeController,
+                          enabled: false,
+                          prefixIcon: Icon(Icons.history),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                kLargeVerticalSpacing,
+                AppButton(
+                  label: 'Create Task',
+                  color: kPrimaryColor,
+                  isLoading: controller.state == NotifierState.isLoading,
+                  textColor: Colors.white,
+                  onPressed: controller.state == NotifierState.isLoading
+                      ? null
+                      : controller.createTask,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -1,8 +1,4 @@
-import 'package:my_study_pal/src/controller/auth_controller.dart';
-
-class ValidatorMixin {
-  final AuthController authController = AuthController.to;
-  
+class ValidationMixin {
   String validateNotEmpty(String value) =>
       value.isEmpty ? 'Field cannot be empty' : null;
 

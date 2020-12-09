@@ -5,6 +5,7 @@ class AppDropdown extends StatelessWidget {
   final List<String> items;
   final String value;
   final String text;
+  final TextEditingController controller;
   final void Function(String) onChanged;
   final String Function(String) validator;
   const AppDropdown({
@@ -13,6 +14,7 @@ class AppDropdown extends StatelessWidget {
     @required this.value,
     @required this.onChanged,
     @required this.text,
+    this.controller,
     this.validator,
   }) : super(key: key);
 
