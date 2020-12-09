@@ -24,7 +24,7 @@ class StudyGoalTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = MaterialLocalizations.of(context);
 
- Widget _showBottomSheet() {
+    Widget _showBottomSheet() {
       showModalBottomSheet(
           context: context,
           shape: RoundedRectangleBorder(
@@ -37,14 +37,33 @@ class StudyGoalTile extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Text(
-                    studyGoals[index].studyGoalname,
-                    style: kHeadingTextStyle,
+                  kLargeVerticalSpacing,
+                  Row(
+                    children: [
+                      Icon(Icons.map_rounded),
+                      SizedBox(width: 6),
+                      Text(
+                        studyGoals[index].studyGoalname,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
                   kMediumVerticalSpacing,
-                  Text(
-                    '${localizations.formatFullDate(studyGoals[index].date)}',
-                    style: kHeadingTextStyle,
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today),
+                      SizedBox(width: 6),
+                      Text(
+                        '${localizations.formatFullDate(studyGoals[index].date)}',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
                   kMediumVerticalSpacing,
                   Expanded(
@@ -90,7 +109,8 @@ class StudyGoalTile extends StatelessWidget {
               CircleAvatar(
                 backgroundColor: kPrimaryColor,
                 radius: 40,
-                backgroundImage: AssetImage(goal1,
+                backgroundImage: AssetImage(
+                  goal1,
                 ),
               ),
               Expanded(
@@ -104,8 +124,8 @@ class StudyGoalTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap:()=> _showBottomSheet(),
-                            child: Column(
+                          onTap: () => _showBottomSheet(),
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
