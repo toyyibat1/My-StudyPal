@@ -11,8 +11,14 @@ abstract class DatabaseService {
   Future<void> createUserWithId(String userId,
       {String emailAddress, String firstName, String lastName});
 
-  Future<void> updateUserWithId(String userId,
-      {String emailAddress, String firstName, String phoneNumber});
+  Future<void> updateUserWithId(
+    String userId, {
+    String firstName,
+    String lastName,
+    String institution,
+    String course,
+  });
+
   // task
   Future<Task> createTask(TaskParams params);
 

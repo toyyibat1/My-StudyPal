@@ -4,8 +4,6 @@ import '../../core/failure.dart';
 import '../../models/app_user.dart';
 import '../../models/signin_params.dart';
 import '../../models/signup_params.dart';
-import '../../models/update_email_params.dart';
-import '../../models/update_password_params.dart';
 import '../../models/update_user_params.dart';
 import '../database/firebase_firestore_service.dart';
 import 'auth_service.dart';
@@ -80,65 +78,19 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  Future<AppUser> updateUser(UpdateUserParams params) async {
+  Future<void> updateUser(UpdateUserParams params) async {
     try {
       User user = _auth.currentUser;
 
       await FirebaseFirestoreService().updateUserWithId(
         user.uid,
-        firstName: params.fullName,
-        phoneNumber: params.phoneNumber,
-        emailAddress: params.emailAddress,
+        firstName: params.firstName,
+        lastName: params.lastName,
+        course: params.course,
+        institution: params.institution,
       );
-      return await FirebaseFirestoreService().getUserWithId(user.uid);
     } on FirebaseAuthException catch (ex) {
       throw Failure(ex.message);
-    }
-  }
-
-  @override
-  Future<void> updateEmail(UpdateEmailParams params) async {
-    try {
-      User user = _auth.currentUser;
-
-      AuthCredential authCredential = EmailAuthProvider.credential(
-        email: user.email,
-        password: params.oldPassword,
-      );
-
-      await user.reauthenticateWithCredential(authCredential);
-
-      await user.updateEmail(params.emailAddress);
-
-      await user.sendEmailVerification();
-    } on FirebaseAuthException catch (ex) {
-      if (ex.code == 'wrong-password' ||
-          ex.code == 'user-mismatch' ||
-          ex.code == 'user-not-found') {
-        throw Failure('The password entered is not correct');
-      }
-    }
-  }
-
-  @override
-  Future<void> updatePassword(UpdatePasswordParams params) async {
-    try {
-      User user = _auth.currentUser;
-
-      AuthCredential authCredential = EmailAuthProvider.credential(
-        email: user.email,
-        password: params.oldPassword,
-      );
-
-      await user.reauthenticateWithCredential(authCredential);
-
-      await user.updatePassword(params.newPassword);
-    } on FirebaseAuthException catch (ex) {
-      if (ex.code == 'wrong-password' ||
-          ex.code == 'user-mismatch' ||
-          ex.code == 'user-not-found') {
-        throw Failure('The password entered is not correct');
-      }
     }
   }
 

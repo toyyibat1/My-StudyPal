@@ -1,0 +1,80 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:my_study_pal/src/services/auth_service/auth_service.dart';
+import 'package:my_study_pal/src/services/database/database_service.dart';
+
+import '../core/failure.dart';
+import '../core/notifier.dart';
+import '../core/validation_mixin.dart';
+import '../models/app_user.dart';
+import '../models/update_user_params.dart';
+import '../services/data_connection_service/data_connection_service.dart';
+
+class EditProfileController extends Notifier with ValidationMixin {
+  EditProfileController(this.user);
+  final AppUser user;
+
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailAddressController = TextEditingController();
+  final _institutionController = TextEditingController();
+  final _courseController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  TextEditingController get firstNameController => _firstNameController;
+  TextEditingController get lastNameController => _lastNameController;
+  TextEditingController get emailAddressController => _emailAddressController;
+  TextEditingController get institutionController => _institutionController;
+  TextEditingController get courseController => _courseController;
+
+  GlobalKey<FormState> get formKey => _formKey;
+
+  @override
+  void onInit() {
+    _firstNameController.text = user.firstName;
+    _lastNameController.text = user.lastName;
+    _emailAddressController.text = user.emailAddress;
+    _institutionController.text = user.institution;
+    _courseController.text = user.course;
+
+    super.onInit();
+  }
+
+  void goBack() => Get.back();
+
+  void updateUser() async {
+    Get.focusScope.unfocus();
+
+    if (_formKey.currentState.validate()) {
+      setState(NotifierState.isLoading);
+
+      try {
+        await Get.find<DataConnectionService>().checkConnection();
+
+        UpdateUserParams params = UpdateUserParams(
+          course: _courseController.text,
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+          institution: _institutionController.text,
+        );
+
+        await Get.find<AuthService>().updateUser(params);
+
+        setState(NotifierState.isIdle);
+
+        Get.back();
+      } on Failure catch (f) {
+        setState(NotifierState.isIdle);
+        Get.snackbar(
+          'Error',
+          f.message,
+          colorText: Get.theme.colorScheme.onError,
+          backgroundColor: Get.theme.errorColor,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+      setState(NotifierState.isIdle);
+    }
+  }
+}

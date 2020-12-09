@@ -1,8 +1,7 @@
-import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
-import 'package:my_study_pal/src/models/app_user.dart';
+import '../core/notifier.dart';
+import '../models/app_user.dart';
 
-class HomeController extends GetxController {
+class HomeController extends Notifier {
   final AppUser user;
   HomeController({this.user});
 

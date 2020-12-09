@@ -6,6 +6,7 @@ import '../../core/constants.dart';
 import '../../core/notifier.dart';
 import '../../models/task.dart';
 import '../widgets/app_button.dart';
+import '../widgets/app_tile.dart';
 import '../widgets/bottom_sheet_divider.dart';
 
 class TaskInfoScreen extends StatelessWidget {
@@ -42,9 +43,8 @@ class TaskInfoScreen extends StatelessWidget {
           ),
           kLargeVerticalSpacing,
           AppTile(
-            leading: Icon(
+            leading:
                 task.completed ? Icons.check_circle : Icons.panorama_fish_eye,
-                color: kPrimaryColor),
             title: task.completed ? 'Completed' : 'Not Completed',
           ),
           AppTile(title: task.description),
@@ -80,45 +80,6 @@ class TaskInfoScreen extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class AppTile extends StatelessWidget {
-  final Widget leading;
-  final String title;
-  final Widget trailing;
-
-  const AppTile({
-    Key key,
-    this.leading,
-    @required this.title,
-    this.trailing,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFFE0E0E0)),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          leading ?? Container(),
-          leading == null ? Container() : SizedBox(width: 24),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          Spacer(),
-          trailing ?? Container(),
         ],
       ),
     );
