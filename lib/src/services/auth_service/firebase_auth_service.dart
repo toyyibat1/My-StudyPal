@@ -86,7 +86,7 @@ class FirebaseAuthService implements AuthService {
 
       await FirebaseFirestoreService().updateUserWithId(
         user.uid,
-        fullName: params.fullName,
+        firstName: params.fullName,
         phoneNumber: params.phoneNumber,
         emailAddress: params.emailAddress,
       );

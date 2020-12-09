@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:my_study_pal/src/controller/task_controller.dart';
+import 'package:my_study_pal/src/controller/timetable_controller.dart';
+import 'package:my_study_pal/src/models/timetable.dart';
 
 import '../../core/constants.dart';
-import '../../models/task.dart';
 
-class TaskTile extends StatelessWidget {
+class TimetableTile extends StatelessWidget {
   final int index;
-  final List<Task> tasks;
-  final TaskController controller;
+  final List<Timetable> timetables;
+  final TimetableController controller;
 
-  const TaskTile({
+  const TimetableTile({
     Key key,
     this.index,
-    this.tasks,
+    this.timetables,
     this.controller,
   }) : super(key: key);
 
@@ -48,18 +47,10 @@ class TaskTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              tasks[index].name,
+                              timetables[index].subject,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              tasks[index].description,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             SizedBox(height: 16),
@@ -68,25 +59,12 @@ class TaskTile extends StatelessWidget {
                                 Icon(Icons.timer, size: 20),
                                 SizedBox(width: 6),
                                 Text(
-                                  '${localizations.formatTimeOfDay(tasks[index].startTime)} - ${localizations.formatTimeOfDay(tasks[index].endTime)}',
+                                  '${localizations.formatTimeOfDay(timetables[index].startTime)} - ${localizations.formatTimeOfDay(timetables[index].endTime)}',
                                   style: kLabelText,
                                 ),
                               ],
                             ),
                           ],
-                        ),
-                        GestureDetector(
-                          onTap: () => controller.changeTaskStatus(
-                              tasks[index].id, !tasks[index].completed),
-                          child: tasks[index].completed
-                              ? Icon(
-                                  Icons.check_circle,
-                                  color: kPrimaryColor,
-                                )
-                              : Icon(
-                                  Icons.panorama_fish_eye,
-                                  color: kPrimaryColor,
-                                ),
                         ),
                       ],
                     ),

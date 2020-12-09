@@ -37,8 +37,7 @@ class AuthController extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   Rx<User> firebaseUser = Rx<User>();
   Rx<UserModel> firestoreUser = Rx<UserModel>();
-  final _loginformKey = GlobalKey<FormState>();
-  final _signupformKey = GlobalKey<FormState>();
+
   final _formKey = GlobalKey<FormState>();
 
   //final RxBool admin = false.obs;

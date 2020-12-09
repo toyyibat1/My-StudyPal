@@ -128,7 +128,7 @@ class CreateTaskScreen extends StatelessWidget {
                           controller.selectEndTime(context);
                         },
                         child: AppTextField(
-                          text: 'Start Time',
+                          text: 'End Time',
                           hintText: 'Set Time',
                           validator: controller.validateNotEmpty,
                           controller: controller.endTimeController,

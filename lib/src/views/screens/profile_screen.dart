@@ -20,9 +20,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // String name = "Mubarak Shuaib";
-  // String email = "mubarakshuaib3@gmail.com";
-
   final AuthController authController = AuthController.to;
 
   @override

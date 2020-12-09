@@ -26,7 +26,7 @@ class BadgesScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: 10,
+                itemCount: 1,
                 itemBuilder: (context, index) => Row(
                   children: [
                     Expanded(

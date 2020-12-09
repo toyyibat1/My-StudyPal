@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_study_pal/src/models/timetable.dart';
+import 'package:my_study_pal/src/models/timetable_params.dart';
 
 import '../../models/app_user.dart';
 import '../../models/task.dart';
@@ -17,24 +19,31 @@ class FirebaseFirestoreService implements DatabaseService {
 
   @override
   Future<void> createUserWithId(String userId,
-      {String emailAddress, String firstName, String lastName}) async {
+      {String emailAddress,
+      String firstName,
+      String lastName,
+      String institution,
+      String course}) async {
     return await userCollection.doc(userId).set({
       'emailAddress': emailAddress,
       'firstName': firstName,
       'lastName': lastName,
+      'institution': institution,
+      'course': course,
     });
   }
 
   @override
   Future<void> updateUserWithId(String userId,
-      {String emailAddress, String fullName, String phoneNumber}) async {
+      {String emailAddress, String firstName, String phoneNumber}) async {
     return await userCollection.doc(userId).update({
       'emailAddress': emailAddress,
-      'fullName': fullName,
+      'fullName': firstName,
       'phoneNumber': phoneNumber,
     });
   }
 
+//  task
   @override
   Future<Task> createTask(TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
@@ -126,6 +135,48 @@ class FirebaseFirestoreService implements DatabaseService {
 
     snapshot.forEach(
       (card) => cards.add(Task.fromDocumentSnapshot(card)),
+    );
+
+    return cards;
+  }
+
+//  timetable
+  @override
+  Future<Timetable> createTimetable(TimetableParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    DateTime startTime =
+        DateTime(params.startTime.hour, params.startTime.minute);
+    DateTime endTime = DateTime(params.endTime.hour, params.endTime.minute);
+
+    DocumentReference reference =
+        await userCollection.doc(user.uid).collection('timetable').add({
+      'subject': params.subject,
+//      'notification': params.notification,
+      'day': params.day,
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
+
+      'timestamp': Timestamp.now(),
+      'location': params.location,
+    });
+
+    DocumentSnapshot snapshot = await reference.get();
+
+    return Timetable.fromDocumentSnapshot(snapshot);
+  }
+
+  @override
+  Future<List<Timetable>> getAllTimetables() async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    List<Timetable> cards = [];
+
+    List<QueryDocumentSnapshot> snapshot =
+        (await userCollection.doc(user.uid).collection("timetable").get()).docs;
+
+    snapshot.forEach(
+      (card) => cards.add(Timetable.fromDocumentSnapshot(card)),
     );
 
     return cards;
