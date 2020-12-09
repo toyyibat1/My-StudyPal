@@ -19,9 +19,10 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               header,
-              controller.state == NotifierState.isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : Expanded(child: profileActions(controller)),
+              Expanded(
+                  child: controller.state == NotifierState.isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : profileActions(controller)),
             ],
           ),
         ),

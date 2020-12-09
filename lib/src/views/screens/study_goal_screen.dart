@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/views/widgets/study_goal_tile.dart';
-import '../../controller/study_goal_controller.dart';
-import '../widgets/school_schedule_tile.dart';
 
-import '../../controller/school_schedule_controller.dart';
+import '../../controller/study_goal_controller.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
+import '../widgets/study_goal_tile.dart';
 
 class StudyGoalScreen extends StatelessWidget {
   @override

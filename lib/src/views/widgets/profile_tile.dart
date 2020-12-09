@@ -31,27 +31,31 @@ class ProfileTile extends StatelessWidget {
           children: [
             leading,
             SizedBox(width: 24),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                email == null ? Container() : SizedBox(height: 8),
-                email == null
-                    ? Container()
-                    : Text(
-                        email,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                  email == null ? Container() : SizedBox(height: 8),
+                  email == null
+                      ? Container()
+                      : Text(
+                          email,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
