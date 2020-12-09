@@ -20,29 +20,33 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
         title: Text('Invite Friends'),
         backgroundColor: kPrimaryColor,
         leading: GestureDetector(
-          onTap: ()=>Navigator.pop(context),
+          onTap: () => Navigator.pop(context),
           child: Icon(Icons.arrow_back_ios),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SafeArea(
-          child: Center(
-            child: Column(
-              children: [
-                kMediumVerticalSpacing,
-                Text('Invite your friends to download\nmystudypadi app and view created tasks',
+      body: SafeArea(
+          child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text(
+                'Invite your friends to download\nmystudypadi app and view created tasks',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),),
-                kLargeVerticalSpacing,
-                Image.asset(invite,),
-                kLargeVerticalSpacing,
-                AppTextField(
+                style: TextStyle(fontSize: 18),
+              ),
+              kLargeVerticalSpacing,
+              Image.asset(
+                invite,
+              ),
+              kLargeVerticalSpacing,
+              AppTextField(
                 text: '',
                 hintText: 'Enter email address',
-                ),
-                kLargeVerticalSpacing,
-                Row(
+              ),
+              kLargeVerticalSpacing,
+              Row(
                 children: [
                   Expanded(
                     child: AppButton(
@@ -50,17 +54,19 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                       color: kPrimaryColor,
                       textColor: Colors.white,
                       onPressed: () {
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=> InviteSucessScreen()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InviteSucessScreen()));
                       },
                     ),
                   ),
                 ],
               ),
-          
-              ],
-            ),
-          )),
-      ),
+            ],
+          ),
+        ),
+      )),
     );
   }
 }
