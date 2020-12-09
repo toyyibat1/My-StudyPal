@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_study_pal/src/core/constants.dart';
 
 class AppButton extends StatelessWidget {
   final Function onPressed;
@@ -6,14 +7,16 @@ class AppButton extends StatelessWidget {
   final Color textColor;
   final bool isLoading;
   final String label;
+  final double padding;
 
   const AppButton({
     Key key,
-    this.onPressed,
-    this.color,
-    this.textColor,
+    @required this.onPressed,
+    this.color = kPrimaryColor,
+    this.textColor = Colors.white,
     this.isLoading = false,
-    this.label,
+    this.padding = 100.0,
+    @required this.label,
   }) : super(key: key);
 
   @override
@@ -22,9 +25,7 @@ class AppButton extends StatelessWidget {
       onPressed: onPressed,
       color: color,
       textColor: textColor,
-      padding: EdgeInsets.symmetric(
-        vertical: 16,
-      ),
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: padding),
       child: isLoading
           ? SizedBox(
               width: 25.0,

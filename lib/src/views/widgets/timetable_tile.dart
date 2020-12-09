@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:my_study_pal/src/controller/timetable_controller.dart';
-import 'package:my_study_pal/src/models/timetable.dart';
-import 'package:my_study_pal/src/views/widgets/app_button.dart';
-import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 
+import '../../controller/timetable_controller.dart';
 import '../../core/constants.dart';
+import '../../models/timetable.dart';
 
 class TimetableTile extends StatelessWidget {
-  final int index;
-  final List<Timetable> timetables;
+  final Timetable timetable;
   final TimetableController controller;
 
   const TimetableTile({
     Key key,
-    this.index,
-    this.timetables,
+    this.timetable,
     this.controller,
   }) : super(key: key);
 
@@ -107,43 +103,37 @@ class TimetableTile extends StatelessWidget {
           });
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: SizedBox(
-        height: 120,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Row(
-            children: [
-              Container(
-                width: 18,
-                color: kPrimaryColor,
-              ),
-              Expanded(
-                child: Container(
-                  color: Color(0xFFF4F4F4),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () => _showBottomSheet(),
-//                              Get.bottomSheet(_showBottomSheet(),
-//                              shape: BeveledRectangleBorder(
-//                                borderRadius: BorderRadius.only(
-//                                    topLeft: Radius.circular(40.0),
-//                                    topRight: Radius.circular(40.0)),
-//
-//                              )),
-                          child: Column(
+    return GestureDetector(
+      onTap: () => controller.openTimetableInfoScreen(timetable),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: SizedBox(
+          height: 100,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Row(
+              children: [
+                Container(
+                  width: 18,
+                  color: kPrimaryColor,
+                ),
+                Expanded(
+                  child: Container(
+                    color: Color(0xFFF4F4F4),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                timetables[index].subject,
+
+                                timetable.subject,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -155,20 +145,27 @@ class TimetableTile extends StatelessWidget {
                                   Icon(Icons.timer, size: 20),
                                   SizedBox(width: 6),
                                   Text(
-                                    '${localizations.formatTimeOfDay(timetables[index].startTime)} - ${localizations.formatTimeOfDay(timetables[index].endTime)}',
+                                    '${localizations.formatTimeOfDay(timetable.startTime)} - ${localizations.formatTimeOfDay(timetable.endTime)}',
+                                    style: kLabelText,
+                                  ),
+                                  SizedBox(width: 12),
+                                  Icon(Icons.location_on_outlined, size: 20),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    timetable.location,
                                     style: kLabelText,
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

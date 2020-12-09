@@ -48,7 +48,7 @@ class FirebaseFirestoreService implements DatabaseService {
     });
   }
 
-//  task
+  // task
   @override
   Future<Task> createTask(TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
@@ -145,23 +145,22 @@ class FirebaseFirestoreService implements DatabaseService {
     return cards;
   }
 
-//  timetable
+  // timetable
   @override
   Future<Timetable> createTimetable(TimetableParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime =
-        DateTime(params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(params.endTime.hour, params.endTime.minute);
-
+    DateTime date = DateTime.now();
+    DateTime startTime = DateTime(date.year, date.month, date.day,
+        params.startTime.hour, params.startTime.minute);
+    DateTime endTime = DateTime(date.year, date.month, date.day,
+        params.endTime.hour, params.endTime.minute);
     DocumentReference reference =
         await userCollection.doc(user.uid).collection('timetable').add({
       'subject': params.subject,
-//      'notification': params.notification,
       'day': params.day,
       'startTime': startTime.toIso8601String(),
       'endTime': endTime.toIso8601String(),
-
       'timestamp': Timestamp.now(),
       'location': params.location,
     });
@@ -169,6 +168,41 @@ class FirebaseFirestoreService implements DatabaseService {
     DocumentSnapshot snapshot = await reference.get();
 
     return Timetable.fromDocumentSnapshot(snapshot);
+  }
+
+  @override
+  Future<void> updateTimetable(
+      String timetableId, TimetableParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    DateTime date = DateTime.now();
+    DateTime startTime = DateTime(date.year, date.month, date.day,
+        params.startTime.hour, params.startTime.minute);
+    DateTime endTime = DateTime(date.year, date.month, date.day,
+        params.endTime.hour, params.endTime.minute);
+
+    return await userCollection
+        .doc(user.uid)
+        .collection('timetable')
+        .doc(timetableId)
+        .update({
+      'subject': params.subject,
+      'day': params.day,
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
+      'location': params.location,
+    });
+  }
+
+  @override
+  Future<void> deleteTimetable(String timetableId) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    await userCollection
+        .doc(user.uid)
+        .collection('timetable')
+        .doc(timetableId)
+        .delete();
   }
 
   @override

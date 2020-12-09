@@ -28,9 +28,13 @@ abstract class DatabaseService {
   Future<List<Task>> getPendingTasks();
 
   Future<List<Task>> getCompletedTasks();
-//  timetable
 
+  // timetable
   Future<Timetable> createTimetable(TimetableParams params);
+
+  Future<void> updateTimetable(String timetableId, TimetableParams params);
+
+  Future<void> deleteTimetable(String timetableId);
 
   Future<List<Timetable>> getAllTimetables();
 
