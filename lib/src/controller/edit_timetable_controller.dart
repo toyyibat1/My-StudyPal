@@ -1,17 +1,20 @@
 import 'dart:async';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/timetable.dart';
 import '../models/timetable_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database/database_service.dart';
 
-class CreateTimetableController extends Notifier with ValidationMixin {
+class EditTimetableController extends Notifier with ValidationMixin {
+  EditTimetableController(this.timetable);
+  final Timetable timetable;
+
   TimeOfDay _pickedStartTime;
   TimeOfDay _pickedEndTime;
 
@@ -35,10 +38,18 @@ class CreateTimetableController extends Notifier with ValidationMixin {
 
   @override
   void onInit() {
-    _pickedStartTime = TimeOfDay.now();
-    _pickedEndTime = TimeOfDay.now();
-    _timetableDayController.text = 'Monday';
+    _pickedStartTime = timetable.startTime;
+    _pickedEndTime = timetable.endTime;
+    _timetableDayController.text = timetable.day;
+    _timetableSubjectController.text = timetable.subject;
+    _timetableLocationController.text = timetable.location;
+
     super.onInit();
+  }
+
+  void formatTimes(BuildContext context) {
+    _startTimeController.text = timetable.startTime.format(context);
+    _endTimeController.text = timetable.endTime.format(context);
   }
 
   Future<Null> selectStartTime(BuildContext context) async {
@@ -73,7 +84,7 @@ class CreateTimetableController extends Notifier with ValidationMixin {
 
   void goBack() => Get.back();
 
-  void createTimetable() async {
+  void updateTimetable(String timetableId) async {
     Get.focusScope.unfocus();
 
     if (_formKey.currentState.validate()) {
@@ -90,7 +101,7 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           startTime: _pickedStartTime,
         );
 
-        await Get.find<DatabaseService>().createTimetable(params);
+        await Get.find<DatabaseService>().updateTimetable(timetableId, params);
 
         setState(NotifierState.isIdle);
 
