@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_study_pal/src/views/screens/signin_screen.dart';
 
+import '../../controller/onboarding_controller.dart';
 import '../../core/constants.dart';
 import '../../core/images.dart';
 import '../widgets/app_button.dart';
 import '../widgets/onboard_column.dart';
 
-class OnboardingScreen extends StatefulWidget {
-  @override
-  _OnboardingScreenState createState() => _OnboardingScreenState();
-}
-
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  final int _numPages = 4;
-  final PageController _pageController = PageController(initialPage: 0);
-  int _currentPage = 0;
-
-  List<Widget> _buildPageIndicator() {
+class OnboardingScreen extends StatelessWidget {
+  List<Widget> _buildPageIndicator(OnboardingController controller) {
     List<Widget> list = [];
-    for (int i = 0; i < _numPages; i++) {
-      list.add(i == _currentPage ? _indicator(true) : _indicator(false));
+    for (int i = 0; i < controller.numPages; i++) {
+      list.add(
+          i == controller.currentIndex ? _indicator(true) : _indicator(false));
     }
     return list;
   }
@@ -40,7 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  List<OnboardColumn> onboardingPages = <OnboardColumn>[
+  final List<OnboardColumn> onboardingPages = <OnboardColumn>[
     OnboardColumn(
         imgPath: onboarding1,
         titletext: Text.rich(
@@ -114,38 +107,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         statusBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 60.0),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: PageView(
-                  physics: ClampingScrollPhysics(),
-                  controller: _pageController,
-                  onPageChanged: (int page) {
-                    setState(() {
-                      _currentPage = page;
-                    });
-                  },
-                  children: onboardingPages,
+        body: GetBuilder<OnboardingController>(
+          init: OnboardingController(),
+          builder: (controller) => Padding(
+            padding: const EdgeInsets.only(bottom: 60.0),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: PageView(
+                    physics: ClampingScrollPhysics(),
+                    controller: controller.pageController,
+                    onPageChanged: controller.onChangedFunction,
+                    children: onboardingPages,
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: _buildPageIndicator(),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height / 15),
-              AppButton(
-                label: "Get Started",
-                color: kPrimaryColor,
-                textColor: Colors.white,
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => SigninScreen()));
-                },
-              )
-            ],
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _buildPageIndicator(controller),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height / 15),
+                AppButton(
+                  label: "Get Started",
+                  color: kPrimaryColor,
+                  textColor: Colors.white,
+                  onPressed: controller.signUp,
+                )
+              ],
+            ),
           ),
         ),
       ),

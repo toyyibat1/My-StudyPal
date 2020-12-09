@@ -37,8 +37,7 @@ class AuthController extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   Rx<User> firebaseUser = Rx<User>();
   Rx<UserModel> firestoreUser = Rx<UserModel>();
-  final _loginformKey = GlobalKey<FormState>();
-  final _signupformKey = GlobalKey<FormState>();
+
   final _formKey = GlobalKey<FormState>();
 
   //final RxBool admin = false.obs;
@@ -80,9 +79,7 @@ class AuthController extends GetxController {
   // Firebase user a realtime stream
   Stream<User> get user => _auth.authStateChanges();
 
-
   GlobalKey<FormState> get formKey => _formKey;
-
 
   //Streams the firestore user from the firestore collection
   Stream<UserModel> streamFirestoreUser() {
@@ -107,73 +104,73 @@ class AuthController extends GetxController {
 
   //Method to handle user sign in using email and password
   signInWithEmailAndPassword(BuildContext context) async {
-      try {
-        await _auth
-            .signInWithEmailAndPassword(
-                email: emailController.text.trim(),
-                password: passwordController.text.trim())
-            .then((result) {
-          print('uID: ' + result.user.uid);
-          print('email: ' + result.user.email);
-        });
-        emailController.clear();
-        passwordController.clear();
-        Get.snackbar("Success", "Login succesfully",
-            snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(seconds: 7),
-            backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-            colorText: Get.theme.snackBarTheme.actionTextColor);
+    try {
+      await _auth
+          .signInWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim())
+          .then((result) {
+        print('uID: ' + result.user.uid);
+        print('email: ' + result.user.email);
+      });
+      emailController.clear();
+      passwordController.clear();
+      Get.snackbar("Success", "Login succesfully",
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 7),
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+          colorText: Get.theme.snackBarTheme.actionTextColor);
 //     Get.to(HomeScreen());
-      } catch (error) {
-        Get.snackbar(Error().signInErrorTitle, Error().signInError,
-            snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(seconds: 7),
-            backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-            colorText: Get.theme.snackBarTheme.actionTextColor);
-      }
-    
+    } catch (error) {
+      Get.snackbar(Error().signInErrorTitle, Error().signInError,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 7),
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+          colorText: Get.theme.snackBarTheme.actionTextColor);
+    }
   }
+
   // User registration using email and password
   registerWithEmailAndPassword(BuildContext context) async {
-      try {
-        await _auth
-            .createUserWithEmailAndPassword(
-                email: emailController.text, password: passwordController.text)
-            .then((result) async {
-          print('uID: ' + result.user.uid);
-          print('email: ' + result.user.email);
-          //get photo url from gravatar if user has one
-          Gravatar gravatar = Gravatar(emailController.text);
-          String gravatarUrl = gravatar.imageUrl(
-            size: 200,
-            defaultImage: GravatarImage.retro,
-            rating: GravatarRating.pg,
-            fileExtension: true,
-          );
-          //create the new user object
-          UserModel _newUser = UserModel(
-              uid: result.user.uid,
-              email: result.user.email,
-              firstName: firstNameController.text,
-              lastName: lastNameController.text,
-              photoUrl: gravatarUrl);
-          //create the user in firestore
-          _createUserFirestore(_newUser, result.user);
-          firstNameController.clear();
-          lastNameController.clear();
-          emailController.clear();
-          passwordController.clear();
-        });
-        Get.off(HomeScreen());
-      } catch (error) {
-        Get.snackbar(Error().signUpErrorTitle, error.message,
-            snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(seconds: 10),
-            backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-            colorText: Get.theme.snackBarTheme.actionTextColor);
-      }
+    try {
+      await _auth
+          .createUserWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text)
+          .then((result) async {
+        print('uID: ' + result.user.uid);
+        print('email: ' + result.user.email);
+        //get photo url from gravatar if user has one
+        Gravatar gravatar = Gravatar(emailController.text);
+        String gravatarUrl = gravatar.imageUrl(
+          size: 200,
+          defaultImage: GravatarImage.retro,
+          rating: GravatarRating.pg,
+          fileExtension: true,
+        );
+        //create the new user object
+        UserModel _newUser = UserModel(
+            uid: result.user.uid,
+            email: result.user.email,
+            firstName: firstNameController.text,
+            lastName: lastNameController.text,
+            photoUrl: gravatarUrl);
+        //create the user in firestore
+        _createUserFirestore(_newUser, result.user);
+        firstNameController.clear();
+        lastNameController.clear();
+        emailController.clear();
+        passwordController.clear();
+      });
+      Get.off(HomeScreen());
+    } catch (error) {
+      Get.snackbar(Error().signUpErrorTitle, error.message,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 10),
+          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
+          colorText: Get.theme.snackBarTheme.actionTextColor);
+    }
+  }
 
-}
   //create the firestore user in users collection
   void _createUserFirestore(UserModel user, User _firebaseUser) {
     _db.doc('/users/${_firebaseUser.uid}').set(user.toJson());

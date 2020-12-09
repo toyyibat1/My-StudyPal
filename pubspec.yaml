@@ -27,7 +27,8 @@ dependencies:
   image_picker: ^0.6.7+14
   simple_gravatar: ^1.0.5
   google_sign_in: ^4.5.6
-
+  data_connection_checker: ^0.3.4
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:
