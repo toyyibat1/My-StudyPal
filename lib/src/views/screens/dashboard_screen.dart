@@ -54,6 +54,8 @@ class DashboardScreen extends StatelessWidget {
   }
 
   Widget header(BuildContext context, DashboardController controller) {
+    String firstName = controller.user.firstName ?? '';
+    String lastName = controller.user.lastName ?? '';
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -72,8 +74,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text:
-                        '${controller.user.firstName} ${controller.user.lastName}',
+                    text: '$firstName $lastName',
                     style: TextStyle(
                       color: kBlackColor,
                       fontSize: 25.0,
