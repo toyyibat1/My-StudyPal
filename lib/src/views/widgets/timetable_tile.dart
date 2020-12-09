@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/controller/timetable_controller.dart';
 import 'package:my_study_pal/src/models/timetable.dart';
+import 'package:my_study_pal/src/views/widgets/app_button.dart';
+import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 
 import '../../core/constants.dart';
 
@@ -19,6 +21,91 @@ class TimetableTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = MaterialLocalizations.of(context);
+    Widget _showBottomSheet() {
+      showModalBottomSheet(
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0)),
+          ),
+          builder: (builder) {
+            return Container(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                    timetables[index].subject,
+                    style: kHeadingTextStyle,
+                  ),
+                  kMediumVerticalSpacing,
+                  AppTextField(
+                    text: '',
+                    hintText: '${timetables[index].day}',
+//                  validator: ValidationMixin().validateNotEmpty(),
+//                  controller: controller.endTimeController,
+                    enabled: false,
+                    prefixIcon: Icon(
+                      Icons.check_circle,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                  kMediumVerticalSpacing,
+                  AppTextField(
+                    text: "",
+                    hintText:
+                        '${localizations.formatTimeOfDay(timetables[index].startTime)} - ${localizations.formatTimeOfDay(timetables[index].endTime)}',
+//                  validator: ValidationMixin().validateNotEmpty(),
+//                  controller: controller.endTimeController,
+                    enabled: false,
+                    prefixIcon: Icon(
+                      Icons.history,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                  kSmallVerticalSpacing,
+                  AppTextField(
+                    text: '',
+                    hintText: '${timetables[index].location}',
+//                  validator: ValidationMixin().validateNotEmpty(),
+//                  controller: controller.endTimeController,
+                    enabled: false,
+                    prefixIcon: Icon(
+                      Icons.check_circle,
+                      color: kPrimaryColor,
+                    ),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 2,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppButton(
+                          onPressed: () {},
+                          textColor: Colors.white,
+                          label: 'Delete',
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                      kMediumHorizontalSpacing,
+                      Expanded(
+                        child: AppButton(
+                          onPressed: () {},
+                          textColor: Colors.white,
+                          label: 'Edit',
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          });
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -42,29 +129,39 @@ class TimetableTile extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              timetables[index].subject,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Icon(Icons.timer, size: 20),
-                                SizedBox(width: 6),
-                                Text(
-                                  '${localizations.formatTimeOfDay(timetables[index].startTime)} - ${localizations.formatTimeOfDay(timetables[index].endTime)}',
-                                  style: kLabelText,
+                        GestureDetector(
+                          onTap: () => _showBottomSheet(),
+//                              Get.bottomSheet(_showBottomSheet(),
+//                              shape: BeveledRectangleBorder(
+//                                borderRadius: BorderRadius.only(
+//                                    topLeft: Radius.circular(40.0),
+//                                    topRight: Radius.circular(40.0)),
+//
+//                              )),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                timetables[index].subject,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Icon(Icons.timer, size: 20),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    '${localizations.formatTimeOfDay(timetables[index].startTime)} - ${localizations.formatTimeOfDay(timetables[index].endTime)}',
+                                    style: kLabelText,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

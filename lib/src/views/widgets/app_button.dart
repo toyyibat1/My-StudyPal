@@ -22,7 +22,9 @@ class AppButton extends StatelessWidget {
       onPressed: onPressed,
       color: color,
       textColor: textColor,
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 100.0),
+      padding: EdgeInsets.symmetric(
+        vertical: 16,
+      ),
       child: isLoading
           ? SizedBox(
               width: 25.0,
