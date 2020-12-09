@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/core/notifier.dart';
-import 'package:my_study_pal/src/models/app_user.dart';
 
 import '../../controller/create_task_controller.dart';
 import '../../core/constants.dart';
+import '../../core/notifier.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
 
 class CreateTaskScreen extends StatelessWidget {
-  final AppUser user;
-  CreateTaskScreen({Key key, this.user}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(

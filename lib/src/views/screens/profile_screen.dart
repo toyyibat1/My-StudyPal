@@ -1,198 +1,121 @@
 import 'package:flutter/material.dart';
-import 'package:my_study_pal/src/controller/auth_controller.dart';
-import 'package:my_study_pal/src/core/constants.dart';
-import 'package:my_study_pal/src/core/images.dart';
-import 'package:my_study_pal/src/models/app_user.dart';
-import 'package:my_study_pal/src/services/google_signin.dart';
-import 'package:my_study_pal/src/views/screens/add_schedule_screen.dart';
-import 'package:my_study_pal/src/views/screens/badges_screen.dart';
-import 'package:my_study_pal/src/views/screens/invite_friends_screen.dart';
-import 'package:my_study_pal/src/views/screens/study_goals.dart';
+import 'package:get/get.dart';
 
-import 'edit_profile_screen.dart';
+import '../../controller/profile_controller.dart';
+import '../../core/constants.dart';
+import '../../core/notifier.dart';
+import '../widgets/app_tile.dart';
+import '../widgets/profile_tile.dart';
 
-class ProfileScreen extends StatefulWidget {
-  final AppUser user;
-  const ProfileScreen({Key key, this.user}) : super(key: key);
-
-  @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  final AuthController authController = AuthController.to;
-
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
+    return GetBuilder<ProfileController>(
+      init: ProfileController()..getAuthenticatedUser(),
+      builder: (controller) => Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      color: kPrimaryColor,
-                      child: Center(
-                          child: Text(
-                        'My Profile',
-                        style: kHeadingTextStyle.copyWith(color: Colors.white),
-                      )),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      kMediumVerticalSpacing,
-                      Card(
-                        child: ListTile(
-                          title: Text(
-                            name ??
-                                (authController.firestoreUser.value.firstName +
-                                    ' ' +
-                                    authController
-                                        .firestoreUser.value.lastName),
-                            style: kHeadingTextStyle,
-                          ),
-                          subtitle: Text(emailAddress ??
-                              (authController.firestoreUser.value.email)),
-                          leading: CircleAvatar(
-                            radius: 40,
-                            backgroundImage: AssetImage(welcome),
-                          ),
-                        ),
-                      ),
-                      kSmallVerticalSpacing,
-                      Text(
-                        'General',
-                        style: kHeadingTextStyle,
-                      ),
-                      ProfileCard(
-                        ontap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditProfileScreen()));
-                        },
-                        text: 'Edit Profile',
-                        icon: Icon(
-                          Icons.person,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      kExtraSmallVerticalSpacing,
-                      ProfileCard(
-                        ontap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BadgesScreen()));
-                        },
-                        text: 'Badges',
-                        icon: Icon(
-                          Icons.badge,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      kExtraSmallVerticalSpacing,
-                      ProfileCard(
-                        ontap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => StudyGoalsScreen()));
-                        },
-                        text: 'Study Goals',
-                        icon: Icon(
-                          Icons.control_point_rounded,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      kExtraSmallVerticalSpacing,
-                      ProfileCard(
-                        ontap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddScheduleScreen()));
-                        },
-                        text: 'School Schedule',
-                        icon: Icon(
-                          Icons.next_plan,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      kExtraSmallVerticalSpacing,
-                      ProfileCard(
-                        ontap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => InviteFriendScreen()));
-                        },
-                        text: 'Invite Friends',
-                        icon: Icon(
-                          Icons.people,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      kExtraSmallVerticalSpacing,
-                      ProfileCard(
-                        ontap: () async {
-                          await authController.signOut();
-                        },
-                        text: 'Log Out',
-                        icon: Icon(
-                          Icons.logout,
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      kExtraSmallVerticalSpacing,
-                    ],
-                  ),
-                ),
-              ),
+              header,
+              Expanded(
+                  child: controller.state == NotifierState.isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : profileActions(controller)),
             ],
           ),
         ),
       ),
     );
   }
-}
 
-class ProfileCard extends StatelessWidget {
-  final Icon icon;
-  final String text;
-  final Function ontap;
-
-  const ProfileCard({Key key, this.icon, this.text, this.ontap})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: ontap,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            leading: icon,
-            title: Text(
-              text,
-              style: kBodyText2TextStyle,
+  Widget get header => Container(
+        width: double.infinity,
+        height: 40,
+        color: kPrimaryColor2,
+        child: Center(
+          child: Text(
+            'My Profile',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
             ),
-            trailing: Icon(Icons.arrow_forward_ios),
           ),
         ),
+      );
+
+  Widget profileActions(ProfileController controller) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          kMediumVerticalSpacing,
+          ProfileTile(
+            leading: CircleAvatar(
+              radius: 35,
+              // backgroundImage: AssetImage(welcome),
+              child: Text(
+                controller.user.firstName[0],
+                style: kHeadingTextStyle,
+              ),
+              backgroundColor: Color(0xFFE0E0E0),
+            ),
+            title: '${controller.user.firstName} ${controller.user.lastName}',
+            email: controller.user.emailAddress,
+          ),
+          kSmallVerticalSpacing,
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
+            child: Text(
+              'General',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+          ),
+          AppTile(
+            onPressed: controller.navigateToEditProfileScreen,
+            leading: Icons.person,
+            title: 'Edit Profile',
+            trailing: Icons.arrow_forward_ios,
+          ),
+          // AppTile(
+          //   onPressed: controller.navigateToBadgesScreen,
+          //   leading: Icons.badge,
+          //   title: 'Badges',
+          //   trailing: Icons.arrow_forward_ios,
+          // ),
+          AppTile(
+            onPressed: controller.navigateToStudyGoalsScreen,
+            leading: Icons.control_point_rounded,
+            title: 'Study Goals',
+            trailing: Icons.arrow_forward_ios,
+          ),
+          AppTile(
+            onPressed: controller.navigateToAddScheduleScreen,
+            leading: Icons.next_plan,
+            title: 'School Schedule',
+            trailing: Icons.arrow_forward_ios,
+          ),
+          // AppTile(
+          //   onPressed: controller.navigateToInviteFriendScreen,
+          //   leading: Icons.people,
+          //   title: 'Invite Friends',
+          //   trailing: Icons.arrow_forward_ios,
+          // ),
+          AppTile(
+            onPressed: controller.signOut,
+            leading: Icons.logout,
+            title: 'Log Out',
+            trailing: Icons.arrow_forward_ios,
+          ),
+          kExtraSmallVerticalSpacing,
+          Center(
+              child: Text(
+            'Powered by Side Hustle',
+            style: TextStyle(color: Colors.grey),
+          )),
+        ],
       ),
     );
   }

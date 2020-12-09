@@ -16,7 +16,6 @@ class CreateTimetableController extends Notifier with ValidationMixin {
   TimeOfDay _pickedEndTime;
 
   final _timetableSubjectController = TextEditingController();
-//  final _timetableNotificationController = TextEditingController();
   final _startTimeController = TextEditingController();
   final _endTimeController = TextEditingController();
   final _timetableLocationController = TextEditingController();
@@ -24,25 +23,21 @@ class CreateTimetableController extends Notifier with ValidationMixin {
 
   final _formKey = GlobalKey<FormState>();
 
-  TapGestureRecognizer _signUp;
-
   TextEditingController get timetableSubjectController =>
       _timetableSubjectController;
-//  TextEditingController get timetableNotificationController =>
-//      _timetableNotificationController;
   TextEditingController get timetableDayController => _timetableDayController;
   TextEditingController get timetableLocationController =>
       _timetableLocationController;
   TextEditingController get startTimeController => _startTimeController;
   TextEditingController get endTimeController => _endTimeController;
 
-  TapGestureRecognizer get signUp => _signUp;
   GlobalKey<FormState> get formKey => _formKey;
 
   @override
   void onInit() {
     _pickedStartTime = TimeOfDay.now();
     _pickedEndTime = TimeOfDay.now();
+    _timetableDayController.text = 'Monday';
     super.onInit();
   }
 
@@ -91,7 +86,6 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           subject: _timetableSubjectController.text,
           day: _timetableDayController.text,
           endTime: _pickedEndTime,
-//          notification: _timetableNotificationController.text,
           location: _timetableLocationController.text,
           startTime: _pickedStartTime,
         );

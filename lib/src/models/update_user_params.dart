@@ -1,13 +1,15 @@
 import 'package:flutter/foundation.dart';
 
 class UpdateUserParams {
-  final String fullName;
-  final String phoneNumber;
-  final String emailAddress;
+  final String firstName;
+  final String lastName;
+  final String institution;
+  final String course;
 
   UpdateUserParams({
-    @required this.fullName,
-    @required this.phoneNumber,
-    @required this.emailAddress,
+    @required this.firstName,
+    @required this.lastName,
+    @required this.institution,
+    @required this.course,
   });
 }

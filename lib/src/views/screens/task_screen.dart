@@ -13,6 +13,7 @@ class TaskScreen extends StatelessWidget {
     return GetBuilder<TaskController>(
       init: TaskController(),
       builder: (controller) => Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [
@@ -21,7 +22,7 @@ class TaskScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
                   child: controller.state == NotifierState.isLoading
-                      ? Center(child: Text('jxhhgj'))
+                      ? Center(child: CircularProgressIndicator())
                       : controller.tasks.isEmpty
                           ? Center(
                               child: SizedBox(
