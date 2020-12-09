@@ -1,9 +1,12 @@
 import 'package:my_study_pal/src/models/timetable.dart';
 import 'package:my_study_pal/src/models/timetable_params.dart';
+import 'package:my_study_pal/src/views/screens/study_goals.dart';
 
 import '../../models/app_user.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
+import '../../models/study_goals.dart';
+import '../../models/study_goals_params.dart';
 
 abstract class DatabaseService {
   Future<AppUser> getUserWithId(String userId);
@@ -28,4 +31,15 @@ abstract class DatabaseService {
   Future<Timetable> createTimetable(TimetableParams params);
 
   Future<List<Timetable>> getAllTimetables();
+
+  //studyGoals
+  Future<StudyGoal> createStudyGoal(StudyGoalParams params);
+
+   Future<void> changeStudyGoalStatus(String studyGoalId, bool status);
+
+  Future<List<StudyGoal>> getAllStudyGoals();
+
+  // Future<List<StudyGoal>> getPendingStudyGoals();
+
+  // Future<List<StudyGoal>> getCompletedStudyGoals();
 }

@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_study_pal/src/models/timetable.dart';
 import 'package:my_study_pal/src/models/timetable_params.dart';
+import 'package:my_study_pal/src/views/screens/study_goals.dart';
 
 import '../../models/app_user.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
+import '../../models/study_goals_params.dart';
+import '../../models/study_goals.dart';
 import 'database_service.dart';
 
 class FirebaseFirestoreService implements DatabaseService {
@@ -181,4 +184,53 @@ class FirebaseFirestoreService implements DatabaseService {
 
     return cards;
   }
+
+  Future<StudyGoal> createStudyGoal(StudyGoalParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    DocumentReference reference =
+        await userCollection.doc(user.uid).collection('studyGoals').add({
+      'studyGoalname': params.studyGoalname,
+      //'studyGoalToBeAchieved': params.studyGoalsToBeAchievied,
+      'date': params.date.toIso8601String(),
+      'completed': false,
+      'timestamp': Timestamp.now(),
+    });
+
+    DocumentSnapshot snapshot = await reference.get();
+
+    return StudyGoal.fromDocumentSnapshot(snapshot);
+  }
+
+  @override
+  Future<void> changeStudyGoalStatus(String taskId, bool status) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    return await userCollection
+        .doc(user.uid)
+        .collection('studyGoals')
+        .doc(taskId)
+        .update(
+      {
+        'completed': status,
+      },
+    );
+  }
+
+  @override
+  Future<List<StudyGoal>> getAllStudyGoals() async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    List<StudyGoal> cards = [];
+
+    List<QueryDocumentSnapshot> snapshot =
+        (await userCollection.doc(user.uid).collection("studyGoals").get()).docs;
+
+    snapshot.forEach(
+      (card) => cards.add(StudyGoal.fromDocumentSnapshot(card)),
+    );
+
+    return cards;
+  }
+
 }
