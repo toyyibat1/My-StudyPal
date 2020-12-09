@@ -12,7 +12,7 @@ import '../views/screens/edit_profile_screen.dart';
 import '../views/screens/invite_friends_screen.dart';
 import '../views/screens/school_schedule_screen.dart';
 import '../views/screens/signin_screen.dart';
-import '../views/screens/study_goals.dart';
+import '../views/screens/study_goal_screen.dart';
 
 class ProfileController extends Notifier with ValidationMixin {
   AppUser _user;
@@ -47,7 +47,7 @@ class ProfileController extends Notifier with ValidationMixin {
 
   void navigateToBadgesScreen() => Get.to(BadgesScreen());
 
-  void navigateToStudyGoalsScreen() => Get.to(StudyGoalsScreen());
+  void navigateToStudyGoalsScreen() => Get.to(StudyGoalScreen());
 
   void navigateToAddScheduleScreen() => Get.to(SchoolScheduleScreen());
 

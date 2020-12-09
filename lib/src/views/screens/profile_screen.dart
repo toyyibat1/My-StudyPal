@@ -78,12 +78,12 @@ class ProfileScreen extends StatelessWidget {
             title: 'Edit Profile',
             trailing: Icons.arrow_forward_ios,
           ),
-          AppTile(
-            onPressed: controller.navigateToBadgesScreen,
-            leading: Icons.badge,
-            title: 'Badges',
-            trailing: Icons.arrow_forward_ios,
-          ),
+          // AppTile(
+          //   onPressed: controller.navigateToBadgesScreen,
+          //   leading: Icons.badge,
+          //   title: 'Badges',
+          //   trailing: Icons.arrow_forward_ios,
+          // ),
           AppTile(
             onPressed: controller.navigateToStudyGoalsScreen,
             leading: Icons.control_point_rounded,
@@ -96,12 +96,12 @@ class ProfileScreen extends StatelessWidget {
             title: 'School Schedule',
             trailing: Icons.arrow_forward_ios,
           ),
-          AppTile(
-            onPressed: controller.navigateToInviteFriendScreen,
-            leading: Icons.people,
-            title: 'Invite Friends',
-            trailing: Icons.arrow_forward_ios,
-          ),
+          // AppTile(
+          //   onPressed: controller.navigateToInviteFriendScreen,
+          //   leading: Icons.people,
+          //   title: 'Invite Friends',
+          //   trailing: Icons.arrow_forward_ios,
+          // ),
           AppTile(
             onPressed: controller.signOut,
             leading: Icons.logout,

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_study_pal/src/models/study_goal.dart';
+import 'package:my_study_pal/src/models/study_goal_params.dart';
 
 import '../../models/app_user.dart';
 import '../../models/school_schedule.dart';
@@ -315,5 +317,64 @@ class FirebaseFirestoreService implements DatabaseService {
     );
 
     return schedules;
+  }
+
+  // Study Goals
+  @override
+  Future<StudyGoal> createStudyGoal(StudyGoalParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    DocumentReference reference =
+        await userCollection.doc(user.uid).collection('studygoal').add({
+      'goal': params.goal,
+      'date': params.date.toIso8601String(),
+      'timestamp': Timestamp.now(),
+    });
+
+    DocumentSnapshot snapshot = await reference.get();
+
+    return StudyGoal.fromDocumentSnapshot(snapshot);
+  }
+
+  @override
+  Future<void> updateStudyGoal(
+      String scheduleId, StudyGoalParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    return await userCollection
+        .doc(user.uid)
+        .collection('studygoal')
+        .doc(scheduleId)
+        .update({
+      'goal': params.goal,
+      'date': params.date.toIso8601String(),
+    });
+  }
+
+  @override
+  Future<void> deleteStudyGoal(String scheduleId) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    await userCollection
+        .doc(user.uid)
+        .collection('studygoal')
+        .doc(scheduleId)
+        .delete();
+  }
+
+  @override
+  Future<List<StudyGoal>> getAllStudyGoals() async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    List<StudyGoal> studyGoals = [];
+
+    List<QueryDocumentSnapshot> snapshot =
+        (await userCollection.doc(user.uid).collection("studygoal").get()).docs;
+
+    snapshot.forEach(
+      (studyGoal) => studyGoals.add(StudyGoal.fromDocumentSnapshot(studyGoal)),
+    );
+
+    return studyGoals;
   }
 }

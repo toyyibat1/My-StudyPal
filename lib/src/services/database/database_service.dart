@@ -1,6 +1,9 @@
+import 'package:my_study_pal/src/models/study_goal.dart';
+
 import '../../models/app_user.dart';
 import '../../models/school_schedule.dart';
 import '../../models/school_schedule_params.dart';
+import '../../models/study_goal_params.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
 import '../../models/timetable.dart';
@@ -52,4 +55,13 @@ abstract class DatabaseService {
   Future<void> deleteSchedule(String scheduleId);
 
   Future<List<SchoolSchedule>> getAllSchedules();
+
+  //Study Goals
+  Future<StudyGoal> createStudyGoal(StudyGoalParams params);
+
+  Future<void> updateStudyGoal(String scheduleId, StudyGoalParams params);
+
+  Future<void> deleteStudyGoal(String scheduleId);
+
+  Future<List<StudyGoal>> getAllStudyGoals();
 }
