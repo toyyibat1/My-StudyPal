@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:my_study_pal/src/controller/schedule_controller.dart';
-import 'package:my_study_pal/src/core/images.dart';
+import 'package:my_study_pal/src/models/app_user.dart';
+import 'package:my_study_pal/src/views/widgets/app_button.dart';
+import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 
 import '../../core/constants.dart';
 import '../../models/schedule.dart';
-import 'app_button.dart';
 
 class ScheduleTile extends StatelessWidget {
+  final AppUser user;
   final int index;
   final List<Schedule> schedules;
   final ScheduleController controller;
@@ -17,6 +20,7 @@ class ScheduleTile extends StatelessWidget {
     this.index,
     this.schedules,
     this.controller,
+    this.user,
   }) : super(key: key);
 
   @override
@@ -36,35 +40,31 @@ class ScheduleTile extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  kLargeVerticalSpacing,
-                  Row(
-                    children: [
-                      Icon(Icons.map_rounded),
-                      SizedBox(width: 6),
-                      Text(
-                        schedules[index].semesterName,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    schedules[index].semesterName,
+                    style: kHeadingTextStyle,
                   ),
                   kMediumVerticalSpacing,
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today),
-                      SizedBox(width: 6),
-                      Text(
+                  AppTextField(
+                    text: "",
+                    hintText:
                         '${localizations.formatFullDate(schedules[index].startDate)}',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
+                    enabled: false,
+                    prefixIcon: Icon(
+                      Icons.history,
+                      color: kPrimaryColor,
+                    ),
                   ),
-                  kMediumVerticalSpacing,
+                  kSmallVerticalSpacing,
+                  AppTextField(
+                    text: '',
+                    hintText: '${schedules[index].completed}',
+                    enabled: false,
+                    prefixIcon: Icon(
+                      Icons.check_circle,
+                      color: kPrimaryColor,
+                    ),
+                  ),
                   Expanded(
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height / 2,
@@ -97,68 +97,77 @@ class ScheduleTile extends StatelessWidget {
           });
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: SizedBox(
-        height: 80,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: kPrimaryColor,
-                radius: 40,
-                backgroundImage: AssetImage(
-                  goal1,
+    return GetBuilder<ScheduleController>(
+      init: ScheduleController(),
+      builder: (controller) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: SizedBox(
+          height: 120,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Row(
+              children: [
+                Container(
+                  width: 18,
+                  color: kPrimaryColor,
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  color: Color(0xFFF4F4F4),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () => _showBottomSheet(),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                schedules[index].semesterName,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              SizedBox(height: 16),
-                              Row(
-                                children: [
-                                  Icon(Icons.calendar_today),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    '${localizations.formatFullDate(schedules[index].startDate)}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                Expanded(
+                  child: Container(
+                    color: Color(0xFFF4F4F4),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () => _showBottomSheet(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  schedules[index].semesterName,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ],
-                              ),
-                              SizedBox(height: 16),
-                            ],
+                                ),
+                                SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    Icon(Icons.timer, size: 20),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      '${localizations.formatFullDate(schedules[index].startDate)} - ${localizations.formatFullDate(schedules[index].endDate)}',
+                                      style: kLabelText,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          GestureDetector(
+                            onTap: () => controller.changeScheduleStatus(
+                                schedules[index].id, !schedules[index].completed),
+                            child: schedules[index].completed
+                                ? Icon(
+                                    Icons.check_circle,
+                                    color: kPrimaryColor,
+                                  )
+                                : Icon(
+                                    Icons.panorama_fish_eye,
+                                    color: kPrimaryColor,
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

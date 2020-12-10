@@ -10,8 +10,6 @@ import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
 
 class CreateScheduleScreen extends StatelessWidget {
-  final AppUser user;
-  CreateScheduleScreen({Key key, this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +113,7 @@ class CreateScheduleScreen extends StatelessWidget {
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Create School Schedule',
+                  label: 'Create Schedule',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,

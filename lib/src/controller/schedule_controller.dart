@@ -53,7 +53,7 @@ class ScheduleController extends Notifier {
     setState(NotifierState.isLoading);
     try {
       _schedules = await Get.find<DatabaseService>().getAllSchedules();
-
+  
       setState(NotifierState.isIdle);
     } on Failure catch (f) {
       setState(NotifierState.isIdle);

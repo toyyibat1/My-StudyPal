@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_study_pal/src/models/timetable.dart';
 import 'package:my_study_pal/src/models/timetable_params.dart';
-import 'package:my_study_pal/src/views/screens/study_goals.dart';
 
 import '../../models/app_user.dart';
 import '../../models/task.dart';
@@ -315,5 +314,8 @@ class FirebaseFirestoreService implements DatabaseService {
 
     return cards;
   }
+
+
+
 
 }
