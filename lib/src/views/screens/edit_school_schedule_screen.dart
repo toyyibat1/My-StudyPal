@@ -52,7 +52,7 @@ class EditSchoolScheduleScreen extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Edit Timetable',
+                'Edit School Schedule',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -112,7 +112,7 @@ class EditSchoolScheduleScreen extends StatelessWidget {
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Edit Schedule',
+                  label: 'Update Schedule',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,

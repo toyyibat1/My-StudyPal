@@ -5,14 +5,14 @@ import '../../core/constants.dart';
 import '../../models/timetable.dart';
 
 class TimetableTile extends StatelessWidget {
+  final int index;
+  final List<Timetable> timetables;
   final Timetable timetable;
   final TimetableController controller;
 
-  const TimetableTile({
-    Key key,
-    this.timetable,
-    this.controller,
-  }) : super(key: key);
+  const TimetableTile(
+      {Key key, this.timetable, this.controller, this.timetables, this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +48,7 @@ class TimetableTile extends StatelessWidget {
                             children: [
                               Text(
                                 timetable.subject,
+                                softWrap: true,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -67,6 +68,7 @@ class TimetableTile extends StatelessWidget {
                                   SizedBox(width: 6),
                                   Text(
                                     timetable.location,
+                                    softWrap: true,
                                     style: kLabelText,
                                   ),
                                 ],

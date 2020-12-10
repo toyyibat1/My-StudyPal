@@ -50,6 +50,7 @@ class TaskTile extends StatelessWidget {
                             children: [
                               Text(
                                 tasks[index].name,
+                                softWrap: true,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -58,6 +59,7 @@ class TaskTile extends StatelessWidget {
                               SizedBox(height: 16),
                               Text(
                                 tasks[index].description,
+                                softWrap: true,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,

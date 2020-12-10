@@ -6,15 +6,17 @@ class ProfileTile extends StatelessWidget {
   final String email;
   final IconData trailing;
   final Function onPressed;
+  final Widget subtitle;
 
-  const ProfileTile({
-    Key key,
-    this.email,
-    @required this.leading,
-    @required this.title,
-    this.trailing,
-    this.onPressed,
-  }) : super(key: key);
+  const ProfileTile(
+      {Key key,
+      this.email,
+      @required this.leading,
+      @required this.title,
+      this.trailing,
+      this.onPressed,
+      this.subtitle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class ProfileTile extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
+                  subtitle,
                 ],
               ),
             ),

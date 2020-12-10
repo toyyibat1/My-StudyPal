@@ -64,6 +64,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             title: '${controller.user.firstName} ${controller.user.lastName}',
             email: controller.user.emailAddress,
+            subtitle: Text(controller.user.institution),
           ),
           kSmallVerticalSpacing,
           Padding(

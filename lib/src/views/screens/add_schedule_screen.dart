@@ -16,7 +16,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
         title: Text('School Schedule'),
         backgroundColor: kPrimaryColor,
         leading: GestureDetector(
-          onTap: ()=>Navigator.pop(context),
+          onTap: () => Navigator.pop(context),
           child: Icon(Icons.arrow_back_ios),
         ),
       ),
