@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -23,7 +22,7 @@ class StudyGoalsScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
                   child: controller.state == NotifierState.isLoading
-                      ? Center(child: Text('jxhhgj'))
+                      ? Center(child: CircularProgressIndicator())
                       : controller.studyGoals.isEmpty
                           ? Center(
                               child: SizedBox(
@@ -75,11 +74,11 @@ class StudyGoalsScreen extends StatelessWidget {
   }
 
   Widget get header => Container(
-        width: double.infinity,
-        height: 40,
-        color: kPrimaryColor,
-        child: Row(
-         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      width: double.infinity,
+      height: 40,
+      color: kPrimaryColor,
+      child: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             kTinyHorizontalSpacing,
             GestureDetector(
@@ -87,15 +86,15 @@ class StudyGoalsScreen extends StatelessWidget {
               child: Icon(Icons.arrow_back_ios, color: Colors.white),
             ),
             kLargeHorizontalSpacing,
-          Center(
-          child: Text(
-            'Study Goals',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+            Center(
+              child: Text(
+                'Study Goals',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ),
-        ),
           ]));
 }

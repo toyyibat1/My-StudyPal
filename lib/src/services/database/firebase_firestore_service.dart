@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_study_pal/src/models/timetable.dart';
-import 'package:my_study_pal/src/models/timetable_params.dart';
-import 'package:my_study_pal/src/views/screens/study_goals.dart';
+import 'package:my_study_pal/src/models/study_goals.dart';
+import 'package:my_study_pal/src/models/study_goals_params.dart';
 
 import '../../models/app_user.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
-import '../../models/study_goals_params.dart';
-import '../../models/study_goals.dart';
+import '../../models/timetable.dart';
+import '../../models/timetable_params.dart';
 import 'database_service.dart';
 
 class FirebaseFirestoreService implements DatabaseService {
@@ -21,12 +20,14 @@ class FirebaseFirestoreService implements DatabaseService {
   }
 
   @override
-  Future<void> createUserWithId(String userId,
-      {String emailAddress,
-      String firstName,
-      String lastName,
-      String institution,
-      String course}) async {
+  Future<void> createUserWithId(
+    String userId, {
+    String emailAddress,
+    String firstName,
+    String lastName,
+    String institution,
+    String course,
+  }) async {
     return await userCollection.doc(userId).set({
       'emailAddress': emailAddress,
       'firstName': firstName,
@@ -37,12 +38,18 @@ class FirebaseFirestoreService implements DatabaseService {
   }
 
   @override
-  Future<void> updateUserWithId(String userId,
-      {String emailAddress, String firstName, String phoneNumber}) async {
+  Future<void> updateUserWithId(
+    String userId, {
+    String firstName,
+    String lastName,
+    String institution,
+    String course,
+  }) async {
     return await userCollection.doc(userId).update({
-      'emailAddress': emailAddress,
-      'fullName': firstName,
-      'phoneNumber': phoneNumber,
+      'firstName': firstName,
+      'lastName': lastName,
+      'institution': institution,
+      'course': course,
     });
   }
 
@@ -70,6 +77,35 @@ class FirebaseFirestoreService implements DatabaseService {
     DocumentSnapshot snapshot = await reference.get();
 
     return Task.fromDocumentSnapshot(snapshot);
+  }
+
+  @override
+  Future<void> updateTask(String taskId, TaskParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    DateTime startTime = DateTime(params.date.year, params.date.month,
+        params.date.day, params.startTime.hour, params.startTime.minute);
+    DateTime endTime = DateTime(params.date.year, params.date.month,
+        params.date.day, params.endTime.hour, params.endTime.minute);
+
+    return await userCollection
+        .doc(user.uid)
+        .collection('tasks')
+        .doc(taskId)
+        .update({
+      'name': params.name,
+      'description': params.description,
+      'date': params.date.toIso8601String(),
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
+    });
+  }
+
+  @override
+  Future<void> deleteTask(String taskId) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    await userCollection.doc(user.uid).collection('tasks').doc(taskId).delete();
   }
 
   @override
@@ -258,7 +294,8 @@ class FirebaseFirestoreService implements DatabaseService {
     List<StudyGoal> cards = [];
 
     List<QueryDocumentSnapshot> snapshot =
-        (await userCollection.doc(user.uid).collection("studyGoals").get()).docs;
+        (await userCollection.doc(user.uid).collection("studyGoals").get())
+            .docs;
 
     snapshot.forEach(
       (card) => cards.add(StudyGoal.fromDocumentSnapshot(card)),
@@ -266,5 +303,4 @@ class FirebaseFirestoreService implements DatabaseService {
 
     return cards;
   }
-
 }

@@ -14,10 +14,20 @@ abstract class DatabaseService {
   Future<void> createUserWithId(String userId,
       {String emailAddress, String firstName, String lastName});
 
-  Future<void> updateUserWithId(String userId,
-      {String emailAddress, String firstName, String phoneNumber});
-//task
+  Future<void> updateUserWithId(
+    String userId, {
+    String firstName,
+    String lastName,
+    String institution,
+    String course,
+  });
+
+  // task
   Future<Task> createTask(TaskParams params);
+
+  Future<void> updateTask(String timetableId, TaskParams params);
+
+  Future<void> deleteTask(String taskId);
 
   Future<void> changeTaskStatus(String taskId, bool status);
 

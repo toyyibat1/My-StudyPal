@@ -48,6 +48,7 @@ class TimetableTile extends StatelessWidget {
                             children: [
                               Text(
                                 timetable.subject,
+                                softWrap: true,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -67,6 +68,7 @@ class TimetableTile extends StatelessWidget {
                                   SizedBox(width: 6),
                                   Text(
                                     timetable.location,
+                                    softWrap: true,
                                     style: kLabelText,
                                   ),
                                 ],

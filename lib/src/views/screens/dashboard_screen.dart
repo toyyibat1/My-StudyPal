@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/controller/dashboard_controller.dart';
 
-import '../../controller/home_controller.dart';
+import '../../controller/dashboard_controller.dart';
 import '../../core/constants.dart';
-import '../../core/images.dart';
+import '../../core/notifier.dart';
 import '../../models/task.dart';
 import '../widgets/task_list.dart';
 import '../widgets/task_tag.dart';
@@ -12,49 +11,49 @@ import '../widgets/task_tag.dart';
 class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
+    return GetBuilder<DashboardController>(
+      init: DashboardController()..getAuthenticatedUser(),
       builder: (controller) => SafeArea(
-        child: Column(
-          children: [
-            header(controller),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: GetBuilder<DashboardController>(
-                    init: DashboardController(),
-                    builder: (dashboardController) => Column(
-                      children: [
-                        kMediumVerticalSpacing,
-                        taskSnapshot(dashboardController),
-                        kMediumVerticalSpacing,
-                        TaskList(
-                          controller: dashboardController,
-                          tagColor: kPrimaryColor,
-                          title: 'Pending',
-                          tasks: dashboardController.pendingTasks,
+        child: controller.state == NotifierState.isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                children: [
+                  header(controller),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          children: [
+                            kMediumVerticalSpacing,
+                            taskSnapshot(controller),
+                            kMediumVerticalSpacing,
+                            TaskList(
+                              controller: controller,
+                              tagColor: kPrimaryColor,
+                              title: 'Pending',
+                              tasks: controller.pendingTasks,
+                            ),
+                            kMediumVerticalSpacing,
+                            TaskList(
+                              controller: controller,
+                              tagColor: kPrimaryColor2,
+                              title: 'Completed',
+                              tasks: controller.completedTasks,
+                            ),
+                            kMediumVerticalSpacing,
+                          ],
                         ),
-                        kMediumVerticalSpacing,
-                        TaskList(
-                          controller: dashboardController,
-                          tagColor: kPrimaryColor2,
-                          title: 'Completed',
-                          tasks: dashboardController.completedTasks,
-                        ),
-                        kMediumVerticalSpacing,
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
 
-  Widget header(HomeController controller) {
+  Widget header(DashboardController controller) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -81,14 +80,22 @@ class DashboardScreen extends StatelessWidget {
               ],
             ),
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              welcome,
-              width: 60,
-              height: 60,
+          // ClipRRect(
+          //   borderRadius: BorderRadius.circular(8),
+          //   child: Image.asset(
+          //     welcome,
+          //     width: 60,
+          //     height: 60,
+          //   ),
+          // ),
+          CircleAvatar(
+            radius: 25,
+            child: Text(
+              controller.user.firstName[0],
+              style: kHeadingTextStyle,
             ),
-          ),
+            backgroundColor: Color(0xFFE0E0E0),
+          )
         ],
       ),
     );
