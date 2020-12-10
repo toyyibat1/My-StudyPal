@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controller/create_study_goal_controller.dart';
+import '../../controller/edit_study_goal_controller.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
+import '../../models/study_goal.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
 
-class CreateStudyGoalScreen extends StatelessWidget {
+class EditStudyGoalScreen extends StatelessWidget {
+  final StudyGoal studyGoal;
+  EditStudyGoalScreen({Key key, @required this.studyGoal}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
       child: Scaffold(
         body: SafeArea(
-          child: GetBuilder<CreateStudyGoalController>(
-            init: CreateStudyGoalController(),
+          child: GetBuilder<EditStudyGoalController>(
+            init: EditStudyGoalController(studyGoal),
             builder: (controller) => Column(
               children: [
                 header(context, controller),
@@ -28,12 +32,12 @@ class CreateStudyGoalScreen extends StatelessWidget {
     );
   }
 
-  Widget header(BuildContext context, CreateStudyGoalController controller) =>
+  Widget header(BuildContext context, EditStudyGoalController controller) =>
       Container(
         width: double.infinity,
         padding: EdgeInsets.only(
           left: 16.0,
-          right: MediaQuery.of(context).size.width * 0.25,
+          right: MediaQuery.of(context).size.width * 0.33,
         ),
         height: 40,
         color: kPrimaryColor,
@@ -46,7 +50,7 @@ class CreateStudyGoalScreen extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Create New Timetable',
+                'Edit Timetable',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -58,7 +62,7 @@ class CreateStudyGoalScreen extends StatelessWidget {
         ),
       );
 
-  Widget form(BuildContext context, CreateStudyGoalController controller) {
+  Widget form(BuildContext context, EditStudyGoalController controller) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -93,13 +97,13 @@ class CreateStudyGoalScreen extends StatelessWidget {
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Create Study Goal',
+                  label: 'Edit Study Goal',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,
-                  onPressed: controller.state == NotifierState.isLoading
+                  onPressed: () => controller.state == NotifierState.isLoading
                       ? null
-                      : controller.createStudyGoal,
+                      : controller.updateStudyGoal(studyGoal.id),
                 ),
               ],
             ),

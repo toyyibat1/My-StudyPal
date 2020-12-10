@@ -7,11 +7,15 @@ import 'package:intl/intl.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/study_goal.dart';
 import '../models/study_goal_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database/database_service.dart';
 
-class CreateStudyGoalController extends Notifier with ValidationMixin {
+class EditStudyGoalController extends Notifier with ValidationMixin {
+  EditStudyGoalController(this.studyGoal);
+  final StudyGoal studyGoal;
+
   DateTime _pickedDate;
 
   final _dateController = TextEditingController();
@@ -26,7 +30,9 @@ class CreateStudyGoalController extends Notifier with ValidationMixin {
 
   @override
   void onInit() {
-    _pickedDate = DateTime.now();
+    _goalController.text = studyGoal.goal;
+    _pickedDate = studyGoal.date;
+    _dateController.text = DateFormat.yMMMMEEEEd().format(_pickedDate);
 
     super.onInit();
   }
@@ -50,7 +56,7 @@ class CreateStudyGoalController extends Notifier with ValidationMixin {
 
   void goBack() => Get.back();
 
-  void createStudyGoal() async {
+  void updateStudyGoal(String studyGoalId) async {
     Get.focusScope.unfocus();
 
     if (_formKey.currentState.validate()) {
@@ -64,7 +70,7 @@ class CreateStudyGoalController extends Notifier with ValidationMixin {
           date: _pickedDate,
         );
 
-        await Get.find<DatabaseService>().createStudyGoal(params);
+        await Get.find<DatabaseService>().updateStudyGoal(studyGoalId, params);
 
         setState(NotifierState.isIdle);
 

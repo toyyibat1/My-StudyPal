@@ -19,9 +19,10 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               header,
-              controller.state == NotifierState.isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : Expanded(child: profileActions(controller)),
+              Expanded(
+                  child: controller.state == NotifierState.isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : profileActions(controller)),
             ],
           ),
         ),
@@ -63,6 +64,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             title: '${controller.user.firstName} ${controller.user.lastName}',
             email: controller.user.emailAddress,
+            subtitle: Text(controller.user.institution),
           ),
           kSmallVerticalSpacing,
           Padding(
@@ -78,12 +80,12 @@ class ProfileScreen extends StatelessWidget {
             title: 'Edit Profile',
             trailing: Icons.arrow_forward_ios,
           ),
-          AppTile(
-            onPressed: controller.navigateToBadgesScreen,
-            leading: Icons.badge,
-            title: 'Badges',
-            trailing: Icons.arrow_forward_ios,
-          ),
+          // AppTile(
+          //   onPressed: controller.navigateToBadgesScreen,
+          //   leading: Icons.badge,
+          //   title: 'Badges',
+          //   trailing: Icons.arrow_forward_ios,
+          // ),
           AppTile(
             onPressed: controller.navigateToStudyGoalsScreen,
             leading: Icons.control_point_rounded,
@@ -96,12 +98,12 @@ class ProfileScreen extends StatelessWidget {
             title: 'School Schedule',
             trailing: Icons.arrow_forward_ios,
           ),
-          AppTile(
-            onPressed: controller.navigateToInviteFriendScreen,
-            leading: Icons.people,
-            title: 'Invite Friends',
-            trailing: Icons.arrow_forward_ios,
-          ),
+          // AppTile(
+          //   onPressed: controller.navigateToInviteFriendScreen,
+          //   leading: Icons.people,
+          //   title: 'Invite Friends',
+          //   trailing: Icons.arrow_forward_ios,
+          // ),
           AppTile(
             onPressed: controller.signOut,
             leading: Icons.logout,
@@ -109,6 +111,11 @@ class ProfileScreen extends StatelessWidget {
             trailing: Icons.arrow_forward_ios,
           ),
           kExtraSmallVerticalSpacing,
+          Center(
+              child: Text(
+            'Powered by Side Hustle',
+            style: TextStyle(color: Colors.grey),
+          )),
         ],
       ),
     );

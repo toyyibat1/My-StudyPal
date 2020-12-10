@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_study_pal/src/models/study_goals.dart';
-import 'package:my_study_pal/src/models/study_goals_params.dart';
+import 'package:my_study_pal/src/models/study_goal.dart';
+import 'package:my_study_pal/src/models/study_goal_params.dart';
 
 import '../../models/app_user.dart';
+import '../../models/school_schedule.dart';
+import '../../models/school_schedule_params.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
 import '../../models/timetable.dart';
@@ -163,7 +165,7 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<List<Task>> getCompletedTasks() async {
     User user = FirebaseAuth.instance.currentUser;
 
-    List<Task> cards = [];
+    List<Task> tasks = [];
 
     List<QueryDocumentSnapshot> snapshot = (await userCollection
             .doc(user.uid)
@@ -173,10 +175,10 @@ class FirebaseFirestoreService implements DatabaseService {
         .docs;
 
     snapshot.forEach(
-      (card) => cards.add(Task.fromDocumentSnapshot(card)),
+      (task) => tasks.add(Task.fromDocumentSnapshot(task)),
     );
 
-    return cards;
+    return tasks;
   }
 
   // timetable
@@ -243,27 +245,89 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<List<Timetable>> getAllTimetables() async {
     User user = FirebaseAuth.instance.currentUser;
 
-    List<Timetable> cards = [];
+    List<Timetable> timetables = [];
 
     List<QueryDocumentSnapshot> snapshot =
         (await userCollection.doc(user.uid).collection("timetable").get()).docs;
 
     snapshot.forEach(
-      (card) => cards.add(Timetable.fromDocumentSnapshot(card)),
+      (timetable) => timetables.add(Timetable.fromDocumentSnapshot(timetable)),
     );
 
-    return cards;
+    return timetables;
   }
 
+  // Schedules
+  @override
+  Future<SchoolSchedule> createSchedule(SchoolScheduleParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    DocumentReference reference =
+        await userCollection.doc(user.uid).collection('schedule').add({
+      'name': params.name,
+      'endOfSemester': params.endOfSemester.toIso8601String(),
+      'startOfSemester': params.startOfSemester.toIso8601String(),
+      'timestamp': Timestamp.now(),
+    });
+
+    DocumentSnapshot snapshot = await reference.get();
+
+    return SchoolSchedule.fromDocumentSnapshot(snapshot);
+  }
+
+  @override
+  Future<void> updateSchedule(
+      String scheduleId, SchoolScheduleParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    return await userCollection
+        .doc(user.uid)
+        .collection('schedule')
+        .doc(scheduleId)
+        .update({
+      'name': params.name,
+      'endOfSemester': params.endOfSemester.toIso8601String(),
+      'startOfSemester': params.startOfSemester.toIso8601String(),
+    });
+  }
+
+  @override
+  Future<void> deleteSchedule(String scheduleId) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    await userCollection
+        .doc(user.uid)
+        .collection('schedule')
+        .doc(scheduleId)
+        .delete();
+  }
+
+  @override
+  Future<List<SchoolSchedule>> getAllSchedules() async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    List<SchoolSchedule> schedules = [];
+
+    List<QueryDocumentSnapshot> snapshot =
+        (await userCollection.doc(user.uid).collection("schedule").get()).docs;
+
+    snapshot.forEach(
+      (schedule) =>
+          schedules.add(SchoolSchedule.fromDocumentSnapshot(schedule)),
+    );
+
+    return schedules;
+  }
+
+  // Study Goals
+  @override
   Future<StudyGoal> createStudyGoal(StudyGoalParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
     DocumentReference reference =
-        await userCollection.doc(user.uid).collection('studyGoals').add({
-      'studyGoalname': params.studyGoalname,
-      //'studyGoalToBeAchieved': params.studyGoalsToBeAchievied,
+        await userCollection.doc(user.uid).collection('studygoal').add({
+      'goal': params.goal,
       'date': params.date.toIso8601String(),
-      'completed': false,
       'timestamp': Timestamp.now(),
     });
 
@@ -273,34 +337,44 @@ class FirebaseFirestoreService implements DatabaseService {
   }
 
   @override
-  Future<void> changeStudyGoalStatus(String taskId, bool status) async {
+  Future<void> updateStudyGoal(
+      String scheduleId, StudyGoalParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
     return await userCollection
         .doc(user.uid)
-        .collection('studyGoals')
-        .doc(taskId)
-        .update(
-      {
-        'completed': status,
-      },
-    );
+        .collection('studygoal')
+        .doc(scheduleId)
+        .update({
+      'goal': params.goal,
+      'date': params.date.toIso8601String(),
+    });
+  }
+
+  @override
+  Future<void> deleteStudyGoal(String scheduleId) async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    await userCollection
+        .doc(user.uid)
+        .collection('studygoal')
+        .doc(scheduleId)
+        .delete();
   }
 
   @override
   Future<List<StudyGoal>> getAllStudyGoals() async {
     User user = FirebaseAuth.instance.currentUser;
 
-    List<StudyGoal> cards = [];
+    List<StudyGoal> studyGoals = [];
 
     List<QueryDocumentSnapshot> snapshot =
-        (await userCollection.doc(user.uid).collection("studyGoals").get())
-            .docs;
+        (await userCollection.doc(user.uid).collection("studygoal").get()).docs;
 
     snapshot.forEach(
-      (card) => cards.add(StudyGoal.fromDocumentSnapshot(card)),
+      (studyGoal) => studyGoals.add(StudyGoal.fromDocumentSnapshot(studyGoal)),
     );
 
-    return cards;
+    return studyGoals;
   }
 }

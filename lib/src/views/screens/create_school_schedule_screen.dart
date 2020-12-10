@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controller/create_study_goal_controller.dart';
+import '../../controller/create_school_schedule_controller.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
 
-class CreateStudyGoalScreen extends StatelessWidget {
+class CreateSchoolScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
       child: Scaffold(
         body: SafeArea(
-          child: GetBuilder<CreateStudyGoalController>(
-            init: CreateStudyGoalController(),
+          child: GetBuilder<CreateSchoolScheduleController>(
+            init: CreateSchoolScheduleController(),
             builder: (controller) => Column(
               children: [
                 header(context, controller),
@@ -28,7 +28,8 @@ class CreateStudyGoalScreen extends StatelessWidget {
     );
   }
 
-  Widget header(BuildContext context, CreateStudyGoalController controller) =>
+  Widget header(
+          BuildContext context, CreateSchoolScheduleController controller) =>
       Container(
         width: double.infinity,
         padding: EdgeInsets.only(
@@ -46,7 +47,7 @@ class CreateStudyGoalScreen extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Create New Timetable',
+                'Create New Schedule',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -58,7 +59,7 @@ class CreateStudyGoalScreen extends StatelessWidget {
         ),
       );
 
-  Widget form(BuildContext context, CreateStudyGoalController controller) {
+  Widget form(BuildContext context, CreateSchoolScheduleController controller) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -70,36 +71,49 @@ class CreateStudyGoalScreen extends StatelessWidget {
               children: [
                 kMediumVerticalSpacing,
                 AppTextField(
-                  maxLines: 3,
-                  text: 'What are your study goals',
+                  text: 'Name of Semester',
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
-                  controller: controller.goalController,
+                  controller: controller.nameController,
                   validator: controller.validateNotEmpty,
                 ),
                 kMediumVerticalSpacing,
                 GestureDetector(
                   onTap: () {
-                    controller.selectDate(context);
+                    controller.selectStartDate(context);
                   },
                   child: AppTextField(
-                    text: 'When do you want your goal to be achieved',
+                    text: 'Start of Semester',
                     hintText: 'Select Date',
                     validator: controller.validateNotEmpty,
-                    controller: controller.dateController,
+                    controller: controller.startOfSemesterController,
+                    enabled: false,
+                    prefixIcon: Icon(Icons.history),
+                  ),
+                ),
+                kMediumVerticalSpacing,
+                GestureDetector(
+                  onTap: () {
+                    controller.selectEndDate(context);
+                  },
+                  child: AppTextField(
+                    text: 'End of Semester',
+                    hintText: 'Select Date',
+                    validator: controller.validateNotEmpty,
+                    controller: controller.endOfSemesterController,
                     enabled: false,
                     prefixIcon: Icon(Icons.history),
                   ),
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Create Study Goal',
+                  label: 'Create Schedule',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,
                   onPressed: controller.state == NotifierState.isLoading
                       ? null
-                      : controller.createStudyGoal,
+                      : controller.createSchedule,
                 ),
               ],
             ),

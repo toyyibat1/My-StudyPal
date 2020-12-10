@@ -6,15 +6,17 @@ class ProfileTile extends StatelessWidget {
   final String email;
   final IconData trailing;
   final Function onPressed;
+  final Widget subtitle;
 
-  const ProfileTile({
-    Key key,
-    this.email,
-    @required this.leading,
-    @required this.title,
-    this.trailing,
-    this.onPressed,
-  }) : super(key: key);
+  const ProfileTile(
+      {Key key,
+      this.email,
+      @required this.leading,
+      @required this.title,
+      this.trailing,
+      this.onPressed,
+      this.subtitle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,27 +33,32 @@ class ProfileTile extends StatelessWidget {
           children: [
             leading,
             SizedBox(width: 24),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                email == null ? Container() : SizedBox(height: 8),
-                email == null
-                    ? Container()
-                    : Text(
-                        email,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                  email == null ? Container() : SizedBox(height: 8),
+                  email == null
+                      ? Container()
+                      : Text(
+                          email,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-              ],
+                  subtitle,
+                ],
+              ),
             ),
           ],
         ),

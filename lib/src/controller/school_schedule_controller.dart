@@ -4,31 +4,31 @@ import 'package:get/get.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
-import '../models/study_goal.dart';
+import '../models/school_schedule.dart';
 import '../services/database/database_service.dart';
-import '../views/screens/create_study_goal_screen.dart';
-import '../views/screens/study_goal_info_screen.dart';
+import '../views/screens/create_school_schedule_screen.dart';
+import '../views/screens/school_schedule_info_screen.dart';
 
-class StudyGoalController extends Notifier {
-  List<StudyGoal> _studyGoals = [];
+class SchoolScheduleController extends Notifier {
+  List<SchoolSchedule> _schedules = [];
 
-  List<StudyGoal> get studyGoals => _studyGoals;
+  List<SchoolSchedule> get schedules => _schedules;
 
   @override
   void onInit() {
-    getAllStudyGoals();
+    getAllSchedules();
     super.onInit();
   }
 
   FutureOr onGoBack(dynamic value) async {
-    getAllStudyGoals();
+    getAllSchedules();
     update();
   }
 
-  void getAllStudyGoals() async {
+  void getAllSchedules() async {
     setState(NotifierState.isLoading);
     try {
-      _studyGoals = await Get.find<DatabaseService>().getAllStudyGoals();
+      _schedules = await Get.find<DatabaseService>().getAllSchedules();
 
       setState(NotifierState.isIdle);
     } on Failure catch (f) {
@@ -44,12 +44,12 @@ class StudyGoalController extends Notifier {
     setState(NotifierState.isIdle);
   }
 
-  void navigateToCreateStudyGoal() =>
-      Get.to(CreateStudyGoalScreen()).then(onGoBack);
+  void navigateToCreateSchedule() =>
+      Get.to(CreateSchoolScheduleScreen()).then(onGoBack);
 
-  void openStudyGoalInfoScreen(StudyGoal studyGoal) {
-    Get.bottomSheet(StudyGoalInfoScreen(
-      studyGoal: studyGoal,
+  void openScheduleInfoScreen(SchoolSchedule schedule) {
+    Get.bottomSheet(SchoolScheduleInfoScreen(
+      schedule: schedule,
       onGoBackCallback: onGoBack,
     )).then((onGoBack));
   }
