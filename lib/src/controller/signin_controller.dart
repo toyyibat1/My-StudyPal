@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -10,29 +11,41 @@ import '../models/signin_params.dart';
 import '../services/auth_service/auth_service.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../views/screens/home_screen.dart';
-import '../views/screens/signup_screen.dart';
 
 class SigninController extends Notifier with ValidationMixin {
   final _emailAddressController = TextEditingController();
   final _passwordController = TextEditingController();
+//
+//  bool obscureText = true;
+//  Icon icon = Icon(Icons.remove_red_eye);
 
   final _formKey = GlobalKey<FormState>();
-  TapGestureRecognizer _signUp;
+  TapGestureRecognizer _createAccount;
 
   TextEditingController get emailAddressController => _emailAddressController;
   TextEditingController get passwordController => _passwordController;
 
-  TapGestureRecognizer get signUp => _signUp;
+  TapGestureRecognizer get createAccount => _createAccount;
   GlobalKey<FormState> get formKey => _formKey;
 
   @override
   void onInit() {
-    _signUp = TapGestureRecognizer()
+    _createAccount = TapGestureRecognizer()
       ..onTap = () {
-        Get.off(SignupScreen());
+        Get.to(CreateAccountScreen());
       };
     super.onInit();
   }
+
+  // Toggles the password show status
+//  void toggle() {
+//    obscureText = !obscureText;
+//    if (!obscureText) {
+//      icon = Icon(Icons.panorama_fish_eye_outlined);
+//    } else {
+//      icon = Icon(Icons.remove_red_eye);
+//    }
+//  }
 
   void signinUser() async {
     Get.focusScope.unfocus();
@@ -66,4 +79,6 @@ class SigninController extends Notifier with ValidationMixin {
       setState(NotifierState.isIdle);
     }
   }
+
+  void forgotPassword() async {}
 }

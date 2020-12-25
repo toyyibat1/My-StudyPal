@@ -57,7 +57,7 @@ class _InviteFriendScreenState extends State<InviteFriendScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => InviteSucessScreen()));
+                                builder: (context) => InviteSuccessScreen()));
                       },
                     ),
                   ),

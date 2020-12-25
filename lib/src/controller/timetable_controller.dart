@@ -48,9 +48,12 @@ class TimetableController extends Notifier {
       Get.to(CreateTimetableScreen()).then(onGoBack);
 
   void openTimetableInfoScreen(Timetable timetable) {
-    Get.bottomSheet(TimetableInfoScreen(
-      timetable: timetable,
-      onGoBackCallback: onGoBack,
-    )).then((onGoBack));
+    Get.bottomSheet(
+      TimetableInfoScreen(
+        timetable: timetable,
+        onGoBackCallback: onGoBack,
+      ),
+      isScrollControlled: true,
+    ).then((onGoBack));
   }
 }

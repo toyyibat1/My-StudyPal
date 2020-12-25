@@ -30,11 +30,14 @@ class AppTile extends StatelessWidget {
           children: [
             Icon(leading, color: kPrimaryColor) ?? Container(),
             leading == null ? Container() : SizedBox(width: 24),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.66,
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
             Spacer(),

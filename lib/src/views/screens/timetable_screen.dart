@@ -57,6 +57,7 @@ class TimetableScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          tooltip: "Click me to create a timetable",
           backgroundColor: kPrimaryColor,
           child: Icon(Icons.add),
           onPressed: controller.navigateToCreateTimetable,

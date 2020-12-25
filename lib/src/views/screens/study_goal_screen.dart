@@ -17,7 +17,7 @@ class StudyGoalScreen extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              header,
+              header(context),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
@@ -39,7 +39,7 @@ class StudyGoalScreen extends StatelessWidget {
                                     SizedBox(height: 8.0),
                                     Center(
                                       child: Text(
-                                        'No Schedule',
+                                        'No Study Goals',
                                         style: TextStyle(
                                           color: Colors.grey,
                                         ),
@@ -85,19 +85,32 @@ class StudyGoalScreen extends StatelessWidget {
     );
   }
 
-  Widget get header => Container(
+  Widget header(BuildContext context) => Container(
         width: double.infinity,
+        padding: EdgeInsets.only(
+          left: 16.0,
+          right: MediaQuery.of(context).size.width * 0.44,
+        ),
         height: 40,
         color: kPrimaryColor2,
-        child: Center(
-          child: Text(
-            'School Schedule',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () => Get.back(),
+              child: Icon(Icons.arrow_back_ios, color: Colors.white),
             ),
-          ),
+            Center(
+              child: Text(
+                'Study Goals',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
       );
 }

@@ -50,7 +50,7 @@ class EditStudyGoalScreen extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Edit Timetable',
+                'Edit Study Goal',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -97,7 +97,7 @@ class EditStudyGoalScreen extends StatelessWidget {
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Edit Study Goal',
+                  label: 'Update Study Goal',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,

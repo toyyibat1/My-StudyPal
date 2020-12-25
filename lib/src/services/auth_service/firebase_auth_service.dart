@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_study_pal/src/models/forgot_password_params.dart';
 
 import '../../core/failure.dart';
 import '../../models/app_user.dart';
@@ -92,6 +93,13 @@ class FirebaseAuthService implements AuthService {
     } on FirebaseAuthException catch (ex) {
       throw Failure(ex.message);
     }
+  }
+
+  @override
+  Future<AppUser> forgotPassword(ForgotPasswordParams params) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: params.emailAddress);
+    } catch (e) {}
   }
 
   @override

@@ -46,12 +46,16 @@ class TimetableTile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                timetable.subject,
-                                softWrap: true,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.4,
+                                child: Text(
+                                  timetable.subject,
+                                  softWrap: true,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               SizedBox(height: 16),
@@ -66,10 +70,15 @@ class TimetableTile extends StatelessWidget {
                                   SizedBox(width: 12),
                                   Icon(Icons.location_on_outlined, size: 20),
                                   SizedBox(width: 6),
-                                  Text(
-                                    timetable.location,
-                                    softWrap: true,
-                                    style: kLabelText,
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 4,
+                                    child: Text(
+                                      timetable.location,
+                                      softWrap: true,
+                                      style: kLabelText,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ],
                               ),

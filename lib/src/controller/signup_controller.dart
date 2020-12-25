@@ -17,6 +17,8 @@ class SignupController extends Notifier with ValidationMixin {
   final _lastNameController = TextEditingController();
   final _emailAddressController = TextEditingController();
   final _passwordController = TextEditingController();
+//  bool _obscureText = true;
+//  Icon icon = Icon(Icons.visibility);
 
   final _formKey = GlobalKey<FormState>();
   TapGestureRecognizer _signIn;

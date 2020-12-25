@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../controller/dashboard_controller.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
-import '../../models/task.dart';
 import '../widgets/task_list.dart';
 import '../widgets/task_tag.dart';
 
@@ -84,14 +83,6 @@ class DashboardScreen extends StatelessWidget {
               ),
             ),
           ),
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(8),
-          //   child: Image.asset(
-          //     welcome,
-          //     width: 60,
-          //     height: 60,
-          //   ),
-          // ),
           CircleAvatar(
             radius: 25,
             child: Text(
@@ -129,29 +120,29 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-List<Task> pendingTasks = [
-  Task(
-    id: "1",
-    name: "Reading about Ethics",
-    description: 'I want to read about Ethics',
-    date: DateTime.now(),
-    startTime: TimeOfDay.now(),
-    endTime: TimeOfDay.now(),
-  ),
-  Task(
-    id: "2",
-    name: "Reading about Ethics",
-    description: 'I want to read about Ethics',
-    date: DateTime.now(),
-    startTime: TimeOfDay.now(),
-    endTime: TimeOfDay.now(),
-  ),
-  Task(
-    id: "3",
-    name: "Reading about Ethics",
-    description: 'I want to read about Ethics',
-    date: DateTime.now(),
-    startTime: TimeOfDay.now(),
-    endTime: TimeOfDay.now(),
-  ),
-];
+//List<Task> pendingTasks = [
+//  Task(
+//    id: "1",
+//    name: "Reading about Ethics",
+//    description: 'I want to read about Ethics',
+//    date: DateTime.now(),
+//    startTime: TimeOfDay.now(),
+//    endTime: TimeOfDay.now(),
+//  ),
+//  Task(
+//    id: "2",
+//    name: "Reading about Ethics",
+//    description: 'I want to read about Ethics',
+//    date: DateTime.now(),
+//    startTime: TimeOfDay.now(),
+//    endTime: TimeOfDay.now(),
+//  ),
+//  Task(
+//    id: "3",
+//    name: "Reading about Ethics",
+//    description: 'I want to read about Ethics',
+//    date: DateTime.now(),
+//    startTime: TimeOfDay.now(),
+//    endTime: TimeOfDay.now(),
+//  ),
+//];

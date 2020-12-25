@@ -1,3 +1,5 @@
+import 'package:my_study_pal/src/models/focus_mode.dart';
+import 'package:my_study_pal/src/models/focus_mode_params.dart';
 import 'package:my_study_pal/src/models/study_goal.dart';
 
 import '../../models/app_user.dart';
@@ -64,4 +66,6 @@ abstract class DatabaseService {
   Future<void> deleteStudyGoal(String scheduleId);
 
   Future<List<StudyGoal>> getAllStudyGoals();
+//  focus mode
+  Future<FocusMode> createFocusMode(FocusModeParams params);
 }

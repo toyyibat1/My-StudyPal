@@ -48,9 +48,12 @@ class SchoolScheduleController extends Notifier {
       Get.to(CreateSchoolScheduleScreen()).then(onGoBack);
 
   void openScheduleInfoScreen(SchoolSchedule schedule) {
-    Get.bottomSheet(SchoolScheduleInfoScreen(
-      schedule: schedule,
-      onGoBackCallback: onGoBack,
-    )).then((onGoBack));
+    Get.bottomSheet(
+      SchoolScheduleInfoScreen(
+        schedule: schedule,
+        onGoBackCallback: onGoBack,
+      ),
+      isScrollControlled: true,
+    ).then((onGoBack));
   }
 }

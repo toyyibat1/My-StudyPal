@@ -1,56 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/focus_mode_controller.dart';
+import 'package:my_study_pal/src/core/notifier.dart';
+import 'package:my_study_pal/src/views/widgets/app_button.dart';
+import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 
-import '../../controller/edit_task_controller.dart';
 import '../../core/constants.dart';
-import '../../core/notifier.dart';
-import '../../models/task.dart';
-import '../widgets/app_button.dart';
-import '../widgets/app_textfield.dart';
-import '../widgets/transparent_statusbar.dart';
 
-class EditTaskScreen extends StatelessWidget {
-  final Task task;
-  EditTaskScreen({Key key, @required this.task}) : super(key: key);
+class FocusModeScreen extends StatefulWidget {
+  @override
+  _FocusModeScreenState createState() => _FocusModeScreenState();
+}
 
+class _FocusModeScreenState extends State<FocusModeScreen> {
   @override
   Widget build(BuildContext context) {
-    return TransparentStatusbar(
-      child: Scaffold(
-        body: SafeArea(
-          child: GetBuilder<EditTaskController>(
-            init: EditTaskController(task)..formatTimes(context),
+    return Scaffold(
+      body: SafeArea(
+        child: GetBuilder<FocusModeController>(
+            init: FocusModeController(),
             builder: (controller) => Column(
-              children: [
-                header(context, controller),
-                form(context, controller),
-              ],
-            ),
-          ),
-        ),
+                  children: [
+                    header(context),
+                    kExtraLargeVerticalSpacing,
+                    form(context, controller)
+                  ],
+                )),
       ),
     );
   }
 
-  Widget header(BuildContext context, EditTaskController controller) =>
-      Container(
+  Widget header(BuildContext context) => Container(
         width: double.infinity,
         padding: EdgeInsets.only(
           left: 16.0,
-          right: MediaQuery.of(context).size.width * 0.40,
+          right: MediaQuery.of(context).size.width * 0.44,
         ),
         height: 40,
-        color: kPrimaryColor,
+        color: kPrimaryColor2,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
-              onTap: controller.goBack,
+              onTap: () => Get.back(),
               child: Icon(Icons.arrow_back_ios, color: Colors.white),
             ),
             Center(
               child: Text(
-                'Edit Task',
+                'Focus Mode',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -62,7 +59,7 @@ class EditTaskScreen extends StatelessWidget {
         ),
       );
 
-  Widget form(BuildContext context, EditTaskController controller) {
+  Widget form(BuildContext context, FocusModeController controller) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -73,37 +70,33 @@ class EditTaskScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 kMediumVerticalSpacing,
-                AppTextField(
-                  text: 'Task Name',
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  controller: controller.taskNameController,
-                  validator: controller.validateNotEmpty,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Focus Mode',
+                          softWrap: true,
+                          style: kHeadingTextStyle,
+                        ),
+                        Text(
+                          'By puting on the focus mode, you won\'t \nrecieve any notification',
+                          softWrap: true,
+                        )
+                      ],
+                    ),
+                    Switch(
+                      activeColor: kPrimaryColor2,
+                      value: controller.focusModeToggle,
+                      onChanged: (value) {
+                        controller.onChange();
+                      },
+                    ),
+                  ],
                 ),
-                kMediumVerticalSpacing,
-                AppTextField(
-                  maxLines: 3,
-                  text: 'Task Description',
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  controller: controller.taskDescriptionController,
-                  validator: controller.validateNotEmpty,
-                ),
-                kMediumVerticalSpacing,
-                GestureDetector(
-                  onTap: () {
-                    controller.selectDate(context);
-                  },
-                  child: AppTextField(
-                    text: 'Date',
-                    hintText: 'Select Date',
-                    controller: controller.dateController,
-                    validator: controller.validateNotEmpty,
-                    enabled: false,
-                    prefixIcon: Icon(Icons.calendar_today),
-                  ),
-                ),
-                kMediumVerticalSpacing,
                 Row(
                   children: [
                     Expanded(
@@ -141,14 +134,13 @@ class EditTaskScreen extends StatelessWidget {
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Update Task',
-                  color: kPrimaryColor,
-                  isLoading: controller.state == NotifierState.isLoading,
-                  textColor: Colors.white,
-                  onPressed: () => controller.state == NotifierState.isLoading
-                      ? null
-                      : controller.updateTask(task.id),
-                ),
+                    label: 'Save',
+                    color: kPrimaryColor,
+                    isLoading: controller.state == NotifierState.isLoading,
+                    textColor: Colors.white,
+                    onPressed: controller.state == NotifierState.isLoading
+                        ? null
+                        : () => controller.createFocusMode()),
               ],
             ),
           ),

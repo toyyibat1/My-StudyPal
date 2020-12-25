@@ -80,12 +80,12 @@ class ProfileScreen extends StatelessWidget {
             title: 'Edit Profile',
             trailing: Icons.arrow_forward_ios,
           ),
-          // AppTile(
-          //   onPressed: controller.navigateToBadgesScreen,
-          //   leading: Icons.badge,
-          //   title: 'Badges',
-          //   trailing: Icons.arrow_forward_ios,
-          // ),
+          AppTile(
+            onPressed: controller.navigateToBadgesScreen,
+            leading: Icons.badge,
+            title: 'Badges',
+            trailing: Icons.arrow_forward_ios,
+          ),
           AppTile(
             onPressed: controller.navigateToStudyGoalsScreen,
             leading: Icons.control_point_rounded,
@@ -93,17 +93,23 @@ class ProfileScreen extends StatelessWidget {
             trailing: Icons.arrow_forward_ios,
           ),
           AppTile(
+            onPressed: controller.navigateToFocusModeScreen,
+            leading: Icons.notifications_off,
+            title: 'Focus Mode',
+            trailing: Icons.arrow_forward_ios,
+          ),
+          AppTile(
             onPressed: controller.navigateToAddScheduleScreen,
-            leading: Icons.next_plan,
+            leading: Icons.next_plan_sharp,
             title: 'School Schedule',
             trailing: Icons.arrow_forward_ios,
           ),
-          // AppTile(
-          //   onPressed: controller.navigateToInviteFriendScreen,
-          //   leading: Icons.people,
-          //   title: 'Invite Friends',
-          //   trailing: Icons.arrow_forward_ios,
-          // ),
+          AppTile(
+            onPressed: controller.navigateToInviteFriendScreen,
+            leading: Icons.people,
+            title: 'Invite Friends',
+            trailing: Icons.arrow_forward_ios,
+          ),
           AppTile(
             onPressed: controller.signOut,
             leading: Icons.logout,
@@ -113,9 +119,16 @@ class ProfileScreen extends StatelessWidget {
           kExtraSmallVerticalSpacing,
           Center(
               child: Text(
-            'Powered by Side Hustle',
+            'MyStudyPadi V 1.0',
             style: TextStyle(color: Colors.grey),
           )),
+          kExtraSmallVerticalSpacing,
+
+//          Center(
+//              child: Text(
+//            'V 1.0',
+//            style: TextStyle(color: Colors.grey),
+//          )),
         ],
       ),
     );
