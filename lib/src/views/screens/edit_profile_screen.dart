@@ -1,140 +1,131 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:my_study_pal/src/controller/auth_controller.dart';
-import 'package:my_study_pal/src/core/constants.dart';
-import 'package:my_study_pal/src/core/images.dart';
-import 'package:my_study_pal/src/views/widgets/app_button.dart';
-import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
+import 'package:get/get.dart';
 
-class EditProfileScreen extends StatefulWidget {
-  @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
-}
+import '../../controller/edit_profile_controller.dart';
+import '../../core/constants.dart';
+import '../../core/notifier.dart';
+import '../../models/app_user.dart';
+import '../widgets/app_button.dart';
+import '../widgets/app_textfield.dart';
+import '../widgets/transparent_statusbar.dart';
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
-  final AuthController authController = AuthController.to;
-  File _image;
-  final ImagePicker picker = ImagePicker();
+class EditProfileScreen extends StatelessWidget {
+  final AppUser user;
+  EditProfileScreen({Key key, @required this.user}) : super(key: key);
 
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image = File(pickedFile.path);
-    });
-  }
-
-  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: kPrimaryColor,
-        title: Text('Edit Your Profile'),
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(
-            Icons.arrow_back_ios,
+    return TransparentStatusbar(
+      child: Scaffold(
+        body: SafeArea(
+          child: GetBuilder<EditProfileController>(
+            init: EditProfileController(user),
+            builder: (controller) => Column(
+              children: [
+                header(context, controller),
+                form(context, controller),
+              ],
+            ),
           ),
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: (_image != null)
-                              ? FileImage(_image)
-                              : AssetImage(welcome),
-                          // backgroundImage: ,
-                          backgroundColor: Colors.grey[50],
-                        ),
-                        padding: EdgeInsets.all(2.0),
-                        decoration: new BoxDecoration(
-                            color: Colors.black, shape: BoxShape.circle),
-                      ),
-                      CircleAvatar(
-                          radius: 20,
-                          backgroundColor: kTextFieldFillColor,
-                          child: IconButton(
-                            icon: Icon(Icons.camera_alt_rounded),
-                            onPressed: getImage,
-                          ))
-                    ],
-                  ),
-                  kSmallVerticalSpacing,
-                  AppTextField(
-                    text: 'First Name',
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    text: 'Last Name',
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    text: 'Email Address',
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    text: 'Insitution',
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  kMediumVerticalSpacing,
-                  AppTextField(
-                    text: 'Course',
-                    keyboardType: TextInputType.text,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  kMediumVerticalSpacing,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: AppButton(
-                          label: 'Save',
-                          textColor: Colors.white,
-                          color: kPrimaryColor,
-                          onPressed: () {
-                            _edit();
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                  kLargeVerticalSpacing,
-                ],
-              )),
         ),
       ),
     );
   }
 
-  void _edit() {
-    FocusScope.of(context).unfocus();
-    if (_formKey.currentState.validate()) {
-      // Get.snackbar("Success", "updated suceessfully");
-      //Get.to(ProfileScreen());
-    }
+  Widget header(BuildContext context, EditProfileController controller) =>
+      Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          left: 16.0,
+          right: MediaQuery.of(context).size.width * 0.33,
+        ),
+        height: 40,
+        color: kPrimaryColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: controller.goBack,
+              child: Icon(Icons.arrow_back_ios, color: Colors.white),
+            ),
+            Center(
+              child: Text(
+                'Edit Your Profile',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget form(BuildContext context, EditProfileController controller) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: controller.formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                kMediumVerticalSpacing,
+                AppTextField(
+                  text: 'FIrst Name',
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  controller: controller.firstNameController,
+                  validator: controller.validateNotEmpty,
+                ),
+                kMediumVerticalSpacing,
+                AppTextField(
+                  text: 'Last Name',
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  controller: controller.lastNameController,
+                  validator: controller.validateNotEmpty,
+                ),
+                kMediumVerticalSpacing,
+                AppTextField(
+                  text: 'Email Address',
+                  enabled: false,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  controller: controller.emailAddressController,
+                  validator: controller.validateNotEmpty,
+                ),
+                kMediumVerticalSpacing,
+                AppTextField(
+                  text: 'Institution',
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  controller: controller.institutionController,
+                ),
+                kMediumVerticalSpacing,
+                AppTextField(
+                  text: 'Course',
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  controller: controller.courseController,
+                ),
+                kLargeVerticalSpacing,
+                AppButton(
+                  label: 'Save',
+                  color: kPrimaryColor,
+                  isLoading: controller.state == NotifierState.isLoading,
+                  textColor: Colors.white,
+                  onPressed: () => controller.state == NotifierState.isLoading
+                      ? null
+                      : controller.updateUser(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -43,7 +43,7 @@ class BadgesScreen extends StatelessWidget {
                               children: [
                                 Image.asset(badge),
                                 Text(
-                                  'Created frist task',
+                                  'Created an Account',
                                   style: kBodyText2TextStyle,
                                 )
                               ],

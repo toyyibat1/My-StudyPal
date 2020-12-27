@@ -13,6 +13,7 @@ class TaskScreen extends StatelessWidget {
     return GetBuilder<TaskController>(
       init: TaskController(),
       builder: (controller) => Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [

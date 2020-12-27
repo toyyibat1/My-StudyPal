@@ -78,16 +78,16 @@ class SigninScreen extends StatelessWidget {
             validator: controller.validatePassword,
           ),
           kSmallVerticalSpacing,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                'Forgot Password?',
-                textAlign: TextAlign.right,
-                style: TextStyle(decoration: TextDecoration.underline),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Text(
+          //       'Forgot Password?',
+          //       textAlign: TextAlign.right,
+          //       style: TextStyle(decoration: TextDecoration.underline),
+          //     ),
+          //   ],
+          // ),
           kMediumVerticalSpacing,
           AppButton(
             label: 'Sign in',

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -25,8 +24,6 @@ class CreateTaskController extends Notifier with ValidationMixin {
 
   final _formKey = GlobalKey<FormState>();
 
-  TapGestureRecognizer _signUp;
-
   TextEditingController get taskNameController => _taskNameController;
   TextEditingController get taskDescriptionController =>
       _taskDescriptionController;
@@ -34,7 +31,6 @@ class CreateTaskController extends Notifier with ValidationMixin {
   TextEditingController get startTimeController => _startTimeController;
   TextEditingController get endTimeController => _endTimeController;
 
-  TapGestureRecognizer get signUp => _signUp;
   GlobalKey<FormState> get formKey => _formKey;
 
   @override

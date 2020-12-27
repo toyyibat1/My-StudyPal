@@ -14,6 +14,7 @@ class TimetableScreen extends StatelessWidget {
     return GetBuilder<TimetableController>(
       init: TimetableController(),
       builder: (controller) => Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [

@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/core/notifier.dart';
-import 'package:my_study_pal/src/models/app_user.dart';
 
-import '../../controller/create_study_goals_controller.dart';
+import '../../controller/create_study_goal_controller.dart';
 import '../../core/constants.dart';
+import '../../core/notifier.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
 
 class CreateStudyGoalScreen extends StatelessWidget {
-  final AppUser user;
-  CreateStudyGoalScreen({Key key, this.user}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
@@ -37,7 +33,7 @@ class CreateStudyGoalScreen extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.only(
           left: 16.0,
-          right: MediaQuery.of(context).size.width * 0.33,
+          right: MediaQuery.of(context).size.width * 0.25,
         ),
         height: 40,
         color: kPrimaryColor,
@@ -50,7 +46,7 @@ class CreateStudyGoalScreen extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Study Goals',
+                'Create New Timetable',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -74,11 +70,11 @@ class CreateStudyGoalScreen extends StatelessWidget {
               children: [
                 kMediumVerticalSpacing,
                 AppTextField(
-                  text: 'What are your study goals',
                   maxLines: 3,
+                  text: 'What are your study goals',
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
-                  controller: controller.studyGoalNameController,
+                  controller: controller.goalController,
                   validator: controller.validateNotEmpty,
                 ),
                 kMediumVerticalSpacing,
@@ -86,19 +82,18 @@ class CreateStudyGoalScreen extends StatelessWidget {
                   onTap: () {
                     controller.selectDate(context);
                   },
-                child: AppTextField(
-                  text: 'When did you want your goal to be achieved?',
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  controller: controller.dateController,
-                  validator: controller.validateNotEmpty,
-                  enabled: false,
-                  prefixIcon: Icon(Icons.calendar_today),
-                ),
+                  child: AppTextField(
+                    text: 'When do you want your goal to be achieved',
+                    hintText: 'Select Date',
+                    validator: controller.validateNotEmpty,
+                    controller: controller.dateController,
+                    enabled: false,
+                    prefixIcon: Icon(Icons.history),
+                  ),
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Create Study Goals',
+                  label: 'Create Study Goal',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,
@@ -114,4 +109,3 @@ class CreateStudyGoalScreen extends StatelessWidget {
     );
   }
 }
-
