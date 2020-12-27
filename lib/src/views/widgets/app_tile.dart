@@ -24,7 +24,7 @@ class AppTile extends StatelessWidget {
           border: Border.all(color: Color(0xFFE0E0E0)),
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [

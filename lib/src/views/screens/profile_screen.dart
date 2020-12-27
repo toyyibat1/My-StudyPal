@@ -52,19 +52,21 @@ class ProfileScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           kMediumVerticalSpacing,
-          ProfileTile(
-            leading: CircleAvatar(
-              radius: 35,
-              // backgroundImage: AssetImage(welcome),
-              child: Text(
-                controller.user.firstName[0],
-                style: kHeadingTextStyle,
+          SingleChildScrollView(
+                      child: ProfileTile(
+              leading: CircleAvatar(
+                radius: 35,
+                // backgroundImage: AssetImage(welcome),
+                child: Text(
+                  controller.user.firstName[0],
+                  style: kHeadingTextStyle,
+                ),
+                backgroundColor: Color(0xFFE0E0E0),
               ),
-              backgroundColor: Color(0xFFE0E0E0),
+              title: '${controller.user.firstName} ${controller.user.lastName}',
+              email: controller.user.emailAddress,
+              subtitle: Text(controller.user.institution),
             ),
-            title: '${controller.user.firstName} ${controller.user.lastName}',
-            email: controller.user.emailAddress,
-            subtitle: Text(controller.user.institution),
           ),
           kSmallVerticalSpacing,
           Padding(
