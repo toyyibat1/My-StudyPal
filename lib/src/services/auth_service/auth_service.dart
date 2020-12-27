@@ -1,3 +1,5 @@
+import 'package:my_study_pal/src/models/forgot_password_params.dart';
+
 import '../../models/app_user.dart';
 import '../../models/signin_params.dart';
 import '../../models/signup_params.dart';
@@ -13,4 +15,6 @@ abstract class AuthService {
   Future<void> updateUser(UpdateUserParams params);
 
   Future<void> signOut();
+
+  Future<AppUser> forgotPassword(ForgotPasswordParams params);
 }

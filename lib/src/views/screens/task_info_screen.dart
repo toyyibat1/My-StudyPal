@@ -21,67 +21,100 @@ class TaskInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(50),
-          topRight: Radius.circular(50),
-        ),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          kSmallVerticalSpacing,
-          BottomSheetDivider(),
-          kLargeVerticalSpacing,
-          Text(
-            task.name,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          kLargeVerticalSpacing,
-          AppTile(
-            leading:
-                task.completed ? Icons.check_circle : Icons.panorama_fish_eye,
-            title: task.completed ? 'Completed' : 'Not Completed',
-          ),
-          AppTile(title: task.description),
-          Spacer(),
-          GetBuilder<TaskInfoController>(
-            init: TaskInfoController(onGoBackCallback),
-            builder: (controller) => Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: AppButton(
-                      padding: 0,
-                      label: 'Delete',
-                      color: kPrimaryColor,
-                      isLoading: controller.state == NotifierState.isLoading,
-                      textColor: Colors.white,
-                      onPressed: () =>
-                          controller.state == NotifierState.isLoading
-                              ? null
-                              : controller.deleteTask(task.id),
-                    ),
-                  ),
-                  kMediumHorizontalSpacing,
-                  Expanded(
-                    child: AppButton(
-                      padding: 0,
-                      label: 'Edit',
-                      onPressed: () => controller.navigateToEditTask(task),
-                    ),
-                  ),
-                ],
+    final localizations = MaterialLocalizations.of(context);
+
+    return Wrap(
+      children: [
+        SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(50),
+                topRight: Radius.circular(50),
               ),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                kSmallVerticalSpacing,
+                BottomSheetDivider(),
+                kLargeVerticalSpacing,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    task.name,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                kLargeVerticalSpacing,
+                Flexible(
+                  child: Container(
+                    constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.7),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          AppTile(
+                            leading: task.completed
+                                ? Icons.check_circle
+                                : Icons.panorama_fish_eye,
+                            title:
+                                task.completed ? 'Completed' : 'Not Completed',
+                          ),
+                          AppTile(title: task.description),
+                          AppTile(
+                              leading: Icons.timer,
+                              title:
+                                  '${localizations.formatTimeOfDay(task.startTime)} - ${localizations.formatTimeOfDay(task.endTime)}'),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+//            Spacer(),
+                GetBuilder<TaskInfoController>(
+                  init: TaskInfoController(onGoBackCallback),
+                  builder: (controller) => Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: AppButton(
+                            padding: 0,
+                            label: 'Delete',
+                            color: kPrimaryColor,
+                            isLoading:
+                                controller.state == NotifierState.isLoading,
+                            textColor: Colors.white,
+                            onPressed: () =>
+                                controller.state == NotifierState.isLoading
+                                    ? null
+                                    : controller.deleteTask(task.id),
+                          ),
+                        ),
+                        kMediumHorizontalSpacing,
+                        Expanded(
+                          child: AppButton(
+                            padding: 0,
+                            label: 'Edit',
+                            onPressed: () =>
+                                controller.navigateToEditTask(task),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

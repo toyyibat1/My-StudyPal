@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/focus_mode_screen.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -52,6 +53,8 @@ class ProfileController extends Notifier with ValidationMixin {
   void navigateToAddScheduleScreen() => Get.to(SchoolScheduleScreen());
 
   void navigateToInviteFriendScreen() => Get.to(InviteFriendScreen());
+
+  void navigateToFocusModeScreen() => Get.to(FocusModeScreen());
 
   void signOut() async {
     await Get.find<AuthService>().signOut();

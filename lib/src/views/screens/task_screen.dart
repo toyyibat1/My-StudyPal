@@ -65,6 +65,7 @@ class TaskScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          tooltip: "Click me to create a task",
           backgroundColor: kPrimaryColor,
           child: Icon(Icons.add),
           onPressed: controller.navigateToCreateTask,

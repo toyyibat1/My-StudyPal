@@ -21,63 +21,78 @@ class StudyGoalInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(50),
-          topRight: Radius.circular(50),
-        ),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          kSmallVerticalSpacing,
-          BottomSheetDivider(),
-          kLargeVerticalSpacing,
-          kSmallVerticalSpacing,
-          ListTile(
-            leading: Icon(Icons.gps_fixed, color: Colors.black),
-            title: Text(studyGoal.goal),
-          ),
-          ListTile(
-            leading: Icon(Icons.calendar_today, color: Colors.black),
-            title: Text(DateFormat.yMMMd().format(studyGoal.date)),
-          ),
-          Spacer(),
-          GetBuilder<StudyGoalInfoController>(
-            init: StudyGoalInfoController(onGoBackCallback),
-            builder: (controller) => Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: AppButton(
-                      padding: 0,
-                      label: 'Delete',
-                      color: kPrimaryColor,
-                      isLoading: controller.state == NotifierState.isLoading,
-                      textColor: Colors.white,
-                      onPressed: () =>
-                          controller.state == NotifierState.isLoading
-                              ? null
-                              : controller.deleteStudyGoal(studyGoal.id),
-                    ),
-                  ),
-                  kMediumHorizontalSpacing,
-                  Expanded(
-                    child: AppButton(
-                      padding: 0,
-                      label: 'Edit',
-                      onPressed: () =>
-                          controller.navigateToEditStudyGoal(studyGoal),
-                    ),
-                  ),
-                ],
+    return Wrap(
+      children: [
+        SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(50),
+                topRight: Radius.circular(50),
               ),
+              color: Colors.white,
+            ),
+            child: Column(
+              children: [
+                kSmallVerticalSpacing,
+                BottomSheetDivider(),
+                kLargeVerticalSpacing,
+                Container(
+                  constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.4),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.gps_fixed, color: Colors.black),
+                        title: Text(studyGoal.goal),
+                      ),
+                      ListTile(
+                        leading:
+                            Icon(Icons.calendar_today, color: Colors.black),
+                        title: Text(DateFormat.yMMMd().format(studyGoal.date)),
+                      ),
+                    ],
+                  ),
+                ),
+                GetBuilder<StudyGoalInfoController>(
+                  init: StudyGoalInfoController(onGoBackCallback),
+                  builder: (controller) => Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: AppButton(
+                            padding: 0,
+                            label: 'Delete',
+                            color: kPrimaryColor,
+                            isLoading:
+                                controller.state == NotifierState.isLoading,
+                            textColor: Colors.white,
+                            onPressed: () =>
+                                controller.state == NotifierState.isLoading
+                                    ? null
+                                    : controller.deleteStudyGoal(studyGoal.id),
+                          ),
+                        ),
+                        kMediumHorizontalSpacing,
+                        Expanded(
+                          child: AppButton(
+                            padding: 0,
+                            label: 'Edit',
+                            onPressed: () =>
+                                controller.navigateToEditStudyGoal(studyGoal),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

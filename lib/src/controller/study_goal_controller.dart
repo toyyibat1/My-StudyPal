@@ -48,9 +48,12 @@ class StudyGoalController extends Notifier {
       Get.to(CreateStudyGoalScreen()).then(onGoBack);
 
   void openStudyGoalInfoScreen(StudyGoal studyGoal) {
-    Get.bottomSheet(StudyGoalInfoScreen(
-      studyGoal: studyGoal,
-      onGoBackCallback: onGoBack,
-    )).then((onGoBack));
+    Get.bottomSheet(
+      StudyGoalInfoScreen(
+        studyGoal: studyGoal,
+        onGoBackCallback: onGoBack,
+      ),
+      isScrollControlled: true,
+    ).then((onGoBack));
   }
 }

@@ -33,7 +33,7 @@ class CreateStudyGoalScreen extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.only(
           left: 16.0,
-          right: MediaQuery.of(context).size.width * 0.25,
+          right: MediaQuery.of(context).size.width * 0.33,
         ),
         height: 40,
         color: kPrimaryColor,
@@ -46,7 +46,7 @@ class CreateStudyGoalScreen extends StatelessWidget {
             ),
             Center(
               child: Text(
-                'Create New Timetable',
+                'Create New Study Goal',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_study_pal/src/models/focus_mode.dart';
+import 'package:my_study_pal/src/models/focus_mode_params.dart';
 import 'package:my_study_pal/src/models/study_goal.dart';
 import 'package:my_study_pal/src/models/study_goal_params.dart';
 
@@ -376,5 +378,25 @@ class FirebaseFirestoreService implements DatabaseService {
     );
 
     return studyGoals;
+  }
+
+//  FocusMode
+  @override
+  Future<FocusMode> createFocusMode(FocusModeParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+    DateTime startTime =
+        DateTime(params.startTime.hour, params.startTime.minute);
+    DateTime endTime = DateTime(params.endTime.hour, params.endTime.minute);
+
+    DocumentReference reference =
+        await userCollection.doc(user.uid).collection('focusmode').add({
+      'toggle': params.focusModeToggle,
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime.toIso8601String(),
+    });
+
+    DocumentSnapshot snapshot = await reference.get();
+
+    return FocusMode.fromDocumentSnapshot(snapshot);
   }
 }
