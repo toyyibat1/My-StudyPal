@@ -89,6 +89,7 @@ class FirebaseAuthService implements AuthService {
         lastName: params.lastName,
         course: params.course,
         institution: params.institution,
+        photoUrl: params.photoUrl
       );
     } on FirebaseAuthException catch (ex) {
       throw Failure(ex.message);

@@ -23,6 +23,7 @@ abstract class DatabaseService {
     String lastName,
     String institution,
     String course,
+    String photoUrl
   });
 
   // task
