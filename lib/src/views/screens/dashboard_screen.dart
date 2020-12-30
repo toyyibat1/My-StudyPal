@@ -60,26 +60,28 @@ class DashboardScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.78,
-            child: Text.rich(
-              TextSpan(
-                text: "Welcome,\n",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w600,
-                  height: 1.3,
-                ),
-                children: [
-                  TextSpan(
-                    text: '$firstName $lastName',
-                    style: TextStyle(
-                      color: kBlackColor,
-                      fontSize: 25.0,
-                    ),
+          Expanded(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.78,
+              child: Text.rich(
+                TextSpan(
+                  text: "Welcome,\n",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    height: 1.3,
                   ),
-                ],
+                  children: [
+                    TextSpan(
+                      text: '$firstName $lastName',
+                      style: TextStyle(
+                        color: kBlackColor,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

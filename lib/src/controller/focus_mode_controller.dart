@@ -64,9 +64,10 @@ class FocusModeController extends Notifier with ValidationMixin {
   }
 
   void goBack() => Get.back();
+
   void onChange() {
     focusModeToggle = !focusModeToggle;
-
+    print(focusModeToggle);
     setState(NotifierState.isIdle);
   }
 
@@ -101,21 +102,20 @@ class FocusModeController extends Notifier with ValidationMixin {
           endTime: _pickedEndTime,
           startTime: _pickedStartTime,
         );
-        if (!focusModeToggle) {
+        await Get.find<DatabaseService>().createFocusMode(params);
+
+        if (focusModeToggle) {
           if (await FlutterDnd.isNotificationPolicyAccessGranted) {
+            FlutterDnd.gotoPolicySettings();
             setInterruptionFilter(FlutterDnd
                 .INTERRUPTION_FILTER_NONE); // Turn on DND - All notifications are suppressed.
           } else {
             FlutterDnd.gotoPolicySettings();
           }
         } else {
-          _formKey.currentState.validate();
           setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
         }
-        await Get.find<DatabaseService>().createFocusMode(params);
-
         setState(NotifierState.isIdle);
-
         Get.back();
       } on Failure catch (f) {
         setState(NotifierState.isIdle);

@@ -37,7 +37,7 @@ class _FocusModeScreenState extends State<FocusModeScreen> {
           right: MediaQuery.of(context).size.width * 0.44,
         ),
         height: 40,
-        color: kPrimaryColor2,
+        color: kPrimaryColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -89,7 +89,7 @@ class _FocusModeScreenState extends State<FocusModeScreen> {
                       ],
                     ),
                     Switch(
-                      activeColor: kPrimaryColor2,
+                      activeColor: kPrimaryColor,
                       value: controller.focusModeToggle,
                       onChanged: (value) {
                         controller.onChange();

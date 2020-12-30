@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
 import 'package:my_study_pal/src/services/auth_service/auth_service.dart';
-import 'package:my_study_pal/src/services/database/database_service.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -60,6 +60,8 @@ class EditProfileController extends Notifier with ValidationMixin {
         );
 
         await Get.find<AuthService>().updateUser(params);
+        await notificationPlugin.showNotification(params.firstName,
+            'Profile Sucessfully Updated! ', 'Profile Updated');
 
         setState(NotifierState.isIdle);
 

@@ -75,7 +75,6 @@ class TaskInfoScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-//            Spacer(),
                 GetBuilder<TaskInfoController>(
                   init: TaskInfoController(onGoBackCallback),
                   builder: (controller) => Container(

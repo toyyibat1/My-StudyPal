@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,8 +19,10 @@ class CreateTimetableController extends Notifier with ValidationMixin {
   final _endTimeController = TextEditingController();
   final _timetableLocationController = TextEditingController();
   final _timetableDayController = TextEditingController();
+  final _notificationTime = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  int _radioValue;
 
   TextEditingController get timetableSubjectController =>
       _timetableSubjectController;
@@ -30,8 +31,10 @@ class CreateTimetableController extends Notifier with ValidationMixin {
       _timetableLocationController;
   TextEditingController get startTimeController => _startTimeController;
   TextEditingController get endTimeController => _endTimeController;
+  TextEditingController get notificationTime => _notificationTime;
 
   GlobalKey<FormState> get formKey => _formKey;
+  int get radioValue => _radioValue;
 
   @override
   void onInit() {
@@ -54,6 +57,25 @@ class CreateTimetableController extends Notifier with ValidationMixin {
       _startTimeController.text = _pickedStartTime.format(context);
       update();
     }
+  }
+
+  Future<Null> selectNotificationTime(BuildContext context) async {
+    Get.focusScope.unfocus();
+    TimeOfDay _time = await showTimePicker(
+      context: context,
+      initialTime: _pickedStartTime,
+    );
+
+    if (_time != null) {
+      _pickedStartTime = _time;
+      _startTimeController.text = _pickedStartTime.format(context);
+      update();
+    }
+  }
+
+  void changeRadio(value) {
+    setState(NotifierState.isIdle);
+    _radioValue = value;
   }
 
   Future<Null> selectEndTime(BuildContext context) async {
@@ -91,8 +113,9 @@ class CreateTimetableController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().createTimetable(params);
-
-        setState(NotifierState.isIdle);
+//        await notificationPlugin.scheduleNotification(
+//            params.day, params.subject + params.location, params.startTime);
+//        setState(NotifierState.isIdle);
 
         Get.back();
       } on Failure catch (f) {

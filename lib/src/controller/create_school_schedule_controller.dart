@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -90,9 +91,13 @@ class CreateSchoolScheduleController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().createSchedule(params);
+        await notificationPlugin.scheduleNotification(
+            params.name,
+            params.startOfSemester.toString(),
+            params.startOfSemester,
+            'Schedule Reminder');
 
         setState(NotifierState.isIdle);
-
         Get.back();
       } on Failure catch (f) {
         setState(NotifierState.isIdle);

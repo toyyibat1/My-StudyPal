@@ -10,25 +10,7 @@ import '../widgets/app_button.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
 
-class SigninScreen extends StatefulWidget {
-  @override
-  _SigninScreenState createState() => _SigninScreenState();
-}
-
-class _SigninScreenState extends State<SigninScreen> {
-  bool _obscureText = true;
-  Icon icon = Icon(Icons.visibility);
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-      if (!_obscureText) {
-        icon = Icon(Icons.visibility_off);
-      } else {
-        icon = Icon(Icons.visibility);
-      }
-    });
-  }
-
+class SigninScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
@@ -109,12 +91,12 @@ class _SigninScreenState extends State<SigninScreen> {
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.done,
             text: 'Password',
-            obscureText: _obscureText,
+            obscureText: controller.obscureText,
             controller: controller.passwordController,
             validator: controller.validatePassword,
             suffixIcon: GestureDetector(
-              onTap: () => _toggle(),
-              child: icon,
+              onTap: () => controller.toggle(),
+              child: controller.icon,
             ),
           ),
           kSmallVerticalSpacing,

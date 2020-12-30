@@ -15,13 +15,14 @@ import '../views/screens/home_screen.dart';
 class SigninController extends Notifier with ValidationMixin {
   final _emailAddressController = TextEditingController();
   final _passwordController = TextEditingController();
-//
-//  bool obscureText = true;
-//  Icon icon = Icon(Icons.remove_red_eye);
+  bool _obscureText = true;
+  Icon _icon = Icon(Icons.visibility);
 
   final _formKey = GlobalKey<FormState>();
   TapGestureRecognizer _createAccount;
 
+  bool get obscureText => _obscureText;
+  Icon get icon => _icon;
   TextEditingController get emailAddressController => _emailAddressController;
   TextEditingController get passwordController => _passwordController;
 
@@ -37,15 +38,15 @@ class SigninController extends Notifier with ValidationMixin {
     super.onInit();
   }
 
-  // Toggles the password show status
-//  void toggle() {
-//    obscureText = !obscureText;
-//    if (!obscureText) {
-//      icon = Icon(Icons.panorama_fish_eye_outlined);
-//    } else {
-//      icon = Icon(Icons.remove_red_eye);
-//    }
-//  }
+  void toggle() {
+    setState(NotifierState.isIdle);
+    _obscureText = !_obscureText;
+    if (!_obscureText) {
+      _icon = Icon(Icons.visibility_off);
+    } else {
+      _icon = Icon(Icons.visibility);
+    }
+  }
 
   void signinUser() async {
     Get.focusScope.unfocus();
