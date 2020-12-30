@@ -57,7 +57,7 @@ class EditProfileController extends Notifier with ValidationMixin {
     _emailAddressController.text = user.emailAddress;
     _institutionController.text = user.institution;
     _courseController.text = user.course;
-    _image = File(_image.path);
+    _image = File(user.photoUrl);
     super.onInit();
   }
 

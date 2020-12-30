@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
 import 'package:my_study_pal/src/views/screens/focus_mode_screen.dart';
 
 import '../core/failure.dart';
@@ -59,5 +60,9 @@ class ProfileController extends Notifier with ValidationMixin {
   void signOut() async {
     await Get.find<AuthService>().signOut();
     Get.off(SigninScreen());
+  }
+  void signOutWithGoogle() async {
+    await Get.find<AuthService>().signOutWithGoogle();
+    Get.off(CreateAccountScreen());
   }
 }

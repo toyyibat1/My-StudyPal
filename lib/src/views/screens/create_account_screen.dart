@@ -83,10 +83,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           TextSpan(
               text: 'Sign In',
               style: TextStyle(color: kPrimaryColor),
+             // recognizer: 
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  Get.to(SigninScreen());
-                }),
+                  Get.off(SigninScreen());
+                }
+              ),
         ],
       ),
     );

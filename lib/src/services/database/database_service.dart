@@ -17,13 +17,17 @@ abstract class DatabaseService {
   Future<void> createUserWithId(String userId,
       {String emailAddress, String firstName, String lastName});
 
+  Future<void> createUserWithGoogle(String userId,
+      {String emailAddress, String firstName, String lastName});
+
   Future<void> updateUserWithId(
     String userId, {
     String firstName,
     String lastName,
     String institution,
     String course,
-    String photoUrl
+    String photoUrl,
+    String name,
   });
 
   // task

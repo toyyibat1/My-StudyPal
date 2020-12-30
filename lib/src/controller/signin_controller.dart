@@ -32,7 +32,7 @@ class SigninController extends Notifier with ValidationMixin {
   void onInit() {
     _createAccount = TapGestureRecognizer()
       ..onTap = () {
-        Get.to(CreateAccountScreen());
+        Get.off(CreateAccountScreen());
       };
     super.onInit();
   }

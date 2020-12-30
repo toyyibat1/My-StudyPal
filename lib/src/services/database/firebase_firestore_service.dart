@@ -47,6 +47,25 @@ class FirebaseFirestoreService implements DatabaseService {
     });
   }
 
+   @override
+  Future<void> createUserWithGoogle(
+    String userId, {
+    String emailAddress,
+    String firstName,
+    String lastName,
+    String institution,
+    String course,
+    String photoUrl
+  }) async => await userCollection.doc(userId).set({
+      'emailAddress': emailAddress,
+      'firstName': firstName,
+      'lastName': lastName,
+      'institution': institution,
+      'course': course,
+      'photoUrl': photoUrl
+    });
+
+
   @override
   Future<void> updateUserWithId(
     String userId, {
@@ -54,14 +73,16 @@ class FirebaseFirestoreService implements DatabaseService {
     String lastName,
     String institution,
     String course,
-    String photoUrl
+    String photoUrl,
+    String name,
   }) async {
     return await userCollection.doc(userId).update({
       'firstName': firstName,
       'lastName': lastName,
       'institution': institution,
       'course': course,
-      'photoUrl': photoUrl
+      'photoUrl': photoUrl,
+      'name': name
     });
   }
 
