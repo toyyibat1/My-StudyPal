@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/signin_screen.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -13,7 +14,34 @@ class SigninWithGoogleController extends Notifier with ValidationMixin {
   //AppUser _user;
 
  // AppUser get user => _user;
-  void signinUserWithGoogle() async {
+  void signUpUserWithGoogle() async {
+
+      setState(NotifierState.isLoading);
+
+      try {
+        await Get.find<DataConnectionService>().checkConnection();
+        //AppUser user = await Get.find<AuthService>().signIn(params);
+
+        await Get.find<AuthService>().signUpWithGoogle();
+
+        setState(NotifierState.isIdle);
+
+        Get.off(SigninScreen());
+
+      } on Failure catch (f) {
+        setState(NotifierState.isIdle);
+        Get.snackbar(
+          'Error',
+          f.message,
+          colorText: Get.theme.colorScheme.onError,
+          backgroundColor: Get.theme.errorColor,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+      setState(NotifierState.isIdle);
+    }
+
+    void signinUserWithGoogle() async {
 
       setState(NotifierState.isLoading);
 
@@ -39,5 +67,6 @@ class SigninWithGoogleController extends Notifier with ValidationMixin {
       }
       setState(NotifierState.isIdle);
     }
+  
   }
 

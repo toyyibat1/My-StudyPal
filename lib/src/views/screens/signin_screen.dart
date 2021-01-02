@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
 import 'package:my_study_pal/src/views/screens/home_screen.dart';
 import 'package:my_study_pal/src/views/widgets/signin_with_tile.dart';
 
 import '../../controller/signin_controller.dart';
 import '../../controller/signin_with_google_controller.dart';
+import '../../controller/signin_with_facebook_controller.dart';
 import '../../core/constants.dart';
 import '../../core/images.dart';
 import '../../core/notifier.dart';
@@ -55,16 +57,24 @@ class _SigninScreenState extends State<SigninScreen> {
                       style: kBodyText1TextStyle,
                     ),
                     kSmallVerticalSpacing,
+                    GetBuilder<SigninWithFacebookController>(
+                    init: SigninWithFacebookController(),
+                    builder: (controller) => 
                     SignInWithTile(
-                      ontap: () {},
-                      image: facebook,
-                      text: 'Log in with facebook',
-                    ),
+                        isLoading: controller.state == NotifierState.isLoading,
+                        ontap:  controller.state == NotifierState.isLoading
+                        ? null
+                        :  controller.signinUserWithFacebook,   
+                          image: facebook,
+                          text: 'Log in with Facebook',
+                        ),
+                      ),
                     kLargeVerticalSpacing,
                     GetBuilder<SigninWithGoogleController>(
                     init: SigninWithGoogleController(),
                     builder: (controller) => 
                     SignInWithTile(
+                      isLoading: controller.state == NotifierState.isLoading,
                         ontap:  controller.state == NotifierState.isLoading
                         ? null
                         : controller.signinUserWithGoogle,   

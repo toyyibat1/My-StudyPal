@@ -112,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
             trailing: Icons.arrow_forward_ios,
           ),
           AppTile(
-            onPressed: controller.signOut ?? controller.signOutWithGoogle,
+            onPressed: controller.signOut ?? controller.signOutWithGoogle ?? controller.signOutWithFacebook,
             leading: Icons.logout,
             title: 'Log Out',
             trailing: Icons.arrow_forward_ios,

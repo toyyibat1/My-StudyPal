@@ -24,6 +24,8 @@ dependencies:
   cloud_firestore: ^0.14.3
   firebase_storage: ^5.0.1
   firebase_messaging: ^7.0.3
+  flutter_facebook_login: ^3.0.0
+  flutter_facebook_auth: ^1.0.0
   #  flutter_local_notifications: ^3.0.2
   image_picker: ^0.6.7+14
   simple_gravatar: ^1.0.5

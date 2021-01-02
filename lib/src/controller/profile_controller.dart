@@ -65,4 +65,8 @@ class ProfileController extends Notifier with ValidationMixin {
     await Get.find<AuthService>().signOutWithGoogle();
     Get.off(CreateAccountScreen());
   }
+  void signOutWithFacebook() async {
+    await Get.find<AuthService>().signOutWithFacebook();
+    Get.off(CreateAccountScreen());
+  }
 }

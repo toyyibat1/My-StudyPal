@@ -14,13 +14,21 @@ abstract class AuthService {
 
   Future<AppUser> signIn(SignInParams params);
 
+  Future<AppUser> signUpWithGoogle();
+
+  Future<AppUser> signUpWithFacebook();
+
   Future<AppUser> signInWithGoogle();
+
+  Future<AppUser> signInWithFacebook();
 
   Future<void> updateUser(UpdateUserParams params);
 
   Future<void> signOut();
 
   Future<void> signOutWithGoogle();
+
+  Future<void> signOutWithFacebook();
 
   Future<AppUser> forgotPassword(ForgotPasswordParams params);
 }

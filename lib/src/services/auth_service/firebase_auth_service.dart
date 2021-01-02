@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_study_pal/src/core/images.dart';
 import 'package:my_study_pal/src/models/forgot_password_params.dart';
+import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
 
 import'../../core/failure.dart';
 import '../../models/app_user.dart';
@@ -115,13 +119,13 @@ class FirebaseAuthService implements AuthService {
     }
   }
 
-  String firstName1;
-  String lastName1;
-  String email;
-  String photoUrl;
+  
+
+  String firstName;
+  String lastName;
 
   @override
-  Future<AppUser> signInWithGoogle() async{
+  Future<AppUser> signUpWithGoogle() async{
     await Firebase.initializeApp();
      //try {
        GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
@@ -139,16 +143,13 @@ class FirebaseAuthService implements AuthService {
        String name = user.displayName;
 
         int firstSpace = name.indexOf(" "); // detect the first space character
-        firstName1 = name.substring(0, firstSpace);  // get everything upto the first space character
-        lastName1 = name.substring(firstSpace).trim(); 
+        firstName = name.substring(0, firstSpace);  // get everything upto the first space character
+        lastName = name.substring(firstSpace).trim(); 
 
-        email = user.email;
-        photoUrl = user.photoURL;
-
-       await FirebaseFirestoreService().createUserWithGoogle(
+       await FirebaseFirestoreService().createUserWithId(
         user.uid,
-        firstName: firstName1,
-        lastName: lastName1,
+        firstName: firstName,
+        lastName: lastName,
         emailAddress: user.email,
         photoUrl: user.photoURL
       );
@@ -164,6 +165,110 @@ class FirebaseAuthService implements AuthService {
     }
   }
 
+  Future<AppUser> signUpWithFacebook() async {
+    try {
+        // by default the login method has the next permissions ['email','public_profile']
+    
+      AccessToken accessToken = await FacebookAuth.instance.login();
+      final OAuthCredential credential =  FacebookAuthProvider.credential(accessToken.token);
+      final UserCredential result = await _auth.signInWithCredential(credential);
+      print(accessToken.toJson());
+      // get the user data
+      final userData = await FacebookAuth.instance.getUserData();
+      print(userData);
+      User user = result.user;
+
+      String userId = result.user.uid;
+
+      String name = user.displayName;
+
+      int firstSpace = name.indexOf(" "); // detect the first space character
+      firstName = name.substring(0, firstSpace);  // get everything upto the first space character
+      lastName = name.substring(firstSpace).trim(); 
+
+       await FirebaseFirestoreService().createUserWithId(
+        user.uid,
+        firstName: firstName,
+        lastName: lastName,
+        emailAddress: user.email,
+        photoUrl: user.photoURL
+      );
+      return await FirebaseFirestoreService().getUserWithId(userId);
+      
+    } on FacebookAuthException catch (e) {
+      switch (e.errorCode) {
+          case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+            print("You have a previous login operation in progress");
+            break;
+          case FacebookAuthErrorCode.CANCELLED:
+            print("login cancelled");
+            break;
+          case FacebookAuthErrorCode.FAILED:
+            print("login failed");
+            break;
+      }
+      
+    }
+    return null;
+  }
+  Future<void> signOutWithFacebook() async { 
+    try {
+      return await FacebookAuth.instance.logOut();
+    } on FirebaseAuthException {
+      throw Failure('Something went wrong');
+    }
+  }
+
+  @override
+  Future<AppUser> signInWithFacebook() async{
+    try {
+      AccessToken accessToken = await FacebookAuth.instance.login();
+      final OAuthCredential credential =  FacebookAuthProvider.credential(accessToken.token);
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      print(accessToken.toJson());
+
+      String userId = userCredential.user.uid;
+      //String userId = userCredential.user.uid;
+      return await FirebaseFirestoreService().getUserWithId(userId);
+       
+    } on FirebaseAuthException catch (ex) {
+      if (ex.code == 'user-disabled') {
+        throw Failure('User has been disabled');
+      } else if (ex.code == 'not signup') {
+        throw Failure('Please signup to continue');
+      } else if (ex.code == 'user-not-found' ) {
+        throw Failure('User not found');
+      }
+      return null;
+    }
+  }
+
+  @override
+  Future<AppUser> signInWithGoogle() async{
+    try {    
+      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+       GoogleSignInAuthentication googleAuth =
+           await googleSignInAccount.authentication;
+       final AuthCredential credential = GoogleAuthProvider.credential(
+         accessToken: googleAuth.accessToken,
+         idToken: googleAuth.idToken,
+       );
+       final UserCredential authResult = await _auth.signInWithCredential(credential);
+
+       String userId = authResult.user.uid;
+
+      return await FirebaseFirestoreService().getUserWithId(userId);
+      } on FirebaseAuthException catch (ex) {
+      if (ex.code == 'user-disabled') {
+        throw Failure('User has been disabled');
+      } else if (ex.code == 'not signup') {
+        throw Failure('Please signup to continue');
+      } else if (ex.code == 'user-not-found' ) {
+        throw Failure('User not found');
+      }
+      return null;
+    }
+  }
   }
 
 
