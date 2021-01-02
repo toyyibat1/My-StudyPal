@@ -1,31 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AppUser {
+class GoogleUser {
   final String id;
-  final String firstName;
   final String emailAddress;
-  final String lastName;
   final String institution;
   final String course;
   final String photoUrl;
+  final String firstName;
+  final String lastName;
 
-  AppUser({
+  GoogleUser({
     this.id,
-    this.firstName,
     this.emailAddress,
-    this.lastName,
     this.institution,
     this.course,
     this.photoUrl,
+    this.firstName,
+    this.lastName
   });
 
-  factory AppUser.fromDocumentSnapshot(DocumentSnapshot snapshot) => AppUser(
+  factory GoogleUser.fromDocumentSnapshot(DocumentSnapshot snapshot) => GoogleUser(
         id: snapshot.id,
-        firstName: snapshot.data()['firstName'] ?? '',
         emailAddress: snapshot.data()['emailAddress'] ?? '',
-        lastName: snapshot.data()['lastName'] ?? '',
         institution: snapshot.data()['institution'] ?? '',
         course: snapshot.data()['course'] ?? '',
         photoUrl: snapshot.data()['photoUrl'] ?? '',
+        firstName: snapshot.data()['firstName'] ?? '',
+        lastName: snapshot.data()['lastName'] ?? '',
       );
 }

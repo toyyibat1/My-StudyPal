@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_study_pal/src/models/focus_mode.dart';
 import 'package:my_study_pal/src/models/focus_mode_params.dart';
 import 'package:my_study_pal/src/models/study_goal.dart';
@@ -17,6 +20,7 @@ import 'database_service.dart';
 class FirebaseFirestoreService implements DatabaseService {
   final userCollection = FirebaseFirestore.instance.collection('users');
 
+  
   @override
   Future<AppUser> getUserWithId(String userId) async {
     final snapshot = await userCollection.doc(userId).get();
@@ -31,6 +35,7 @@ class FirebaseFirestoreService implements DatabaseService {
     String lastName,
     String institution,
     String course,
+    String photoUrl
   }) async {
     return await userCollection.doc(userId).set({
       'emailAddress': emailAddress,
@@ -38,8 +43,28 @@ class FirebaseFirestoreService implements DatabaseService {
       'lastName': lastName,
       'institution': institution,
       'course': course,
+      'photoUrl': photoUrl
     });
   }
+
+   @override
+  Future<void> createUserWithGoogle(
+    String userId, {
+    String emailAddress,
+    String firstName,
+    String lastName,
+    String institution,
+    String course,
+    String photoUrl
+  }) async => await userCollection.doc(userId).set({
+      'emailAddress': emailAddress,
+      'firstName': firstName,
+      'lastName': lastName,
+      'institution': institution,
+      'course': course,
+      'photoUrl': photoUrl
+    });
+
 
   @override
   Future<void> updateUserWithId(
@@ -48,12 +73,16 @@ class FirebaseFirestoreService implements DatabaseService {
     String lastName,
     String institution,
     String course,
+    String photoUrl,
+    String name,
   }) async {
     return await userCollection.doc(userId).update({
       'firstName': firstName,
       'lastName': lastName,
       'institution': institution,
       'course': course,
+      'photoUrl': photoUrl,
+      'name': name
     });
   }
 

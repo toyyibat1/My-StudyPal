@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/home_screen.dart';
 import 'package:my_study_pal/src/views/widgets/signin_with_tile.dart';
 
 import '../../controller/signin_controller.dart';
+import '../../controller/signin_with_google_controller.dart';
 import '../../core/constants.dart';
 import '../../core/images.dart';
 import '../../core/notifier.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
+import '../../services/google_signin.dart';
 
 class SigninScreen extends StatelessWidget {
   @override
@@ -40,11 +43,17 @@ class SigninScreen extends StatelessWidget {
                       text: 'Log in with facebook',
                     ),
                     kLargeVerticalSpacing,
+                    GetBuilder<SigninWithGoogleController>(
+                    init: SigninWithGoogleController(),
+                    builder: (controller) => 
                     SignInWithTile(
-                      ontap: () {},
-                      image: google,
-                      text: 'Log in with Google',
-                    ),
+                        ontap:  controller.state == NotifierState.isLoading
+                        ? null
+                        : controller.signinUserWithGoogle,   
+                          image: google,
+                          text: 'Log in with Google',
+                        ),
+                        ),
                     kSmallVerticalSpacing,
                     dontHaveAccount(controller),
                   ],

@@ -106,9 +106,13 @@ class FocusModeController extends Notifier with ValidationMixin {
 
         if (focusModeToggle) {
           if (await FlutterDnd.isNotificationPolicyAccessGranted) {
-            FlutterDnd.gotoPolicySettings();
-            setInterruptionFilter(FlutterDnd
-                .INTERRUPTION_FILTER_NONE); // Turn on DND - All notifications are suppressed.
+            if (TimeOfDay.now() == params.startTime) {
+              setInterruptionFilter(FlutterDnd
+                  .INTERRUPTION_FILTER_NONE); //       Turn on DND - All notifications are suppressed.
+
+            } else if (TimeOfDay.now() == params.endTime) {
+              setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+            }
           } else {
             FlutterDnd.gotoPolicySettings();
           }

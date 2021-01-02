@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
 import '../../controller/dashboard_controller.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
@@ -88,7 +89,7 @@ class DashboardScreen extends StatelessWidget {
           CircleAvatar(
             radius: 25,
             child: Text(
-              controller.user.firstName[0],
+              controller.user.firstName[0] ,
               style: kHeadingTextStyle,
             ),
             backgroundColor: Color(0xFFE0E0E0),
