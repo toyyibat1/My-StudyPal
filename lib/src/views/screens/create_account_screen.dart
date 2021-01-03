@@ -1,17 +1,15 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/controller/signin_with_facebook_controller.dart';
-import 'package:my_study_pal/src/controller/signin_with_google_controller.dart';
-import 'package:my_study_pal/src/core/constants.dart';
-import 'package:my_study_pal/src/core/images.dart';
-import 'package:my_study_pal/src/core/notifier.dart';
-import 'package:my_study_pal/src/views/screens/signin_screen.dart';
-import 'package:my_study_pal/src/views/screens/signup_screen.dart';
-import 'package:my_study_pal/src/views/widgets/signin_with_tile.dart';
+
+import '../../controller/signin_with_facebook_controller.dart';
+import '../../controller/signin_with_google_controller.dart';
+import '../../core/constants.dart';
+import '../../core/images.dart';
+import '../../core/notifier.dart';
+import '../widgets/signin_with_tile.dart';
+import 'signup_screen.dart';
 
 class CreateAccountScreen extends StatelessWidget {
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,30 +25,27 @@ class CreateAccountScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.15,
                 ),
                 GetBuilder<SigninWithFacebookController>(
-                    init: SigninWithFacebookController(),
-                    builder: (controller) => 
-                    SignInWithTile(
-                      isLoading: false,
-                        ontap:  controller.state == NotifierState.isLoading
+                  init: SigninWithFacebookController(),
+                  builder: (controller) => SignInWithTile(
+                    isLoading: false,
+                    ontap: controller.state == NotifierState.isLoading
                         ? null
-                        : controller.signUpUserWithFacebook,   
-                          image: facebook,
-                          text: 'Continue with Facebook',
-                        ),
-                      ),
+                        : controller.signUpUserWithFacebook,
+                    image: facebook,
+                    text: 'Continue with Facebook',
+                  ),
+                ),
                 kLargeVerticalSpacing,
                 GetBuilder<SigninWithGoogleController>(
-                    init: SigninWithGoogleController(),
-                    builder: (controller) => 
-                     SignInWithTile(
-                      isLoading: false,
-                       ontap:  controller.state == NotifierState.isLoading
+                  init: SigninWithGoogleController(),
+                  builder: (controller) => SignInWithTile(
+                    isLoading: false,
+                    ontap: controller.state == NotifierState.isLoading
                         ? null
                         : controller.signUpUserWithGoogle,
-                      image: google,
-                      text: 'Continue with Google',
-                    ),
-                  
+                    image: google,
+                    text: 'Continue with Google',
+                  ),
                 ),
                 kLargeVerticalSpacing,
                 SignInWithTile(
@@ -91,21 +86,17 @@ class CreateAccountScreen extends StatelessWidget {
   Widget alreadyHaveAccount() {
     return Text.rich(
       TextSpan(
-        text: 'Already have an account?',
+        text: 'Already have an account? ',
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
         children: <TextSpan>[
           TextSpan(
-              text: 'Sign In',
-              style: TextStyle(color: kPrimaryColor),
-             // recognizer: 
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Get.off(SigninScreen());
-                }
-              ),
+            text: 'Sign In',
+            style: TextStyle(color: kPrimaryColor),
+            // recognizer: controller.signIn,
+          ),
         ],
       ),
     );

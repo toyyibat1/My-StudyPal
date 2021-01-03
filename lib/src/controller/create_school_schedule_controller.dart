@@ -9,7 +9,8 @@ import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
 import '../models/school_schedule_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
+import 'local_notification_controller.dart';
 
 class CreateSchoolScheduleController extends Notifier with ValidationMixin {
   DateTime _startOfSemester;
@@ -90,9 +91,13 @@ class CreateSchoolScheduleController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().createSchedule(params);
+        await notificationPlugin.scheduleNotification(
+            params.name,
+            params.startOfSemester.toString(),
+            params.startOfSemester,
+            'Schedule Reminder');
 
         setState(NotifierState.isIdle);
-
         Get.back();
       } on Failure catch (f) {
         setState(NotifierState.isIdle);

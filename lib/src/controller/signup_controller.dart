@@ -17,11 +17,14 @@ class SignupController extends Notifier with ValidationMixin {
   final _lastNameController = TextEditingController();
   final _emailAddressController = TextEditingController();
   final _passwordController = TextEditingController();
-//  bool _obscureText = true;
-//  Icon icon = Icon(Icons.visibility);
+  bool _obscureText = true;
+  Icon _icon = Icon(Icons.visibility);
 
   final _formKey = GlobalKey<FormState>();
   TapGestureRecognizer _signIn;
+
+  bool get obscureText => _obscureText;
+  Icon get icon => _icon;
 
   TextEditingController get firstNameController => _firstNameController;
   TextEditingController get lastNameController => _lastNameController;
@@ -38,6 +41,16 @@ class SignupController extends Notifier with ValidationMixin {
         Get.off(SigninScreen());
       };
     super.onInit();
+  }
+
+  void toggle() {
+    setState(NotifierState.isIdle);
+    _obscureText = !_obscureText;
+    if (!_obscureText) {
+      _icon = Icon(Icons.visibility_off);
+    } else {
+      _icon = Icon(Icons.visibility);
+    }
   }
 
   void signupUser() async {

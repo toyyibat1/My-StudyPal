@@ -9,7 +9,8 @@ import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
 import '../models/task_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
+import 'local_notification_controller.dart';
 
 class CreateTaskController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;
@@ -108,6 +109,8 @@ class CreateTaskController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().createTask(params);
+        await notificationPlugin.scheduleNotification(
+            params.name, params.description, params.date, 'Task Reminder');
 
         setState(NotifierState.isIdle);
 

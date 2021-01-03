@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/models/focus_mode_params.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/focus_mode_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 
 class FocusModeController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;
@@ -64,9 +64,10 @@ class FocusModeController extends Notifier with ValidationMixin {
   }
 
   void goBack() => Get.back();
+
   void onChange() {
     focusModeToggle = !focusModeToggle;
-
+    print(focusModeToggle);
     setState(NotifierState.isIdle);
   }
 
@@ -101,21 +102,24 @@ class FocusModeController extends Notifier with ValidationMixin {
           endTime: _pickedEndTime,
           startTime: _pickedStartTime,
         );
-        if (!focusModeToggle) {
+        await Get.find<DatabaseService>().createFocusMode(params);
+
+        if (focusModeToggle) {
           if (await FlutterDnd.isNotificationPolicyAccessGranted) {
-            setInterruptionFilter(FlutterDnd
-                .INTERRUPTION_FILTER_NONE); // Turn on DND - All notifications are suppressed.
+            if (TimeOfDay.now() == params.startTime) {
+              setInterruptionFilter(FlutterDnd
+                  .INTERRUPTION_FILTER_NONE); //       Turn on DND - All notifications are suppressed.
+
+            } else if (TimeOfDay.now() == params.endTime) {
+              setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+            }
           } else {
             FlutterDnd.gotoPolicySettings();
           }
         } else {
-          _formKey.currentState.validate();
           setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
         }
-        await Get.find<DatabaseService>().createFocusMode(params);
-
         setState(NotifierState.isIdle);
-
         Get.back();
       } on Failure catch (f) {
         setState(NotifierState.isIdle);

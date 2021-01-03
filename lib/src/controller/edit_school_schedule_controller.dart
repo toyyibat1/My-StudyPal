@@ -10,7 +10,8 @@ import '../core/validation_mixin.dart';
 import '../models/school_schedule.dart';
 import '../models/school_schedule_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
+import 'local_notification_controller.dart';
 
 class EditSchoolScheduleController extends Notifier with ValidationMixin {
   EditSchoolScheduleController(this.schedule);
@@ -99,6 +100,11 @@ class EditSchoolScheduleController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().updateSchedule(scheduleId, params);
+        await notificationPlugin.scheduleNotification(
+            params.name,
+            params.startOfSemester.toString(),
+            params.startOfSemester,
+            'Schedule Reminder');
 
         setState(NotifierState.isIdle);
 

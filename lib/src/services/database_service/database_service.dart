@@ -1,10 +1,9 @@
-import 'package:my_study_pal/src/models/focus_mode.dart';
-import 'package:my_study_pal/src/models/focus_mode_params.dart';
-import 'package:my_study_pal/src/models/study_goal.dart';
-
 import '../../models/app_user.dart';
+import '../../models/focus_mode.dart';
+import '../../models/focus_mode_params.dart';
 import '../../models/school_schedule.dart';
 import '../../models/school_schedule_params.dart';
+import '../../models/study_goal.dart';
 import '../../models/study_goal_params.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
@@ -63,7 +62,7 @@ abstract class DatabaseService {
 
   Future<List<SchoolSchedule>> getAllSchedules();
 
-  //Study Goals
+  // Study Goals
   Future<StudyGoal> createStudyGoal(StudyGoalParams params);
 
   Future<void> updateStudyGoal(String scheduleId, StudyGoalParams params);
@@ -71,6 +70,7 @@ abstract class DatabaseService {
   Future<void> deleteStudyGoal(String scheduleId);
 
   Future<List<StudyGoal>> getAllStudyGoals();
-//  focus mode
+
+  // focus mode
   Future<FocusMode> createFocusMode(FocusModeParams params);
 }

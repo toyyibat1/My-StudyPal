@@ -10,7 +10,8 @@ import '../core/validation_mixin.dart';
 import '../models/study_goal.dart';
 import '../models/study_goal_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
+import 'local_notification_controller.dart';
 
 class EditStudyGoalController extends Notifier with ValidationMixin {
   EditStudyGoalController(this.studyGoal);
@@ -71,6 +72,8 @@ class EditStudyGoalController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().updateStudyGoal(studyGoalId, params);
+        await notificationPlugin.scheduleNotification('Study Goal Reminder',
+            params.goal, params.date, 'Study Goal Reminder');
 
         setState(NotifierState.isIdle);
 
