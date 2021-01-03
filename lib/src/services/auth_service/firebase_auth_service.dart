@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:my_study_pal/src/models/forgot_password_params.dart';
 
-import'../../core/failure.dart';
+import '../../core/failure.dart';
 import '../../models/app_user.dart';
+import '../../models/forgot_password_params.dart';
 import '../../models/signin_params.dart';
 import '../../models/signup_params.dart';
 import '../../models/update_user_params.dart';
-import '../database/firebase_firestore_service.dart';
+import '../database_service/firebase_firestore_service.dart';
 import 'auth_service.dart';
 
 class FirebaseAuthService implements AuthService {
@@ -86,24 +86,24 @@ class FirebaseAuthService implements AuthService {
     try {
       User user = _auth.currentUser;
 
-      await FirebaseFirestoreService().updateUserWithId(
-        user.uid,
-        firstName: params.firstName,
-        lastName: params.lastName,
-        course: params.course,
-        institution: params.institution,
-        photoUrl: params.photoUrl
-      );
+      await FirebaseFirestoreService().updateUserWithId(user.uid,
+          firstName: params.firstName,
+          lastName: params.lastName,
+          course: params.course,
+          institution: params.institution,
+          photoUrl: params.photoUrl);
     } on FirebaseAuthException catch (ex) {
       throw Failure(ex.message);
     }
   }
 
   @override
-  Future<AppUser> forgotPassword(ForgotPasswordParams params) async {
+  Future<void> forgotPassword(ForgotPasswordParams params) async {
     try {
       await _auth.sendPasswordResetEmail(email: params.emailAddress);
-    } catch (e) {}
+    } catch (ex) {
+      throw Failure(ex.message);
+    }
   }
 
   @override
@@ -121,50 +121,46 @@ class FirebaseAuthService implements AuthService {
   String photoUrl;
 
   @override
-  Future<AppUser> signInWithGoogle() async{
+  Future<AppUser> signInWithGoogle() async {
     await Firebase.initializeApp();
-     //try {
-       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-       GoogleSignInAuthentication googleAuth =
-           await googleSignInAccount.authentication;
-       final AuthCredential credential = GoogleAuthProvider.credential(
-         accessToken: googleAuth.accessToken,
-         idToken: googleAuth.idToken,
-       );
-       final UserCredential authResult = await _auth.signInWithCredential(credential);
-       User user = authResult.user;
+    //try {
+    GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+    GoogleSignInAuthentication googleAuth =
+        await googleSignInAccount.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    final UserCredential authResult =
+        await _auth.signInWithCredential(credential);
+    User user = authResult.user;
 
-       String userId = authResult.user.uid;
+    String userId = authResult.user.uid;
 
-       String name = user.displayName;
+    String name = user.displayName;
 
-        int firstSpace = name.indexOf(" "); // detect the first space character
-        firstName1 = name.substring(0, firstSpace);  // get everything upto the first space character
-        lastName1 = name.substring(firstSpace).trim(); 
+    int firstSpace = name.indexOf(" "); // detect the first space character
+    firstName1 = name.substring(
+        0, firstSpace); // get everything upto the first space character
+    lastName1 = name.substring(firstSpace).trim();
 
-        email = user.email;
-        photoUrl = user.photoURL;
+    email = user.email;
+    photoUrl = user.photoURL;
 
-       await FirebaseFirestoreService().createUserWithGoogle(
-        user.uid,
+    await FirebaseFirestoreService().createUserWithGoogle(user.uid,
         firstName: firstName1,
         lastName: lastName1,
         emailAddress: user.email,
-        photoUrl: user.photoURL
-      );
-      return await FirebaseFirestoreService().getUserWithId(userId);
-     }
+        photoUrl: user.photoURL);
+    return await FirebaseFirestoreService().getUserWithId(userId);
+  }
 
   @override
-  Future<void> signOutWithGoogle() async{
-     try {
+  Future<void> signOutWithGoogle() async {
+    try {
       return await _googleSignIn.signOut();
     } on FirebaseAuthException {
       throw Failure('Something went wrong');
     }
   }
-
-  }
-
-
-
+}

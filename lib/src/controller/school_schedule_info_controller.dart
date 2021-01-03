@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../models/school_schedule.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 import '../views/screens/edit_school_schedule_screen.dart';
 
 class SchoolScheduleInfoController extends Notifier {

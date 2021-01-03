@@ -9,7 +9,7 @@ import '../core/validation_mixin.dart';
 import '../models/timetable.dart';
 import '../models/timetable_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 
 class EditTimetableController extends Notifier with ValidationMixin {
   EditTimetableController(this.timetable);

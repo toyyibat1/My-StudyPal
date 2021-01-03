@@ -7,7 +7,7 @@ import '../core/notifier.dart';
 import '../models/app_user.dart';
 import '../models/task.dart';
 import '../services/auth_service/auth_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 
 class DashboardController extends Notifier {
   AppUser _user;
