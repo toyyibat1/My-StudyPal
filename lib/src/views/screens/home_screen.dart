@@ -37,7 +37,8 @@ class HomeScreen extends StatelessWidget {
             items: [
               NavBarItem(iconData: Icons.home, text: 'Home'),
               NavBarItem(iconData: Icons.today, text: 'Tasks'),
-              NavBarItem(iconData: Icons.timelapse_rounded, text: 'Timetable'),
+              NavBarItem(
+                  iconData: Icons.my_library_books_rounded, text: 'Timetable'),
               NavBarItem(iconData: Icons.person_outline, text: 'Profile'),
             ],
           ),

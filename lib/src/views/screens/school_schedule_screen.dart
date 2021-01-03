@@ -17,7 +17,7 @@ class SchoolScheduleScreen extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              header,
+              header(context),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
@@ -73,19 +73,32 @@ class SchoolScheduleScreen extends StatelessWidget {
     );
   }
 
-  Widget get header => Container(
+  Widget header(BuildContext context) => Container(
         width: double.infinity,
+        padding: EdgeInsets.only(
+          left: 16.0,
+          right: MediaQuery.of(context).size.width * 0.33,
+        ),
         height: 40,
         color: kPrimaryColor2,
-        child: Center(
-          child: Text(
-            'School Schedule',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () => Get.back(),
+              child: Icon(Icons.arrow_back_ios, color: Colors.white),
             ),
-          ),
+            Center(
+              child: Text(
+                'School Schedule',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
       );
 }

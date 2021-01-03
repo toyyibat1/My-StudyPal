@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/home_screen.dart';
+import 'package:my_study_pal/src/views/widgets/signin_with_tile.dart';
 
 import '../../controller/signin_controller.dart';
+import '../../controller/signin_with_google_controller.dart';
 import '../../core/constants.dart';
 import '../../core/images.dart';
 import '../../core/notifier.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
+import '../../services/google_signin.dart';
 
 class SigninScreen extends StatelessWidget {
   @override
@@ -27,7 +31,30 @@ class SigninScreen extends StatelessWidget {
                     header,
                     kLargeVerticalSpacing,
                     form(controller),
-                    kMediumVerticalSpacing,
+                    kSmallVerticalSpacing,
+                    Text(
+                      'or',
+                      style: kBodyText1TextStyle,
+                    ),
+                    kSmallVerticalSpacing,
+                    SignInWithTile(
+                      ontap: () {},
+                      image: facebook,
+                      text: 'Log in with facebook',
+                    ),
+                    kLargeVerticalSpacing,
+                    GetBuilder<SigninWithGoogleController>(
+                    init: SigninWithGoogleController(),
+                    builder: (controller) => 
+                    SignInWithTile(
+                        ontap:  controller.state == NotifierState.isLoading
+                        ? null
+                        : controller.signinUserWithGoogle,   
+                          image: google,
+                          text: 'Log in with Google',
+                        ),
+                        ),
+                    kSmallVerticalSpacing,
                     dontHaveAccount(controller),
                   ],
                 ),
@@ -73,21 +100,30 @@ class SigninScreen extends StatelessWidget {
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.done,
             text: 'Password',
-            obscureText: true,
+            obscureText: controller.obscureText,
             controller: controller.passwordController,
             validator: controller.validatePassword,
+            suffixIcon: GestureDetector(
+              onTap: () => controller.toggle(),
+              child: controller.icon,
+            ),
           ),
           kSmallVerticalSpacing,
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     Text(
-          //       'Forgot Password?',
-          //       textAlign: TextAlign.right,
-          //       style: TextStyle(decoration: TextDecoration.underline),
-          //     ),
-          //   ],
-          // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  controller.forgotPassword();
+                },
+                child: Text(
+                  'Forgot Password?',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ),
+              ),
+            ],
+          ),
           kMediumVerticalSpacing,
           AppButton(
             label: 'Sign in',
@@ -115,7 +151,7 @@ class SigninScreen extends StatelessWidget {
           TextSpan(
             text: ' Sign Up',
             style: TextStyle(color: kPrimaryColor),
-            recognizer: controller.signUp,
+            recognizer: controller.createAccount,
           )
         ],
       ),

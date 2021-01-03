@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/services/push_notification_service/push_notification_service.dart';
+
+import 'file:///C:/Users/user/Documents/Flutter/My-StudyPal/lib/src/services/push_notification_service/push_notification.dart';
 
 import 'auth_service/auth_service.dart';
 import 'auth_service/firebase_auth_service.dart';
@@ -16,6 +19,8 @@ class ServicesBinding implements Bindings {
     Get.lazyPut<AuthService>(() => FirebaseAuthService(), fenix: true);
     Get.lazyPut<DatabaseService>(() => FirebaseFirestoreService(), fenix: true);
     Get.lazyPut<DataConnectionService>(() => DataConnectionCheckerService(),
+        fenix: true);
+    Get.lazyPut<PushNotificationService>(() => PushNotifications(),
         fenix: true);
   }
 }

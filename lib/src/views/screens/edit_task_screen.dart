@@ -141,7 +141,7 @@ class EditTaskScreen extends StatelessWidget {
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Edit Task',
+                  label: 'Update Task',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,

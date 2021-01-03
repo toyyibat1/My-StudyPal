@@ -24,17 +24,20 @@ class AppTile extends StatelessWidget {
           border: Border.all(color: Color(0xFFE0E0E0)),
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
             Icon(leading, color: kPrimaryColor) ?? Container(),
             leading == null ? Container() : SizedBox(width: 24),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.66,
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
             Spacer(),

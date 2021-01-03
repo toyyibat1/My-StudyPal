@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../../controller/task_controller.dart';
 import '../../core/constants.dart';
@@ -48,21 +49,27 @@ class TaskTile extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                tasks[index].name,
-                                softWrap: true,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.4,
+                                child: Text(
+                                  tasks[index].name,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               SizedBox(height: 16),
-                              Text(
-                                tasks[index].description,
-                                softWrap: true,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
+                              Container(
+                                width: MediaQuery.of(context).size.width / 1.4,
+                                child: Text(
+                                  tasks[index].description,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               SizedBox(height: 16),
@@ -71,7 +78,7 @@ class TaskTile extends StatelessWidget {
                                   Icon(Icons.timer, size: 20),
                                   SizedBox(width: 6),
                                   Text(
-                                    '${localizations.formatTimeOfDay(tasks[index].startTime)} - ${localizations.formatTimeOfDay(tasks[index].startTime)}',
+                                    '${localizations.formatTimeOfDay(tasks[index].startTime)} - ${localizations.formatTimeOfDay(tasks[index].endTime)}',
                                     style: kLabelText,
                                   ),
                                 ],

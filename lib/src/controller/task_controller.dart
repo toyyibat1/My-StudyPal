@@ -72,9 +72,12 @@ class TaskController extends Notifier {
   void navigateToCreateTask() => Get.to(CreateTaskScreen()).then(onGoBack);
 
   void openTaskInfoScreen(Task task) {
-    Get.bottomSheet(TaskInfoScreen(
-      task: task,
-      onGoBackCallback: onGoBack,
-    )).then((onGoBack));
+    Get.bottomSheet(
+      TaskInfoScreen(
+        task: task,
+        onGoBackCallback: onGoBack,
+      ),
+      isScrollControlled: true,
+    ).then((onGoBack));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/services/google_signin.dart';
 
 import '../../controller/profile_controller.dart';
 import '../../core/constants.dart';
@@ -59,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
               child: Text(
                 controller.user.firstName[0],
                 style: kHeadingTextStyle,
-              ),
+              ) ,
               backgroundColor: Color(0xFFE0E0E0),
             ),
             title: '${controller.user.firstName} ${controller.user.lastName}',
@@ -80,12 +81,12 @@ class ProfileScreen extends StatelessWidget {
             title: 'Edit Profile',
             trailing: Icons.arrow_forward_ios,
           ),
-          // AppTile(
-          //   onPressed: controller.navigateToBadgesScreen,
-          //   leading: Icons.badge,
-          //   title: 'Badges',
-          //   trailing: Icons.arrow_forward_ios,
-          // ),
+          AppTile(
+            onPressed: controller.navigateToBadgesScreen,
+            leading: Icons.badge,
+            title: 'Badges',
+            trailing: Icons.arrow_forward_ios,
+          ),
           AppTile(
             onPressed: controller.navigateToStudyGoalsScreen,
             leading: Icons.control_point_rounded,
@@ -93,19 +94,25 @@ class ProfileScreen extends StatelessWidget {
             trailing: Icons.arrow_forward_ios,
           ),
           AppTile(
+            onPressed: controller.navigateToFocusModeScreen,
+            leading: Icons.notifications_off,
+            title: 'Focus Mode',
+            trailing: Icons.arrow_forward_ios,
+          ),
+          AppTile(
             onPressed: controller.navigateToAddScheduleScreen,
-            leading: Icons.next_plan,
+            leading: Icons.next_plan_sharp,
             title: 'School Schedule',
             trailing: Icons.arrow_forward_ios,
           ),
-          // AppTile(
-          //   onPressed: controller.navigateToInviteFriendScreen,
-          //   leading: Icons.people,
-          //   title: 'Invite Friends',
-          //   trailing: Icons.arrow_forward_ios,
-          // ),
           AppTile(
-            onPressed: controller.signOut,
+            onPressed: controller.navigateToInviteFriendScreen,
+            leading: Icons.people,
+            title: 'Invite Friends',
+            trailing: Icons.arrow_forward_ios,
+          ),
+          AppTile(
+            onPressed: controller.signOut ?? controller.signOutWithGoogle,
             leading: Icons.logout,
             title: 'Log Out',
             trailing: Icons.arrow_forward_ios,
@@ -113,9 +120,16 @@ class ProfileScreen extends StatelessWidget {
           kExtraSmallVerticalSpacing,
           Center(
               child: Text(
-            'Powered by Side Hustle',
+            'MyStudyPadi V 1.0',
             style: TextStyle(color: Colors.grey),
           )),
+          kExtraSmallVerticalSpacing,
+
+//          Center(
+//              child: Text(
+//            'V 1.0',
+//            style: TextStyle(color: Colors.grey),
+//          )),
         ],
       ),
     );

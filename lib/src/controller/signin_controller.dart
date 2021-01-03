@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -10,28 +11,41 @@ import '../models/signin_params.dart';
 import '../services/auth_service/auth_service.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../views/screens/home_screen.dart';
-import '../views/screens/signup_screen.dart';
 
 class SigninController extends Notifier with ValidationMixin {
   final _emailAddressController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _obscureText = true;
+  Icon _icon = Icon(Icons.visibility);
 
   final _formKey = GlobalKey<FormState>();
-  TapGestureRecognizer _signUp;
+  TapGestureRecognizer _createAccount;
 
+  bool get obscureText => _obscureText;
+  Icon get icon => _icon;
   TextEditingController get emailAddressController => _emailAddressController;
   TextEditingController get passwordController => _passwordController;
 
-  TapGestureRecognizer get signUp => _signUp;
+  TapGestureRecognizer get createAccount => _createAccount;
   GlobalKey<FormState> get formKey => _formKey;
 
   @override
   void onInit() {
-    _signUp = TapGestureRecognizer()
+    _createAccount = TapGestureRecognizer()
       ..onTap = () {
-        Get.off(SignupScreen());
+        Get.off(CreateAccountScreen());
       };
     super.onInit();
+  }
+
+  void toggle() {
+    setState(NotifierState.isIdle);
+    _obscureText = !_obscureText;
+    if (!_obscureText) {
+      _icon = Icon(Icons.visibility_off);
+    } else {
+      _icon = Icon(Icons.visibility);
+    }
   }
 
   void signinUser() async {
@@ -66,4 +80,6 @@ class SigninController extends Notifier with ValidationMixin {
       setState(NotifierState.isIdle);
     }
   }
+
+  void forgotPassword() async {}
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
 import '../../controller/dashboard_controller.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
-import '../../models/task.dart';
 import '../widgets/task_list.dart';
 import '../widgets/task_tag.dart';
 
@@ -61,41 +61,35 @@ class DashboardScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.78,
-            child: Text.rich(
-              TextSpan(
-                text: "Welcome,\n",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w600,
-                  height: 1.3,
-                ),
-                children: [
-                  TextSpan(
-                    text: '$firstName $lastName',
-                    style: TextStyle(
-                      color: kBlackColor,
-                      fontSize: 25.0,
-                    ),
+          Expanded(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.78,
+              child: Text.rich(
+                TextSpan(
+                  text: "Welcome,\n",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    height: 1.3,
                   ),
-                ],
+                  children: [
+                    TextSpan(
+                      text: '$firstName $lastName',
+                      style: TextStyle(
+                        color: kBlackColor,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(8),
-          //   child: Image.asset(
-          //     welcome,
-          //     width: 60,
-          //     height: 60,
-          //   ),
-          // ),
           CircleAvatar(
             radius: 25,
             child: Text(
-              controller.user.firstName[0],
+              controller.user.firstName[0] ,
               style: kHeadingTextStyle,
             ),
             backgroundColor: Color(0xFFE0E0E0),
@@ -129,29 +123,29 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-List<Task> pendingTasks = [
-  Task(
-    id: "1",
-    name: "Reading about Ethics",
-    description: 'I want to read about Ethics',
-    date: DateTime.now(),
-    startTime: TimeOfDay.now(),
-    endTime: TimeOfDay.now(),
-  ),
-  Task(
-    id: "2",
-    name: "Reading about Ethics",
-    description: 'I want to read about Ethics',
-    date: DateTime.now(),
-    startTime: TimeOfDay.now(),
-    endTime: TimeOfDay.now(),
-  ),
-  Task(
-    id: "3",
-    name: "Reading about Ethics",
-    description: 'I want to read about Ethics',
-    date: DateTime.now(),
-    startTime: TimeOfDay.now(),
-    endTime: TimeOfDay.now(),
-  ),
-];
+//List<Task> pendingTasks = [
+//  Task(
+//    id: "1",
+//    name: "Reading about Ethics",
+//    description: 'I want to read about Ethics',
+//    date: DateTime.now(),
+//    startTime: TimeOfDay.now(),
+//    endTime: TimeOfDay.now(),
+//  ),
+//  Task(
+//    id: "2",
+//    name: "Reading about Ethics",
+//    description: 'I want to read about Ethics',
+//    date: DateTime.now(),
+//    startTime: TimeOfDay.now(),
+//    endTime: TimeOfDay.now(),
+//  ),
+//  Task(
+//    id: "3",
+//    name: "Reading about Ethics",
+//    description: 'I want to read about Ethics',
+//    date: DateTime.now(),
+//    startTime: TimeOfDay.now(),
+//    endTime: TimeOfDay.now(),
+//  ),
+//];
