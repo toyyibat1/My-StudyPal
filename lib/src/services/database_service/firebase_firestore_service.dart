@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../core/failure.dart';
 import '../../models/app_user.dart';
 import '../../models/focus_mode.dart';
 import '../../models/focus_mode_params.dart';
@@ -20,24 +21,27 @@ class FirebaseFirestoreService implements DatabaseService {
   @override
   Future<AppUser> getUserWithId(String userId) async {
     final snapshot = await userCollection.doc(userId).get();
-    return AppUser.fromDocumentSnapshot(snapshot);
+    return snapshot.exists ? AppUser.fromDocumentSnapshot(snapshot) : null;
   }
 
   @override
-  Future<void> createUserWithId(String userId,
-      {String emailAddress,
-      String firstName,
-      String lastName,
-      String institution,
-      String course,
-      String photoUrl}) async {
+  Future<void> createUserWithId(
+    String userId, {
+    String emailAddress,
+    String firstName,
+    String lastName,
+    String institution,
+    String course,
+    String photoUrl,
+  }) async {
     return await userCollection.doc(userId).set({
       'emailAddress': emailAddress,
       'firstName': firstName,
       'lastName': lastName,
       'institution': institution,
       'course': course,
-      'photoUrl': photoUrl
+      'photoUrl': photoUrl,
+      'timestamp': Timestamp.now(),
     });
   }
 

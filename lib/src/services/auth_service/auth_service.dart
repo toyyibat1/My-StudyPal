@@ -25,5 +25,7 @@ abstract class AuthService {
 
   Future<void> signOut();
 
+  Future<void> signOutWithFacebook();
+
   Future<void> signOutWithGoogle();
 }
