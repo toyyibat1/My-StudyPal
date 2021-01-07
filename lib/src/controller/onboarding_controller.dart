@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
 
 import '../services/startup_service/startup_service.dart';
 import '../views/screens/signup_screen.dart';
@@ -32,6 +33,6 @@ class OnboardingController extends GetxController {
 
   void signUp() async {
     await Get.find<StartupService>().writeOnboardingViewed();
-    Get.to(SignupScreen());
+    Get.off(CreateAccountScreen());
   }
 }

@@ -1,18 +1,15 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_study_pal/src/core/notifier.dart';
-import 'package:my_study_pal/src/core/validation_mixin.dart';
-import 'package:my_study_pal/src/views/screens/home_screen.dart';
-import 'package:my_study_pal/src/views/screens/signin_screen.dart';
-import '../services/database/firebase_firestore_service.dart';
 
+import '../core/notifier.dart';
+import '../core/validation_mixin.dart';
 import '../models/update_user_params.dart';
-import 'database/firebase_firestore_service.dart';
+import '../views/screens/signin_screen.dart';
+import 'database_service/firebase_firestore_service.dart';
 
-class AuthService extends Notifier with ValidationMixin{
+class AuthService extends Notifier with ValidationMixin {
   // Dependencies
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -21,33 +18,31 @@ class AuthService extends Notifier with ValidationMixin{
 
   Future<User> googleSignIn() async {
     // Start
-    setState(NotifierState.isLoading);  
+    setState(NotifierState.isLoading);
     // Step 1
     GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     // Step 2
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken: googleAuth.idToken,
-  );
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
     final UserCredential authResult =
-      await _auth.signInWithCredential(credential);
-          User user = authResult.user;
+        await _auth.signInWithCredential(credential);
+    User user = authResult.user;
     // Step 3
     void updateUserData(UpdateUserParams params) async {
-    await FirebaseFirestoreService().createUserWithId(
-        user.uid,
-        firstName: params.firstName,
-        lastName: params.lastName,
-        course: params.course,
-        institution: params.institution,
-        photoUrl: params.photoUrl
-      );
+      await FirebaseFirestoreService().createUserWithId(user.uid,
+          firstName: params.firstName,
+          lastName: params.lastName,
+          course: params.course,
+          institution: params.institution,
+          photoUrl: params.photoUrl);
     }
     // Done
 
     setState(NotifierState.isIdle);
-  //  Get.off(HomeScreen(user2: user));
+    //  Get.off(HomeScreen(user2: user));
     print("signed in " + user.displayName);
     return user;
   }
@@ -85,37 +80,37 @@ final AuthService authService = AuthService();
 //     return user;
 //   }
 
- /// Sign in with Google
-  Future<User> googleSignIn() async {
-    try {
-      // GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-      // GoogleSignInAuthentication googleAuth =
-      //     await googleSignInAccount.authentication;
-      // final AuthCredential credential = GoogleAuthProvider.credential(
-      //   accessToken: googleAuth.accessToken,
-      //   idToken: googleAuth.idToken,
-      // );
-     // AuthResult result = await _auth.signInWithCredential(credential);
-     // User user = result.user;
-      // Gravatar gravatar = Gravatar(user.email);
-      // String gravatarUrl = gravatar.imageUrl(
-      //   size: 200,
-      //   defaultImage: GravatarImage.retro,
-      //   rating: GravatarRating.pg,
-      //   fileExtension: true,
-      // );
-      // UserModel _newUser = UserModel(
-      //     uid: user.uid,
-      //     email: user.email,
-      //     name: user.displayName,
-      //     photoUrl: photoUrl);
-      // _auth.signInWithEmailAndPassword(email: email, password: password);
-     // UserData(collection: 'users').upsert(_newUser.toJson());
-      // Update user data
-     // updateUserData(user);
-      //return user;
-    } catch (error) {
-      print(error);
-      return null;
-    }
+/// Sign in with Google
+Future<User> googleSignIn() async {
+  try {
+    // GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+    // GoogleSignInAuthentication googleAuth =
+    //     await googleSignInAccount.authentication;
+    // final AuthCredential credential = GoogleAuthProvider.credential(
+    //   accessToken: googleAuth.accessToken,
+    //   idToken: googleAuth.idToken,
+    // );
+    // AuthResult result = await _auth.signInWithCredential(credential);
+    // User user = result.user;
+    // Gravatar gravatar = Gravatar(user.email);
+    // String gravatarUrl = gravatar.imageUrl(
+    //   size: 200,
+    //   defaultImage: GravatarImage.retro,
+    //   rating: GravatarRating.pg,
+    //   fileExtension: true,
+    // );
+    // UserModel _newUser = UserModel(
+    //     uid: user.uid,
+    //     email: user.email,
+    //     name: user.displayName,
+    //     photoUrl: photoUrl);
+    // _auth.signInWithEmailAndPassword(email: email, password: password);
+    // UserData(collection: 'users').upsert(_newUser.toJson());
+    // Update user data
+    // updateUserData(user);
+    //return user;
+  } catch (error) {
+    print(error);
+    return null;
   }
+}

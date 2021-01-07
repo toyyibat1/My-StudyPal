@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
 
 import '../models/app_user.dart';
 import '../services/auth_service/auth_service.dart';
 import '../services/startup_service/startup_service.dart';
+import '../views/screens/create_account_screen.dart';
 import '../views/screens/home_screen.dart';
 import '../views/screens/onboarding_screen.dart';
 

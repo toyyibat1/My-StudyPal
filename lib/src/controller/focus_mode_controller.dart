@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/models/focus_mode_params.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/focus_mode_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 
 class FocusModeController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;

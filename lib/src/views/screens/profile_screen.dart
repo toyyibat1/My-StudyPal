@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/services/google_signin.dart';
 
 import '../../controller/profile_controller.dart';
 import '../../core/constants.dart';
@@ -56,11 +55,10 @@ class ProfileScreen extends StatelessWidget {
           ProfileTile(
             leading: CircleAvatar(
               radius: 35,
-              // backgroundImage: AssetImage(welcome),
               child: Text(
                 controller.user.firstName[0],
                 style: kHeadingTextStyle,
-              ) ,
+              ),
               backgroundColor: Color(0xFFE0E0E0),
             ),
             title: '${controller.user.firstName} ${controller.user.lastName}',
@@ -112,24 +110,21 @@ class ProfileScreen extends StatelessWidget {
             trailing: Icons.arrow_forward_ios,
           ),
           AppTile(
-            onPressed: controller.signOut ?? controller.signOutWithGoogle ?? controller.signOutWithFacebook,
+            onPressed: controller.signOut ??
+                controller.signOutWithGoogle ??
+                controller.signOutWithFacebook,
             leading: Icons.logout,
             title: 'Log Out',
             trailing: Icons.arrow_forward_ios,
           ),
           kExtraSmallVerticalSpacing,
           Center(
-              child: Text(
-            'MyStudyPadi V 1.0',
-            style: TextStyle(color: Colors.grey),
-          )),
+            child: Text(
+              'MyStudyPadi V 1.0',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
           kExtraSmallVerticalSpacing,
-
-//          Center(
-//              child: Text(
-//            'V 1.0',
-//            style: TextStyle(color: Colors.grey),
-//          )),
         ],
       ),
     );
