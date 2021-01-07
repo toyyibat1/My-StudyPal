@@ -1,16 +1,15 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:my_study_pal/src/models/focus_mode.dart';
-import 'package:my_study_pal/src/models/focus_mode_params.dart';
-import 'package:my_study_pal/src/models/study_goal.dart';
-import 'package:my_study_pal/src/models/study_goal_params.dart';
+import 'package:my_study_pal/src/core/dateTimeUtils.dart';
 
+import '../../core/failure.dart';
 import '../../models/app_user.dart';
+import '../../models/focus_mode.dart';
+import '../../models/focus_mode_params.dart';
 import '../../models/school_schedule.dart';
 import '../../models/school_schedule_params.dart';
+import '../../models/study_goal.dart';
+import '../../models/study_goal_params.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
 import '../../models/timetable.dart';
@@ -20,11 +19,10 @@ import 'database_service.dart';
 class FirebaseFirestoreService implements DatabaseService {
   final userCollection = FirebaseFirestore.instance.collection('users');
 
-  
   @override
   Future<AppUser> getUserWithId(String userId) async {
     final snapshot = await userCollection.doc(userId).get();
-    return AppUser.fromDocumentSnapshot(snapshot);
+    return snapshot.exists ? AppUser.fromDocumentSnapshot(snapshot) : null;
   }
 
   @override
@@ -35,7 +33,7 @@ class FirebaseFirestoreService implements DatabaseService {
     String lastName,
     String institution,
     String course,
-    String photoUrl
+    String photoUrl,
   }) async {
     return await userCollection.doc(userId).set({
       'emailAddress': emailAddress,
@@ -43,28 +41,27 @@ class FirebaseFirestoreService implements DatabaseService {
       'lastName': lastName,
       'institution': institution,
       'course': course,
-      'photoUrl': photoUrl
+      'photoUrl': photoUrl,
+      'timestamp': Timestamp.now(),
     });
   }
 
-   @override
-  Future<void> createUserWithGoogle(
-    String userId, {
-    String emailAddress,
-    String firstName,
-    String lastName,
-    String institution,
-    String course,
-    String photoUrl
-  }) async => await userCollection.doc(userId).set({
-      'emailAddress': emailAddress,
-      'firstName': firstName,
-      'lastName': lastName,
-      'institution': institution,
-      'course': course,
-      'photoUrl': photoUrl
-    });
-
+  @override
+  Future<void> createUserWithGoogle(String userId,
+          {String emailAddress,
+          String firstName,
+          String lastName,
+          String institution,
+          String course,
+          String photoUrl}) async =>
+      await userCollection.doc(userId).set({
+        'emailAddress': emailAddress,
+        'firstName': firstName,
+        'lastName': lastName,
+        'institution': institution,
+        'course': course,
+        'photoUrl': photoUrl
+      });
 
   @override
   Future<void> updateUserWithId(
@@ -91,10 +88,8 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<Task> createTask(TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = DateTime(params.date.year, params.date.month,
-        params.date.day, params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(params.date.year, params.date.month,
-        params.date.day, params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startTimeTask(date, params);
+    DateTime endTime = endTimeTask(date, params);
 
     DocumentReference reference =
         await userCollection.doc(user.uid).collection('tasks').add({
@@ -116,10 +111,8 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<void> updateTask(String taskId, TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = DateTime(params.date.year, params.date.month,
-        params.date.day, params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(params.date.year, params.date.month,
-        params.date.day, params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startTimeTask(date,params);
+    DateTime endTime = endTimeTask(date,params);
 
     return await userCollection
         .doc(user.uid)
@@ -217,11 +210,8 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<Timetable> createTimetable(TimetableParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime date = DateTime.now();
-    DateTime startTime = DateTime(date.year, date.month, date.day,
-        params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(date.year, date.month, date.day,
-        params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startTimeTable(date, params);
+    DateTime endTime = endTimeTable(date, params);
     DocumentReference reference =
         await userCollection.doc(user.uid).collection('timetable').add({
       'subject': params.subject,
@@ -237,16 +227,15 @@ class FirebaseFirestoreService implements DatabaseService {
     return Timetable.fromDocumentSnapshot(snapshot);
   }
 
+  
+
   @override
   Future<void> updateTimetable(
       String timetableId, TimetableParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime date = DateTime.now();
-    DateTime startTime = DateTime(date.year, date.month, date.day,
-        params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(date.year, date.month, date.day,
-        params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startTimeTable(date, params);
+    DateTime endTime = endTimeTable(date, params);
 
     return await userCollection
         .doc(user.uid)
@@ -413,9 +402,8 @@ class FirebaseFirestoreService implements DatabaseService {
   @override
   Future<FocusMode> createFocusMode(FocusModeParams params) async {
     User user = FirebaseAuth.instance.currentUser;
-    DateTime startTime =
-        DateTime(params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startTimeFocusMode(params);
+    DateTime endTime = endTimeFocusMode(params);
 
     DocumentReference reference =
         await userCollection.doc(user.uid).collection('focusmode').add({
@@ -429,4 +417,6 @@ class FirebaseFirestoreService implements DatabaseService {
 
     return FocusMode.fromDocumentSnapshot(snapshot);
   }
+
+  
 }

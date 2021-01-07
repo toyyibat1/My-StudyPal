@@ -4,9 +4,9 @@ import '../core/notifier.dart';
 import '../models/app_user.dart';
 
 class HomeController extends Notifier {
-  final User user1;
+ // final User user1;
   final AppUser user;
-  HomeController({this.user, this.user1});
+  HomeController({this.user});
 
   int _currentPage = 0;
 

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../models/school_schedule.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 import '../views/screens/create_school_schedule_screen.dart';
 import '../views/screens/school_schedule_info_screen.dart';
 

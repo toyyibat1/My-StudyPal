@@ -6,14 +6,22 @@ class SignInWithTile extends StatelessWidget {
   final String text;
   final String image;
   final Function ontap;
-  const SignInWithTile({Key key, this.image, this.text, this.ontap})
+  final bool isLoading;
+  const SignInWithTile({Key key, this.image, this.text, this.ontap, this.isLoading})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: ontap,
-      child: Container(
+      child: isLoading
+          ? SizedBox(
+              width: 25.0,
+              height: 25.0,
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              ),
+            ): Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -87,13 +89,19 @@ class DashboardScreen extends StatelessWidget {
             ),
           ),
           CircleAvatar(
-            radius: 25,
-            child: Text(
-              controller.user.firstName[0] ,
-              style: kHeadingTextStyle,
+            radius: 30,
+            backgroundColor: Color(0xff102A67),
+            child: ClipOval(
+              child: new SizedBox(
+                width: 60.0,
+                height: 60.0,
+                child: Image.file(File(controller.user.photoUrl), fit: BoxFit.cover) ?? Text(
+                  controller.user.firstName[0],
+                  style: kHeadingTextStyle,
+                )
+              ),
+              ),
             ),
-            backgroundColor: Color(0xFFE0E0E0),
-          )
         ],
       ),
     );

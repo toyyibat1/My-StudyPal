@@ -110,7 +110,7 @@ class OnboardingScreen extends StatelessWidget {
         body: GetBuilder<OnboardingController>(
           init: OnboardingController(),
           builder: (controller) => Padding(
-            padding: const EdgeInsets.only(bottom: 60.0),
+            padding: const EdgeInsets.only(bottom: 50.0),
             child: Column(
               children: <Widget>[
                 Expanded(
@@ -121,12 +121,12 @@ class OnboardingScreen extends StatelessWidget {
                     children: onboardingPages,
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height / 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildPageIndicator(controller),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height / 15),
+                SizedBox(height: MediaQuery.of(context).size.height / 50),
                 AppButton(
                   label: "Get Started",
                   color: kPrimaryColor,
