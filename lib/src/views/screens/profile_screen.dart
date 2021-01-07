@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,12 +57,18 @@ class ProfileScreen extends StatelessWidget {
           ProfileTile(
             leading: CircleAvatar(
               radius: 35,
-              child: Text(
-                controller.user.firstName[0],
-                style: kHeadingTextStyle,
+              backgroundColor: Color(0xff102A67),
+              child: ClipOval(
+                child: new SizedBox(
+                  width: 70.0,
+                  height: 70.0,
+                  child: Image.file(File(controller.user.photoUrl), fit: BoxFit.cover) ?? Text(
+                    controller.user.firstName[0],
+                    style: kHeadingTextStyle,
+                  )
+                ),
+                ),
               ),
-              backgroundColor: Color(0xFFE0E0E0),
-            ),
             title: '${controller.user.firstName} ${controller.user.lastName}',
             email: controller.user.emailAddress,
             subtitle: Text(controller.user.institution),
