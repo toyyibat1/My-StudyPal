@@ -95,7 +95,7 @@ class EditProfileScreen extends StatelessWidget {
                         child: new SizedBox(
                           width: 150.0,
                           height: 150.0,
-                          child: Image.file((controller.image), fit: BoxFit.cover,) ?? Text(
+                          child: Image.file((controller.image), fit: BoxFit.cover) ?? Text(
                             controller.user.firstName[0],
                             style: kHeadingTextStyle,
                           )
