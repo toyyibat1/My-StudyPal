@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_study_pal/src/core/dateTimeUtils.dart';
 
 import '../../core/failure.dart';
 import '../../models/app_user.dart';
@@ -87,10 +88,8 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<Task> createTask(TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = DateTime(params.date.year, params.date.month,
-        params.date.day, params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(params.date.year, params.date.month,
-        params.date.day, params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startDateTimeTask(date, params);
+    DateTime endTime = endDateTimeTask(date, params);
 
     DocumentReference reference =
         await userCollection.doc(user.uid).collection('tasks').add({
@@ -108,14 +107,17 @@ class FirebaseFirestoreService implements DatabaseService {
     return Task.fromDocumentSnapshot(snapshot);
   }
 
+  // DateTime dateTime(TaskParams params) {
+  //   return DateTime(params.date.year, params.date.month,
+  //     params.date.day, params.startTime.hour, params.startTime.minute);
+  // }
+
   @override
   Future<void> updateTask(String taskId, TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = DateTime(params.date.year, params.date.month,
-        params.date.day, params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(params.date.year, params.date.month,
-        params.date.day, params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startDateTimeTask(date,params);
+    DateTime endTime = endDateTimeTask(date,params);
 
     return await userCollection
         .doc(user.uid)
@@ -214,10 +216,8 @@ class FirebaseFirestoreService implements DatabaseService {
     User user = FirebaseAuth.instance.currentUser;
 
     DateTime date = DateTime.now();
-    DateTime startTime = DateTime(date.year, date.month, date.day,
-        params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(date.year, date.month, date.day,
-        params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startdateTimeTable(date, params);
+    DateTime endTime = endDateTimeTable(date, params);
     DocumentReference reference =
         await userCollection.doc(user.uid).collection('timetable').add({
       'subject': params.subject,
@@ -233,16 +233,16 @@ class FirebaseFirestoreService implements DatabaseService {
     return Timetable.fromDocumentSnapshot(snapshot);
   }
 
+  
+
   @override
   Future<void> updateTimetable(
       String timetableId, TimetableParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
     DateTime date = DateTime.now();
-    DateTime startTime = DateTime(date.year, date.month, date.day,
-        params.startTime.hour, params.startTime.minute);
-    DateTime endTime = DateTime(date.year, date.month, date.day,
-        params.endTime.hour, params.endTime.minute);
+    DateTime startTime = startdateTimeTable(date, params);
+    DateTime endTime = endDateTimeTable(date, params);
 
     return await userCollection
         .doc(user.uid)
