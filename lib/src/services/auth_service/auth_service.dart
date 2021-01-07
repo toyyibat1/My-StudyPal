@@ -4,8 +4,6 @@ import '../../models/app_user.dart';
 import '../../models/signin_params.dart';
 import '../../models/signup_params.dart';
 import '../../models/update_user_params.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 
 abstract class AuthService {
   Future<AppUser> getAuthenticatedUser();

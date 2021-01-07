@@ -109,6 +109,7 @@ class CreateTaskController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().createTask(params);
+        DateTime a = DateTime(a.year);
         await notificationPlugin.scheduleNotification(
             params.name, params.description, params.date, 'Task Reminder');
 
