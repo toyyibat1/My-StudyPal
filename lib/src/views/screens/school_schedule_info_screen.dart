@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/controller/school_schedule_info_controller.dart';
 
-import '../../controller/school_schedule_info_controller%20copy.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
 import '../../models/school_schedule.dart';
@@ -68,7 +68,6 @@ class SchoolScheduleInfoScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-//          Spacer(),
                 GetBuilder<SchoolScheduleInfoController>(
                   init: SchoolScheduleInfoController(onGoBackCallback),
                   builder: (controller) => Container(

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -108,6 +109,8 @@ class CreateTaskController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().createTask(params);
+        await notificationPlugin.scheduleNotification(
+            params.name, params.description, params.date, 'Task Reminder');
 
         setState(NotifierState.isIdle);
 

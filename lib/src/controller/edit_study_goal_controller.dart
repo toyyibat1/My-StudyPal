@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -71,6 +72,8 @@ class EditStudyGoalController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().updateStudyGoal(studyGoalId, params);
+        await notificationPlugin.scheduleNotification('Study Goal Reminder',
+            params.goal, params.date, 'Study Goal Reminder');
 
         setState(NotifierState.isIdle);
 

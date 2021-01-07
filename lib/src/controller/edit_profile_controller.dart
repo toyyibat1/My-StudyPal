@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
 import 'package:my_study_pal/src/services/auth_service/auth_service.dart';
 
 import '../core/failure.dart';
@@ -34,7 +35,7 @@ class EditProfileController extends Notifier with ValidationMixin {
   File get image => _image;
   GlobalKey<FormState> get formKey => _formKey;
 
-  String imagePath;  
+  String imagePath;
 
   final picker = ImagePicker();
   Future getImage() async {
@@ -61,19 +62,19 @@ class EditProfileController extends Notifier with ValidationMixin {
     super.onInit();
   }
 
-  Future <void> uploadPic() async {
-    if(_image !=null){
+  Future<void> uploadPic() async {
+    if (_image != null) {
       FirebaseStorage storage = FirebaseStorage.instance;
-      final String picture1 = "1${DateTime.now().microsecondsSinceEpoch.toString()}.jpg";
+      final String picture1 =
+          "1${DateTime.now().microsecondsSinceEpoch.toString()}.jpg";
       Reference ref = storage.ref().child(picture1);
       UploadTask uploadTask = ref.putFile(_image);
       uploadTask.then((res) async {
         await res.ref.getDownloadURL();
         //String photoUrl = imageUrl;
-  });
+      });
+    }
   }
-  }
-
 
   void goBack() => Get.back();
 
@@ -81,21 +82,22 @@ class EditProfileController extends Notifier with ValidationMixin {
     Get.focusScope.unfocus();
 
     if (_formKey.currentState.validate()) {
-      setState(NotifierState.isLoading);      
-      
+      setState(NotifierState.isLoading);
+
       try {
         await Get.find<DataConnectionService>().checkConnection();
         uploadPic();
         UpdateUserParams params = UpdateUserParams(
-          course: _courseController.text,
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          institution: _institutionController.text,
-          photoUrl: _image.path
-        );
+            course: _courseController.text,
+            firstName: _firstNameController.text,
+            lastName: _lastNameController.text,
+            institution: _institutionController.text,
+            photoUrl: _image.path);
 
         await Get.find<AuthService>().updateUser(params);
-            
+        await notificationPlugin.showNotification(params.firstName,
+            'Profile Sucessfully Updated! ', 'Profile Updated');
+
         setState(NotifierState.isIdle);
 
         Get.back();
@@ -109,7 +111,7 @@ class EditProfileController extends Notifier with ValidationMixin {
           snackPosition: SnackPosition.BOTTOM,
         );
       }
-      setState(NotifierState.isIdle);    
-  }
+      setState(NotifierState.isIdle);
+    }
   }
 }

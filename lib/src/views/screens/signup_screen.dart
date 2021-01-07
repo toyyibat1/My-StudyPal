@@ -9,27 +9,7 @@ import '../widgets/app_button.dart';
 import '../widgets/app_textfield.dart';
 import '../widgets/transparent_statusbar.dart';
 
-class SignupScreen extends StatefulWidget {
-  @override
-  _SignupScreenState createState() => _SignupScreenState();
-}
-
-class _SignupScreenState extends State<SignupScreen> {
-  bool _obscureText = true;
-  Icon icon = Icon(Icons.visibility);
-
-  // Toggles the password show status
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-      if (!_obscureText) {
-        icon = Icon(Icons.visibility_off);
-      } else {
-        icon = Icon(Icons.visibility);
-      }
-    });
-  }
-
+class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
@@ -115,11 +95,11 @@ class _SignupScreenState extends State<SignupScreen> {
             textInputAction: TextInputAction.done,
             text: 'Password',
             controller: controller.passwordController,
-            obscureText: _obscureText,
+            obscureText: controller.obscureText,
             validator: controller.validatePassword,
             suffixIcon: GestureDetector(
-              onTap: () => _toggle(),
-              child: icon,
+              onTap: () => controller.toggle(),
+              child: controller.icon,
             ),
           ),
           kLargeVerticalSpacing,

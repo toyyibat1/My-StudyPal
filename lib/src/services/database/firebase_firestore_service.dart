@@ -422,6 +422,7 @@ class FirebaseFirestoreService implements DatabaseService {
       'toggle': params.focusModeToggle,
       'startTime': startTime.toIso8601String(),
       'endTime': endTime.toIso8601String(),
+      'timestamp': Timestamp.now(),
     });
 
     DocumentSnapshot snapshot = await reference.get();
