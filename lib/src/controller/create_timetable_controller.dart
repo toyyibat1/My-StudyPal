@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
+import 'package:my_study_pal/src/core/dateTimeUtils.dart';
+import 'package:my_study_pal/src/models/timetable.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -112,10 +116,20 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           startTime: _pickedStartTime,
         );
 
-        await Get.find<DatabaseService>().createTimetable(params);
-//        await notificationPlugin.scheduleNotification(
-//            params.day, params.subject + params.location, params.startTime);
-//        setState(NotifierState.isIdle);
+        Timetable timetable =
+            await Get.find<DatabaseService>().createTimetable(params);
+
+        int id = timetable.timestamp.nanoseconds;
+
+        await notificationPlugin.weeklyNotification(
+            id,
+            params.day,
+            params.subject,
+            startDayTimeTable(day, params),
+            startTimeTimetable(notificationTime, params),
+            'Timetable Reminder');
+
+        setState(NotifierState.isIdle);
 
         Get.back();
       } on Failure catch (f) {

@@ -69,7 +69,8 @@ class SchoolScheduleInfoScreen extends StatelessWidget {
                   ),
                 ),
                 GetBuilder<SchoolScheduleInfoController>(
-                  init: SchoolScheduleInfoController(onGoBackCallback),
+                  init:
+                      SchoolScheduleInfoController(onGoBackCallback, schedule),
                   builder: (controller) => Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 16),
@@ -77,7 +78,6 @@ class SchoolScheduleInfoScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: AppButton(
-                            padding: 0,
                             label: 'Delete',
                             color: kPrimaryColor,
                             isLoading:
@@ -92,7 +92,6 @@ class SchoolScheduleInfoScreen extends StatelessWidget {
                         kMediumHorizontalSpacing,
                         Expanded(
                           child: AppButton(
-                            padding: 0,
                             label: 'Edit',
                             onPressed: () => controller
                                 .navigateToEditSchoolSchedule(schedule),

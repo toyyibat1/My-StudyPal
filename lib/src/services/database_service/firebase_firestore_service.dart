@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_study_pal/src/core/dateTimeUtils.dart';
 
-import '../../core/failure.dart';
 import '../../models/app_user.dart';
 import '../../models/focus_mode.dart';
 import '../../models/focus_mode_params.dart';
@@ -111,8 +110,8 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<void> updateTask(String taskId, TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = startTimeTask(date,params);
-    DateTime endTime = endTimeTask(date,params);
+    DateTime startTime = startTimeTask(date, params);
+    DateTime endTime = endTimeTask(date, params);
 
     return await userCollection
         .doc(user.uid)
@@ -226,8 +225,6 @@ class FirebaseFirestoreService implements DatabaseService {
 
     return Timetable.fromDocumentSnapshot(snapshot);
   }
-
-  
 
   @override
   Future<void> updateTimetable(
@@ -402,7 +399,7 @@ class FirebaseFirestoreService implements DatabaseService {
   @override
   Future<FocusMode> createFocusMode(FocusModeParams params) async {
     User user = FirebaseAuth.instance.currentUser;
-    DateTime startTime = startTimeFocusMode(params);
+    DateTime startTime = startTimeFocusMode(date, params);
     DateTime endTime = endTimeFocusMode(params);
 
     DocumentReference reference =
@@ -417,6 +414,4 @@ class FirebaseFirestoreService implements DatabaseService {
 
     return FocusMode.fromDocumentSnapshot(snapshot);
   }
-
-  
 }
