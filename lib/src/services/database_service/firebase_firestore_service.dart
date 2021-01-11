@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_study_pal/src/core/dateTimeUtils.dart';
 
+import '../../core/dateTimeUtils.dart';
 import '../../models/app_user.dart';
 import '../../models/focus_mode.dart';
 import '../../models/focus_mode_params.dart';
@@ -87,8 +87,8 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<Task> createTask(TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = startTimeTask(date, params);
-    DateTime endTime = endTimeTask(date, params);
+    DateTime startTime = startTimeTask(params);
+    DateTime endTime = endTimeTask(params);
 
     DocumentReference reference =
         await userCollection.doc(user.uid).collection('tasks').add({
@@ -110,8 +110,8 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<void> updateTask(String taskId, TaskParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = startTimeTask(date, params);
-    DateTime endTime = endTimeTask(date, params);
+    DateTime startTime = startTimeTask(params);
+    DateTime endTime = endTimeTask(params);
 
     return await userCollection
         .doc(user.uid)
@@ -209,8 +209,8 @@ class FirebaseFirestoreService implements DatabaseService {
   Future<Timetable> createTimetable(TimetableParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = startTimeTable(date, params);
-    DateTime endTime = endTimeTable(date, params);
+    DateTime startTime = startTimeTable(params);
+    DateTime endTime = endTimeTable(params);
     DocumentReference reference =
         await userCollection.doc(user.uid).collection('timetable').add({
       'subject': params.subject,
@@ -231,8 +231,8 @@ class FirebaseFirestoreService implements DatabaseService {
       String timetableId, TimetableParams params) async {
     User user = FirebaseAuth.instance.currentUser;
 
-    DateTime startTime = startTimeTable(date, params);
-    DateTime endTime = endTimeTable(date, params);
+    DateTime startTime = startTimeTable(params);
+    DateTime endTime = endTimeTable(params);
 
     return await userCollection
         .doc(user.uid)

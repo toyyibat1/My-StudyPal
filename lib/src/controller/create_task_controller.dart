@@ -119,7 +119,7 @@ class CreateTaskController extends Notifier with ValidationMixin {
           id,
           params.name,
           params.description,
-          startTimeTask(date, params),
+          startTimeTask(params),
           'Task Reminder',
         );
 
@@ -128,7 +128,7 @@ class CreateTaskController extends Notifier with ValidationMixin {
           id + 1,
           params.name + ", Deadline Reached",
           params.description,
-          endTimeTask(date, params),
+          endTimeTask(params),
           'Task Reminder',
         );
 

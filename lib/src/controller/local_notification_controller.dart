@@ -23,35 +23,40 @@ class NotificationPlugin {
         InitializationSettings(android: initializationSettingAndroid);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) {
-//      onclick function(Leads to the Dashboard by default)
+      // onclick function(Leads to the Dashboard by default)
       return null;
     });
   }
 
   void setNotificationOnclick(Function onNotificationClick) async {
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String payload) async {
-      onNotificationClick(payload);
-    });
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onSelectNotification: (String payload) async {
+        onNotificationClick(payload);
+      },
+    );
   }
 
   Future<void> showNotification(
       String message, String messageBody, String channelDesc) async {
     try {
       var androidChannelSpecifics = AndroidNotificationDetails(
-          'Reminder', 'Reminder', channelDesc,
-          largeIcon: DrawableResourceAndroidBitmap('app_logo'),
-          channelAction: AndroidNotificationChannelAction.createIfNotExists,
-          enableLights: true,
-          importance: Importance.max,
-          enableVibration: true,
-          priority: Priority.high,
-          playSound: true,
-          usesChronometer: true,
-          indeterminate: true,
-          autoCancel: true,
-          visibility: NotificationVisibility.public,
-          styleInformation: DefaultStyleInformation(true, true));
+        'Reminder',
+        'Reminder',
+        channelDesc,
+        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
+        channelAction: AndroidNotificationChannelAction.createIfNotExists,
+        enableLights: true,
+        importance: Importance.max,
+        enableVibration: true,
+        priority: Priority.high,
+        playSound: true,
+        usesChronometer: true,
+        indeterminate: true,
+        autoCancel: true,
+        visibility: NotificationVisibility.public,
+        styleInformation: DefaultStyleInformation(true, true),
+      );
       var platformChannelSpecifics =
           NotificationDetails(android: androidChannelSpecifics);
       await flutterLocalNotificationsPlugin.show(
@@ -66,18 +71,21 @@ class NotificationPlugin {
       DateTime notificationDate, String channelDesc) async {
     try {
       var androidChannelSpecifics = AndroidNotificationDetails(
-          'MyStudyPadi', 'Reminder', channelDesc,
-          largeIcon: DrawableResourceAndroidBitmap('app_logo'),
-          channelAction: AndroidNotificationChannelAction.createIfNotExists,
-          enableLights: true,
-          importance: Importance.max,
-          enableVibration: true,
-          priority: Priority.high,
-          playSound: true,
-          indeterminate: true,
-          autoCancel: true,
-          visibility: NotificationVisibility.public,
-          styleInformation: DefaultStyleInformation(true, true));
+        'MyStudyPadi',
+        'Reminder',
+        channelDesc,
+        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
+        channelAction: AndroidNotificationChannelAction.createIfNotExists,
+        enableLights: true,
+        importance: Importance.max,
+        enableVibration: true,
+        priority: Priority.high,
+        playSound: true,
+        indeterminate: true,
+        autoCancel: true,
+        visibility: NotificationVisibility.public,
+        styleInformation: DefaultStyleInformation(true, true),
+      );
       var platformChannelSpecifics =
           NotificationDetails(android: androidChannelSpecifics);
 
@@ -89,40 +97,44 @@ class NotificationPlugin {
     }
   }
 
-// Weekly notification for time table
+  // Weekly notification for time table
   Future<void> weeklyNotification(int id, String message, String messageBody,
       Day notificationDay, Time notificationTime, String channelDesc) async {
     try {
       var androidChannelSpecifics = AndroidNotificationDetails(
-          'MyStudyPadi', 'Reminder', channelDesc,
-          largeIcon: DrawableResourceAndroidBitmap('app_logo'),
-          channelAction: AndroidNotificationChannelAction.createIfNotExists,
-          enableLights: true,
-          importance: Importance.max,
-          enableVibration: true,
-          priority: Priority.high,
-          playSound: true,
-          indeterminate: true,
-          autoCancel: true,
-          visibility: NotificationVisibility.public,
-          styleInformation: DefaultStyleInformation(true, true));
+        'MyStudyPadi',
+        'Reminder',
+        channelDesc,
+        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
+        channelAction: AndroidNotificationChannelAction.createIfNotExists,
+        enableLights: true,
+        importance: Importance.max,
+        enableVibration: true,
+        priority: Priority.high,
+        playSound: true,
+        indeterminate: true,
+        autoCancel: true,
+        visibility: NotificationVisibility.public,
+        styleInformation: DefaultStyleInformation(true, true),
+      );
       var platformChannelSpecifics =
           NotificationDetails(android: androidChannelSpecifics);
 
       await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-          id,
-          message.toUpperCase(),
-          messageBody,
-          notificationDay,
-          notificationTime,
-          platformChannelSpecifics,
-          payload: "Payload schedule");
+        id,
+        message.toUpperCase(),
+        messageBody,
+        notificationDay,
+        notificationTime,
+        platformChannelSpecifics,
+        payload: "Payload schedule",
+      );
     } on Failure catch (e) {
       print(e.message);
     }
   }
 
-//   Method to cancel specific notification
+  // Method to cancel specific notification
   Future<void> cancelNotification(
     int id,
   ) async {

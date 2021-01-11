@@ -122,12 +122,13 @@ class CreateTimetableController extends Notifier with ValidationMixin {
         int id = timetable.timestamp.nanoseconds;
 
         await notificationPlugin.weeklyNotification(
-            id,
-            params.day,
-            params.subject,
-            startDayTimeTable(day, params),
-            startTimeTimetable(notificationTime, params),
-            'Timetable Reminder');
+          id,
+          params.day,
+          params.subject,
+          startDayTimeTable(day, params),
+          startTimeTimetable(notificationTime, params),
+          'Timetable Reminder',
+        );
 
         setState(NotifierState.isIdle);
 

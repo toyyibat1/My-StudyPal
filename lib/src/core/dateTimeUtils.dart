@@ -1,41 +1,54 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/core/failure.dart';
-import 'package:my_study_pal/src/models/focus_mode_params.dart';
-import 'package:my_study_pal/src/models/school_schedule_params.dart';
-import 'package:my_study_pal/src/models/study_goal_params.dart';
-import 'package:my_study_pal/src/models/timetable.dart';
-import 'package:my_study_pal/src/models/timetable_params.dart';
 
+import '../models/focus_mode_params.dart';
+import '../models/school_schedule_params.dart';
+import '../models/study_goal_params.dart';
 import '../models/task_params.dart';
+import '../models/timetable.dart';
+import '../models/timetable_params.dart';
+import 'failure.dart';
 
 Timetable timetable;
-DateTime date = DateTime.now();
 int dayValue = 1;
 Day day = Day(dayValue);
 Time time = Time();
 
 //Task
-DateTime startTimeTask(date, TaskParams params) => DateTime(
-    params.date.year,
-    params.date.month,
-    params.date.day,
-    params.startTime.hour,
-    params.startTime.minute);
+DateTime startTimeTask(TaskParams params) => DateTime(
+      params.date.year,
+      params.date.month,
+      params.date.day,
+      params.startTime.hour,
+      params.startTime.minute,
+    );
 
-DateTime endTimeTask(date, TaskParams params) => DateTime(
-    params.date.year,
-    params.date.month,
-    params.date.day,
-    params.endTime.hour,
-    params.endTime.minute);
+DateTime endTimeTask(TaskParams params) => DateTime(
+      params.date.year,
+      params.date.month,
+      params.date.day,
+      params.endTime.hour,
+      params.endTime.minute,
+    );
 
 //Timetable
-DateTime endTimeTable(date, TimetableParams params) => DateTime(date.year,
-    date.month, date.day, params.endTime.hour, params.endTime.minute);
+DateTime date = DateTime.now();
 
-DateTime startTimeTable(date, TimetableParams params) => DateTime(date.year,
-    date.month, date.day, params.startTime.hour, params.startTime.minute);
+DateTime startTimeTable(TimetableParams params) => DateTime(
+      date.year,
+      date.month,
+      date.day,
+      params.startTime.hour,
+      params.startTime.minute,
+    );
+
+DateTime endTimeTable(TimetableParams params) => DateTime(
+      date.year,
+      date.month,
+      date.day,
+      params.endTime.hour,
+      params.endTime.minute,
+    );
 
 Day startDayTimeTable(notificationDay, TimetableParams params) {
   try {
@@ -69,15 +82,21 @@ Day startDayTimeTable(notificationDay, TimetableParams params) {
   return Day(dayValue);
 }
 
-Time startTimeTimetable(notificationTime, TimetableParams params) =>
-    Time(params.startTime.hour, params.startTime.minute);
+Time startTimeTimetable(notificationTime, TimetableParams params) => Time(
+      params.startTime.hour,
+      params.startTime.minute,
+    );
 
 //FocusMode
-DateTime endTimeFocusMode(FocusModeParams params) =>
-    DateTime(params.endTime.hour, params.endTime.minute);
+DateTime endTimeFocusMode(FocusModeParams params) => DateTime(
+      params.endTime.hour,
+      params.endTime.minute,
+    );
 
-DateTime startTimeFocusMode(date, FocusModeParams params) =>
-    DateTime(params.startTime.hour, params.startTime.minute);
+DateTime startTimeFocusMode(date, FocusModeParams params) => DateTime(
+      params.startTime.hour,
+      params.startTime.minute,
+    );
 
 //StudyGoal
 DateTime dateStudyGoal(StudyGoalParams params) => DateTime(
