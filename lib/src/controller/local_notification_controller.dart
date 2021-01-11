@@ -9,22 +9,24 @@ class NotificationPlugin {
     init();
   }
 
-  init() async {
+  void init() async {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     initializePlatformSpecifics();
   }
 
-  initializePlatformSpecifics() {
+  void initializePlatformSpecifics() {
     var initializationSettingAndroid =
-        AndroidInitializationSettings('app_logo');
+        AndroidInitializationSettings('app_icon');
 
     initializationSettings =
         InitializationSettings(android: initializationSettingAndroid);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String payload) {});
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onSelectNotification: (String payload) {},
+    );
   }
 
-  setNotificationOnclick(Function onNotificationClick) async {
+  void setNotificationOnclick(Function onNotificationClick) async {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
       onNotificationClick(payload);
@@ -34,45 +36,67 @@ class NotificationPlugin {
   Future<void> showNotification(
       String message, String messageBody, String channelDesc) async {
     var androidChannelSpecifics = AndroidNotificationDetails(
-        'Reminder', 'Reminder', channelDesc,
-        importance: Importance.max,
-        priority: Priority.high,
-        playSound: true,
-        timeoutAfter: 5000,
-        styleInformation: DefaultStyleInformation(true, true));
+      'Reminder',
+      'Reminder',
+      channelDesc,
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      timeoutAfter: 5000,
+      styleInformation: DefaultStyleInformation(true, true),
+    );
+
     var platformChannelSpecifics =
         NotificationDetails(android: androidChannelSpecifics);
+
     await flutterLocalNotificationsPlugin.show(
-        0, 'Hey ' + message + ',', messageBody, platformChannelSpecifics,
-        payload: "Test Payload");
+      0,
+      'Hey ' + message + ',',
+      messageBody,
+      platformChannelSpecifics,
+      payload: "Test Payload",
+    );
   }
 
-  Future<void> scheduleNotification(String message, String messageBody,
-      DateTime notificationDate, String channelDesc) async {
+  Future<void> scheduleNotification(
+    String message,
+    String messageBody,
+    DateTime notificationDate,
+    String channelDesc,
+  ) async {
     try {
       var androidChannelSpecifics = AndroidNotificationDetails(
-          'MyStudyPadi', 'Reminder', channelDesc,
-          largeIcon: DrawableResourceAndroidBitmap('app_logo'),
-          channelAction: AndroidNotificationChannelAction.createIfNotExists,
-          enableLights: true,
-          importance: Importance.max,
-          fullScreenIntent: true,
-          enableVibration: true,
-          priority: Priority.high,
-          playSound: true,
-          usesChronometer: true,
-          indeterminate: true,
-          autoCancel: false,
-          visibility: NotificationVisibility.public,
-          styleInformation: DefaultStyleInformation(true, true));
+        'MyStudyPadi',
+        'Reminder',
+        channelDesc,
+        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+        channelAction: AndroidNotificationChannelAction.createIfNotExists,
+        enableLights: true,
+        importance: Importance.max,
+        fullScreenIntent: true,
+        enableVibration: true,
+        priority: Priority.high,
+        playSound: true,
+        usesChronometer: true,
+        indeterminate: true,
+        autoCancel: false,
+        visibility: NotificationVisibility.public,
+        styleInformation: DefaultStyleInformation(true, true),
+      );
+
       var platformChannelSpecifics =
           NotificationDetails(android: androidChannelSpecifics);
 
-      await flutterLocalNotificationsPlugin.schedule(0, message.toUpperCase(),
-          messageBody, notificationDate, platformChannelSpecifics,
-          payload: "Payload schedule");
+      await flutterLocalNotificationsPlugin.schedule(
+        0,
+        message.toUpperCase(),
+        messageBody,
+        notificationDate,
+        platformChannelSpecifics,
+        payload: "Payload schedule",
+      );
     } on Failure catch (e) {
-      print(e.message);
+      throw Failure(e.message);
     }
   }
 }

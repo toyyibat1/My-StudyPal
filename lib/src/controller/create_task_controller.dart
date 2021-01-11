@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/models/task.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -108,9 +109,23 @@ class CreateTaskController extends Notifier with ValidationMixin {
           startTime: _pickedStartTime,
         );
 
-        await Get.find<DatabaseService>().createTask(params);
+        Task task = await Get.find<DatabaseService>().createTask(params);
+
+        DateTime a = DateTime(
+          params.date.year,
+          params.date.month,
+          params.date.day,
+          params.startTime.hour,
+          params.startTime.minute,
+        );
+
+        task.timestamp.nanoseconds;
         await notificationPlugin.scheduleNotification(
-            params.name, params.description, params.date, 'Task Reminder');
+          params.name,
+          params.description,
+          a,
+          'Task Reminder',
+        );
 
         setState(NotifierState.isIdle);
 
