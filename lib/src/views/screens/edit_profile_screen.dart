@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/views/widgets/image_picker.dart';
 
 import '../../controller/edit_profile_controller.dart';
 import '../../core/constants.dart';
@@ -83,41 +80,41 @@ class EditProfileScreen extends StatelessWidget {
                 //     ?? controller.imageController,
                 //     style: kHeadingTextStyle,
                 //   ),),
-                   Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Color(0xff102A67),
-                      child: ClipOval(
-                        child: new SizedBox(
-                          width: 150.0,
-                          height: 150.0,
-                          child: Image.file((controller.image), fit: BoxFit.cover) ?? Text(
-                            controller.user.firstName[0],
-                            style: kHeadingTextStyle,
-                          )
-                        ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        radius: 80,
+                        backgroundColor: Color(0xff102A67),
+                        child: ClipOval(
+                          child: new SizedBox(
+                              width: 150.0,
+                              height: 150.0,
+                              child: Image.file((controller.image),
+                                      fit: BoxFit.cover) ??
+                                  Text(
+                                    controller.user.firstName[0],
+                                    style: kHeadingTextStyle,
+                                  )),
                         ),
                       ),
                     ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 60.0),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.camera_alt_rounded,
-                        size: 30.0,
-                      ),
-                      onPressed:  controller.getImage
+                    Padding(
+                      padding: EdgeInsets.only(top: 60.0),
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.camera_alt_rounded,
+                            size: 30.0,
+                          ),
+                          onPressed: controller.getImage),
                     ),
-                  ),
-                ],
-                   ),
+                  ],
+                ),
                 kMediumVerticalSpacing,
                 AppTextField(
-                  text: 'FIrst Name',
+                  text: 'First Name',
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
                   controller: controller.firstNameController,
