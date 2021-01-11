@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/core/dateTimeUtils.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -104,7 +105,7 @@ class EditTaskController extends Notifier with ValidationMixin {
 
   void goBack() => Get.back();
 
-  void updateTask(String taskId) async {
+  Future<void> updateTask(String taskId) async {
     Get.focusScope.unfocus();
 
     if (_formKey.currentState.validate()) {
@@ -122,8 +123,18 @@ class EditTaskController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().updateTask(taskId, params);
-        await notificationPlugin.scheduleNotification(
-            params.name, params.description, params.date, 'Task Reminder');
+        int id = task.timestamp.nanoseconds;
+//        cancels start notification
+        await notificationPlugin.cancelNotification(id);
+        //        cancels end notification
+        await notificationPlugin.cancelNotification(id + 1);
+
+//        updates start notification
+        await notificationPlugin.scheduleNotification(id, params.name,
+            params.description, startTimeTask(date, params), 'Task Reminder');
+        //       updates end notification
+        await notificationPlugin.scheduleNotification(id + 1, params.name,
+            params.description, endTimeTask(date, params), 'Task Reminder');
 
         setState(NotifierState.isIdle);
 

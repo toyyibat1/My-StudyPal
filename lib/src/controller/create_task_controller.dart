@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:my_study_pal/src/models/task.dart';
 
+import '../core/dateTimeUtils.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/task.dart';
 import '../models/task_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database_service/database_service.dart';
@@ -111,19 +112,23 @@ class CreateTaskController extends Notifier with ValidationMixin {
 
         Task task = await Get.find<DatabaseService>().createTask(params);
 
-        DateTime a = DateTime(
-          params.date.year,
-          params.date.month,
-          params.date.day,
-          params.startTime.hour,
-          params.startTime.minute,
-        );
+        int id = task.timestamp.nanoseconds;
 
-        task.timestamp.nanoseconds;
+        // Creates start notification
         await notificationPlugin.scheduleNotification(
+          id,
           params.name,
           params.description,
-          a,
+          startTimeTask(date, params),
+          'Task Reminder',
+        );
+
+        // Creates end notification
+        await notificationPlugin.scheduleNotification(
+          id + 1,
+          params.name + ", Deadline Reached",
+          params.description,
+          endTimeTask(date, params),
           'Task Reminder',
         );
 

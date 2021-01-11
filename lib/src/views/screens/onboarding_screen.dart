@@ -131,6 +131,8 @@ class OnboardingScreen extends StatelessWidget {
                   label: "Get Started",
                   color: kPrimaryColor,
                   textColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 64),
                   onPressed: controller.signUp,
                 )
               ],

@@ -76,7 +76,7 @@ class TimetableInfoScreen extends StatelessWidget {
                 ),
 //          Spacer(),
                 GetBuilder<TimetableInfoController>(
-                  init: TimetableInfoController(onGoBackCallback),
+                  init: TimetableInfoController(onGoBackCallback, timetable),
                   builder: (controller) => Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 16),
@@ -84,7 +84,6 @@ class TimetableInfoScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: AppButton(
-                            padding: 0,
                             label: 'Delete',
                             color: kPrimaryColor,
                             isLoading:
@@ -99,7 +98,6 @@ class TimetableInfoScreen extends StatelessWidget {
                         kMediumHorizontalSpacing,
                         Expanded(
                           child: AppButton(
-                            padding: 0,
                             label: 'Edit',
                             onPressed: () =>
                                 controller.navigateToEditTimetable(timetable),

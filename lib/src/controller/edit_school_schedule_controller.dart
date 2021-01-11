@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
+import 'package:my_study_pal/src/core/dateTimeUtils.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -11,7 +13,6 @@ import '../models/school_schedule.dart';
 import '../models/school_schedule_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database_service/database_service.dart';
-import 'local_notification_controller.dart';
 
 class EditSchoolScheduleController extends Notifier with ValidationMixin {
   EditSchoolScheduleController(this.schedule);
@@ -100,11 +101,26 @@ class EditSchoolScheduleController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().updateSchedule(scheduleId, params);
+        int id = schedule.timestamp.nanoseconds;
+//         Cancels start schedule
+        await notificationPlugin.cancelNotification(id);
+//              Cancels end schedule
+        await notificationPlugin.cancelNotification(id + 2);
+//        Creates new start schedule
         await notificationPlugin.scheduleNotification(
+            id,
+            'Hey padi, you have a new  Schedule ',
             params.name,
-            params.startOfSemester.toString(),
-            params.startOfSemester,
-            'Schedule Reminder');
+            startSchoolSchedule(params),
+            'School Schedule Reminder');
+
+//         Creates new end schedule
+        await notificationPlugin.scheduleNotification(
+            id,
+            'Hey padi, your Schedule deadline has been reached ',
+            params.name,
+            endSchoolSchedule(params),
+            'School Schedule Reminder');
 
         setState(NotifierState.isIdle);
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/core/dateTimeUtils.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -71,7 +72,6 @@ class FocusModeController extends Notifier with ValidationMixin {
     setState(NotifierState.isIdle);
   }
 
-  @override
   void updateUI() async {
     int filter = await FlutterDnd.getCurrentInterruptionFilter();
     String filterName = FlutterDnd.getFilterName(filter);
@@ -106,19 +106,20 @@ class FocusModeController extends Notifier with ValidationMixin {
 
         if (focusModeToggle) {
           if (await FlutterDnd.isNotificationPolicyAccessGranted) {
-            if (TimeOfDay.now() == params.startTime) {
-              setInterruptionFilter(FlutterDnd
-                  .INTERRUPTION_FILTER_NONE); //       Turn on DND - All notifications are suppressed.
+//            if (DateTime.now() == startTimeFocusMode(date, params)) {
+            setInterruptionFilter(FlutterDnd
+                .INTERRUPTION_FILTER_NONE); //Turn on DND - All notifications are suppressed.
 
-            } else if (TimeOfDay.now() == params.endTime) {
-              setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
-            }
-          } else {
-            FlutterDnd.gotoPolicySettings();
+          } else if (DateTime.now() == endTimeFocusMode(params)) {
+            setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
           }
         } else {
-          setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+          FlutterDnd.gotoPolicySettings();
         }
+//        }
+//        else {
+//          setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+//        }
         setState(NotifierState.isIdle);
         Get.back();
       } on Failure catch (f) {

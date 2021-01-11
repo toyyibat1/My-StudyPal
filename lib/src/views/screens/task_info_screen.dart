@@ -76,7 +76,7 @@ class TaskInfoScreen extends StatelessWidget {
                   ),
                 ),
                 GetBuilder<TaskInfoController>(
-                  init: TaskInfoController(onGoBackCallback),
+                  init: TaskInfoController(onGoBackCallback, task),
                   builder: (controller) => Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 16),
@@ -84,7 +84,6 @@ class TaskInfoScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: AppButton(
-                            padding: 0,
                             label: 'Delete',
                             color: kPrimaryColor,
                             isLoading:
@@ -99,7 +98,6 @@ class TaskInfoScreen extends StatelessWidget {
                         kMediumHorizontalSpacing,
                         Expanded(
                           child: AppButton(
-                            padding: 0,
                             label: 'Edit',
                             onPressed: () =>
                                 controller.navigateToEditTask(task),
