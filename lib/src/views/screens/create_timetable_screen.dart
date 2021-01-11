@@ -143,7 +143,7 @@ class CreateTimetableScreen extends StatelessWidget {
                 Row(
                   children: [
                     Radio(
-                      value: 5000,
+                      value: 0,
                       groupValue: controller.radioValue,
                       onChanged: (int rVal) {
                         controller.changeRadio(rVal);
@@ -180,16 +180,11 @@ class CreateTimetableScreen extends StatelessWidget {
                 AppButton(
                   label: 'Create Timetable',
                   color: kPrimaryColor,
-//                  isLoading: controller.state == NotifierState.isLoading,
+                  isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,
                   onPressed: controller.state == NotifierState.isLoading
                       ? null
                       : controller.createTimetable,
-//                  onPressed: () async {
-//                    await notificationPlugin.showNotification('message here');
-//                    await notificationPlugin.scheduleNotification();
-//                    await notificationPlugin.scheduleNotification();
-//                  },
                 ),
               ],
             ),

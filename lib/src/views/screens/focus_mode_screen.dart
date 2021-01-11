@@ -7,12 +7,7 @@ import 'package:my_study_pal/src/views/widgets/app_textfield.dart';
 
 import '../../core/constants.dart';
 
-class FocusModeScreen extends StatefulWidget {
-  @override
-  _FocusModeScreenState createState() => _FocusModeScreenState();
-}
-
-class _FocusModeScreenState extends State<FocusModeScreen> {
+class FocusModeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
