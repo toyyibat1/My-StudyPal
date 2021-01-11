@@ -36,9 +36,12 @@ class FirebaseAuthService implements AuthService {
         email: params.emailAddress,
         password: params.password,
       );
-
-      // Get user id to create a custom user object in firestore
-      String userId = userCredential.user.uid;
+     
+     try {
+        await userCredential.user.sendEmailVerification();
+        // Get user id to create a custom user object in firestore
+        print("email verified");
+       String userId = userCredential.user.uid;
 
       await FirebaseFirestoreService().createUserWithId(
         userId,
@@ -48,6 +51,11 @@ class FirebaseAuthService implements AuthService {
       );
 
       return await FirebaseFirestoreService().getUserWithId(userId);
+        
+     } catch (e) {
+        print("An error occured while trying to send email verification");
+        print(e.message);
+     }  
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'email-already-in-use') {
         throw Failure('Email Address is Already Registered');
@@ -68,6 +76,10 @@ class FirebaseAuthService implements AuthService {
         password: params.password,
       );
 
+     if (userCredential.user.emailVerified) 
+      //return await userCredential.uid;
+      return null;
+     
       String userId = userCredential.user.uid;
 
       return await FirebaseFirestoreService().getUserWithId(userId);
