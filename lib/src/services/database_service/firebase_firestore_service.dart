@@ -399,7 +399,7 @@ class FirebaseFirestoreService implements DatabaseService {
   @override
   Future<FocusMode> createFocusMode(FocusModeParams params) async {
     User user = FirebaseAuth.instance.currentUser;
-    DateTime startTime = startTimeFocusMode(date, params);
+    DateTime startTime = startTimeFocusMode(params);
     DateTime endTime = endTimeFocusMode(params);
 
     DocumentReference reference =

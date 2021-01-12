@@ -17,7 +17,7 @@ class NotificationPlugin {
 
   void initializePlatformSpecifics() {
     var initializationSettingAndroid =
-        AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('app_logo');
 
     initializationSettings =
         InitializationSettings(android: initializationSettingAndroid);
@@ -60,8 +60,12 @@ class NotificationPlugin {
       var platformChannelSpecifics =
           NotificationDetails(android: androidChannelSpecifics);
       await flutterLocalNotificationsPlugin.show(
-          0, 'Hey ' + message + ',', messageBody, platformChannelSpecifics,
-          payload: "Test Payload");
+        0,
+        'Hey ' + message + ',',
+        messageBody,
+        platformChannelSpecifics,
+        payload: "Test Payload",
+      );
     } on Failure catch (e) {
       print(e.message);
     }
@@ -107,7 +111,6 @@ class NotificationPlugin {
         channelDesc,
         largeIcon: DrawableResourceAndroidBitmap('app_logo'),
         channelAction: AndroidNotificationChannelAction.createIfNotExists,
-        enableLights: true,
         importance: Importance.max,
         enableVibration: true,
         priority: Priority.high,
@@ -117,8 +120,9 @@ class NotificationPlugin {
         visibility: NotificationVisibility.public,
         styleInformation: DefaultStyleInformation(true, true),
       );
-      var platformChannelSpecifics =
-          NotificationDetails(android: androidChannelSpecifics);
+      var platformChannelSpecifics = NotificationDetails(
+        android: androidChannelSpecifics,
+      );
 
       await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
         id,
@@ -130,7 +134,7 @@ class NotificationPlugin {
         payload: "Payload schedule",
       );
     } on Failure catch (e) {
-      print(e.message);
+      throw Failure(e.message);
     }
   }
 
