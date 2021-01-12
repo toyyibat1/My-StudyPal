@@ -44,14 +44,13 @@ class NotificationPlugin {
         'Reminder',
         'Reminder',
         channelDesc,
-        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
+        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
         channelAction: AndroidNotificationChannelAction.createIfNotExists,
         enableLights: true,
         importance: Importance.max,
         enableVibration: true,
         priority: Priority.high,
         playSound: true,
-        usesChronometer: true,
         indeterminate: true,
         autoCancel: true,
         visibility: NotificationVisibility.public,
@@ -62,8 +61,8 @@ class NotificationPlugin {
       await flutterLocalNotificationsPlugin.show(
           0, 'Hey ' + message + ',', messageBody, platformChannelSpecifics,
           payload: "Test Payload");
-    } on Failure catch (e) {
-      print(e.message);
+    } catch (e) {
+      throw Failure(e.message);
     }
   }
 
@@ -74,7 +73,7 @@ class NotificationPlugin {
         'MyStudyPadi',
         'Reminder',
         channelDesc,
-        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
+        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
         channelAction: AndroidNotificationChannelAction.createIfNotExists,
         enableLights: true,
         importance: Importance.max,
@@ -92,7 +91,7 @@ class NotificationPlugin {
       await flutterLocalNotificationsPlugin.schedule(id, message.toUpperCase(),
           messageBody, notificationDate, platformChannelSpecifics,
           payload: "Payload schedule");
-    } on Failure catch (e) {
+    } catch (e) {
       throw Failure(e.message);
     }
   }
@@ -105,7 +104,7 @@ class NotificationPlugin {
         'MyStudyPadi',
         'Reminder',
         channelDesc,
-        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
+        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
         channelAction: AndroidNotificationChannelAction.createIfNotExists,
         enableLights: true,
         importance: Importance.max,
@@ -129,8 +128,8 @@ class NotificationPlugin {
         platformChannelSpecifics,
         payload: "Payload schedule",
       );
-    } on Failure catch (e) {
-      print(e.message);
+    } catch (e) {
+      throw Failure(e.message);
     }
   }
 
