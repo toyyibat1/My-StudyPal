@@ -94,9 +94,7 @@ class SigninScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GestureDetector(
-                onTap: () {
-                  controller.forgotPassword();
-                },
+                onTap: controller.forgotPasswordScreen,
                 child: Text(
                   'Forgot Password?',
                   textAlign: TextAlign.right,

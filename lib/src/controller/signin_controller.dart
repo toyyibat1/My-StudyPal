@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/models/forgot_password_params.dart';
 import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
+import 'package:my_study_pal/src/views/screens/forgot_password.dart';
+import 'package:my_study_pal/src/views/screens/signin_screen.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -20,6 +23,7 @@ class SigninController extends Notifier with ValidationMixin {
 
   final _formKey = GlobalKey<FormState>();
   TapGestureRecognizer _createAccount;
+  TapGestureRecognizer _forgotPassword;
 
   bool get obscureText => _obscureText;
   Icon get icon => _icon;
@@ -27,6 +31,7 @@ class SigninController extends Notifier with ValidationMixin {
   TextEditingController get passwordController => _passwordController;
 
   TapGestureRecognizer get createAccount => _createAccount;
+  TapGestureRecognizer get forgotPassword => _forgotPassword;
   GlobalKey<FormState> get formKey => _formKey;
 
   @override
@@ -81,5 +86,32 @@ class SigninController extends Notifier with ValidationMixin {
     }
   }
 
-  void forgotPassword() async {}
+  void forgotPasswordScreen() {
+    Get.off(ForgotPasswordScreen());
+  }
+  // void forgotPassword() async {
+  //   String emailAddress;
+  //  // setState(NotifierState.isLoading);
+  //   try{
+  //     await Get.find<DataConnectionService>().checkConnection();
+
+  //     ForgotPasswordParams params = ForgotPasswordParams(emailAddress: _emailAddressController.text.trim());
+  //     await Get.find<AuthService>().forgotPassword(params);
+
+  //    // setState(NotifierState.isIdle);
+  //     Get.snackbar('Check Email', "Please Check your email to reset your password",
+  //     colorText: Get.theme.colorScheme.onError,
+  //     backgroundColor: Get.theme.primaryColor,
+  //     snackPosition: SnackPosition.BOTTOM,);
+  //     Get.off(SigninScreen());
+  //   } on Failure catch(e){
+  //    // setState(NotifierState.isIdle);
+  //     Get.snackbar('Error',
+  //     e.message,
+  //     colorText: Get.theme.colorScheme.onError,
+  //     backgroundColor: Get.theme.errorColor,
+  //     snackPosition: SnackPosition.BOTTOM,);
+  //   }
+  // }
+
 }
