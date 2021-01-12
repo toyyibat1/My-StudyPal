@@ -20,7 +20,12 @@ class TimetableInfoController extends Notifier {
     setState(NotifierState.isLoading);
     try {
       int id = timetable.timestamp.nanoseconds;
+
+      // cancels before start notification
       await notificationPlugin.cancelNotification(id);
+      // cancels start notification
+      await notificationPlugin.cancelNotification(id + 4);
+
       await Get.find<DatabaseService>().deleteTimetable(timetableId);
 
       setState(NotifierState.isIdle);

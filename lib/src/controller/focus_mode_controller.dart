@@ -81,7 +81,7 @@ class FocusModeController extends Notifier with ValidationMixin {
     filterName = filterName;
   }
 
-  void setInterruptionFilter(int filter) async {
+  Future<void> setInterruptionFilter(int filter) async {
     if (await FlutterDnd.isNotificationPolicyAccessGranted) {
       await FlutterDnd.setInterruptionFilter(filter);
       updateUI();
@@ -106,20 +106,21 @@ class FocusModeController extends Notifier with ValidationMixin {
 
         if (focusModeToggle) {
           if (await FlutterDnd.isNotificationPolicyAccessGranted) {
-//            if (DateTime.now() == startTimeFocusMode(date, params)) {
-            setInterruptionFilter(FlutterDnd
-                .INTERRUPTION_FILTER_NONE); //Turn on DND - All notifications are suppressed.
+            if (DateTime(DateTime.now().hour, DateTime.now().minute) ==
+                startTimeFocusMode(params)) {
+              await setInterruptionFilter(FlutterDnd
+                  .INTERRUPTION_FILTER_NONE); //Turn on DND - All notifications are suppressed.
 
-          } else if (DateTime.now() == endTimeFocusMode(params)) {
-            setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+            } else if (DateTime(DateTime.now().hour, DateTime.now().minute) ==
+                endTimeFocusMode(params)) {
+              setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+            }
+          } else {
+            FlutterDnd.gotoPolicySettings();
           }
         } else {
-          FlutterDnd.gotoPolicySettings();
+          setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
         }
-//        }
-//        else {
-//          setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
-//        }
         setState(NotifierState.isIdle);
         Get.back();
       } on Failure catch (f) {

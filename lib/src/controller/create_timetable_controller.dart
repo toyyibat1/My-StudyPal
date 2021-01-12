@@ -122,13 +122,17 @@ class CreateTimetableController extends Notifier with ValidationMixin {
         int id = timetable.timestamp.nanoseconds;
 
         TimeOfDay startTime;
-
+//Before Start time
         if (_radioValue == 0) {
           startTime = plusMinutes(params.startTime, 16);
         } else if (_radioValue == 1) {
           startTime = plusMinutes(params.startTime, 31);
-        } else {
+        } else if (_radioValue == 2) {
           startTime = plusMinutes(params.startTime, 61);
+        } else if (_radioValue.isNull) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else {
+          startTime = plusMinutes(params.startTime, 0);
         }
 
         await notificationPlugin.weeklyNotification(
@@ -140,6 +144,24 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           'Timetable Reminder',
         );
 
+// Exact Start time
+        if (_radioValue == 0) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else if (_radioValue == 1) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else if (_radioValue == 2) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else {
+          startTime = plusMinutes(params.startTime, 0);
+        }
+        await notificationPlugin.weeklyNotification(
+          id + 4,
+          params.day,
+          params.subject,
+          startDayTimeTable(params),
+          startTimeTimetable(startTime),
+          'Timetable Reminder',
+        );
         setState(NotifierState.isIdle);
 
         Get.back();
