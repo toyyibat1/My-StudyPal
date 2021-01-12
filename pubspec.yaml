@@ -37,6 +37,7 @@ dependencies:
   path_provider: ^1.6.11
   http: ^0.12.1
   share: ^0.6.5+4
+  timezone: ^0.5.9
 
 dev_dependencies:
   flutter_test:

@@ -17,7 +17,7 @@ class NotificationPlugin {
 
   void initializePlatformSpecifics() {
     var initializationSettingAndroid =
-        AndroidInitializationSettings('app_icon');
+        AndroidInitializationSettings('app_logo');
 
     initializationSettings =
         InitializationSettings(android: initializationSettingAndroid);
@@ -44,7 +44,7 @@ class NotificationPlugin {
         'Reminder',
         'Reminder',
         channelDesc,
-        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
         channelAction: AndroidNotificationChannelAction.createIfNotExists,
         enableLights: true,
         importance: Importance.max,
@@ -59,10 +59,14 @@ class NotificationPlugin {
       var platformChannelSpecifics =
           NotificationDetails(android: androidChannelSpecifics);
       await flutterLocalNotificationsPlugin.show(
-          0, 'Hey ' + message + ',', messageBody, platformChannelSpecifics,
-          payload: "Test Payload");
-    } catch (e) {
-      throw Failure(e.message);
+        0,
+        'Hey ' + message + ',',
+        messageBody,
+        platformChannelSpecifics,
+        payload: "Test Payload",
+      );
+    } on Failure catch (e) {
+      print(e.message);
     }
   }
 
@@ -73,7 +77,7 @@ class NotificationPlugin {
         'MyStudyPadi',
         'Reminder',
         channelDesc,
-        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
         channelAction: AndroidNotificationChannelAction.createIfNotExists,
         enableLights: true,
         importance: Importance.max,
@@ -91,7 +95,7 @@ class NotificationPlugin {
       await flutterLocalNotificationsPlugin.schedule(id, message.toUpperCase(),
           messageBody, notificationDate, platformChannelSpecifics,
           payload: "Payload schedule");
-    } catch (e) {
+    } on Failure catch (e) {
       throw Failure(e.message);
     }
   }
@@ -104,9 +108,8 @@ class NotificationPlugin {
         'MyStudyPadi',
         'Reminder',
         channelDesc,
-        largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+        largeIcon: DrawableResourceAndroidBitmap('app_logo'),
         channelAction: AndroidNotificationChannelAction.createIfNotExists,
-        enableLights: true,
         importance: Importance.max,
         enableVibration: true,
         priority: Priority.high,
@@ -116,8 +119,9 @@ class NotificationPlugin {
         visibility: NotificationVisibility.public,
         styleInformation: DefaultStyleInformation(true, true),
       );
-      var platformChannelSpecifics =
-          NotificationDetails(android: androidChannelSpecifics);
+      var platformChannelSpecifics = NotificationDetails(
+        android: androidChannelSpecifics,
+      );
 
       await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
         id,
@@ -128,7 +132,7 @@ class NotificationPlugin {
         platformChannelSpecifics,
         payload: "Payload schedule",
       );
-    } catch (e) {
+    } on Failure catch (e) {
       throw Failure(e.message);
     }
   }

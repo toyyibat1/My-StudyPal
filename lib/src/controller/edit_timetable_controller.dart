@@ -104,15 +104,19 @@ class EditTimetableController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().updateTimetable(timetableId, params);
+
         int id = timetable.timestamp.nanoseconds;
+
         await notificationPlugin.cancelNotification(id);
+
         await notificationPlugin.weeklyNotification(
-            id,
-            params.day,
-            params.subject,
-            startDayTimeTable(day, params),
-            startTimeTimetable(time, params),
-            'Timetable Reminder');
+          id,
+          params.day,
+          params.subject,
+          startDayTimeTable(params),
+          startTimeTimetable(params.startTime),
+          'Timetable Reminder',
+        );
         setState(NotifierState.isIdle);
 
         Get.back();

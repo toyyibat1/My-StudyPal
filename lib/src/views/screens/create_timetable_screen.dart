@@ -140,6 +140,7 @@ class CreateTimetableScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                kSmallVerticalSpacing,
                 Row(
                   children: [
                     Radio(
@@ -193,6 +194,4 @@ class CreateTimetableScreen extends StatelessWidget {
       ),
     );
   }
-
-  onNotificationClick(String payload) {}
 }
