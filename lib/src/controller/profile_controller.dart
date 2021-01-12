@@ -8,7 +8,9 @@ import '../core/validation_mixin.dart';
 import '../models/app_user.dart';
 import '../services/auth_service/auth_service.dart';
 import '../views/screens/badges_screen.dart';
+import '../views/screens/create_account_screen.dart';
 import '../views/screens/edit_profile_screen.dart';
+import '../views/screens/focus_mode_screen.dart';
 import '../views/screens/invite_friends_screen.dart';
 import '../views/screens/school_schedule_screen.dart';
 import '../views/screens/signin_screen.dart';
@@ -53,8 +55,20 @@ class ProfileController extends Notifier with ValidationMixin {
 
   void navigateToInviteFriendScreen() => Get.to(InviteFriendScreen());
 
+  void navigateToFocusModeScreen() => Get.to(FocusModeScreen());
+
   void signOut() async {
     await Get.find<AuthService>().signOut();
     Get.off(SigninScreen());
+  }
+
+  void signOutWithGoogle() async {
+    await Get.find<AuthService>().signOutWithGoogle();
+    Get.off(CreateAccountScreen());
+  }
+
+  void signOutWithFacebook() async {
+    await Get.find<AuthService>().signOutWithFacebook();
+    Get.off(CreateAccountScreen());
   }
 }

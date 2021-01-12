@@ -95,8 +95,12 @@ class SignupScreen extends StatelessWidget {
             textInputAction: TextInputAction.done,
             text: 'Password',
             controller: controller.passwordController,
-            obscureText: true,
+            obscureText: controller.obscureText,
             validator: controller.validatePassword,
+            suffixIcon: GestureDetector(
+              onTap: () => controller.toggle(),
+              child: controller.icon,
+            ),
           ),
           kLargeVerticalSpacing,
           AppButton(

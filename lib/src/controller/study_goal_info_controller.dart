@@ -1,14 +1,16 @@
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../models/study_goal.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 import '../views/screens/edit_study_goal_screen.dart';
 
 class StudyGoalInfoController extends Notifier {
-  StudyGoalInfoController(this.onGoBackCallback);
+  StudyGoalInfoController(this.onGoBackCallback, this.studyGoal);
   final Function onGoBackCallback;
+  final StudyGoal studyGoal;
 
   void navigateToEditStudyGoal(StudyGoal studyGoal) => Get.off(
         EditStudyGoalScreen(studyGoal: studyGoal),
@@ -17,6 +19,8 @@ class StudyGoalInfoController extends Notifier {
   void deleteStudyGoal(String studyGoalId) async {
     setState(NotifierState.isLoading);
     try {
+      int id = studyGoal.timestamp.nanoseconds;
+      await notificationPlugin.cancelNotification(id);
       await Get.find<DatabaseService>().deleteStudyGoal(studyGoalId);
 
       setState(NotifierState.isIdle);

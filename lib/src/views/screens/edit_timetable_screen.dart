@@ -146,7 +146,7 @@ class EditTimetableScreen extends StatelessWidget {
                 ),
                 kLargeVerticalSpacing,
                 AppButton(
-                  label: 'Edit Timetable',
+                  label: 'Update Timetable',
                   color: kPrimaryColor,
                   isLoading: controller.state == NotifierState.isLoading,
                   textColor: Colors.white,

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../models/school_schedule.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 import '../views/screens/create_school_schedule_screen.dart';
 import '../views/screens/school_schedule_info_screen.dart';
 
@@ -48,9 +48,12 @@ class SchoolScheduleController extends Notifier {
       Get.to(CreateSchoolScheduleScreen()).then(onGoBack);
 
   void openScheduleInfoScreen(SchoolSchedule schedule) {
-    Get.bottomSheet(SchoolScheduleInfoScreen(
-      schedule: schedule,
-      onGoBackCallback: onGoBack,
-    )).then((onGoBack));
+    Get.bottomSheet(
+      SchoolScheduleInfoScreen(
+        schedule: schedule,
+        onGoBackCallback: onGoBack,
+      ),
+      isScrollControlled: true,
+    ).then((onGoBack));
   }
 }

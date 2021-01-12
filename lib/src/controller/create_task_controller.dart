@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../core/dateTimeUtils.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/task.dart';
 import '../models/task_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
+import 'local_notification_controller.dart';
 
 class CreateTaskController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;
@@ -107,7 +110,27 @@ class CreateTaskController extends Notifier with ValidationMixin {
           startTime: _pickedStartTime,
         );
 
-        await Get.find<DatabaseService>().createTask(params);
+        Task task = await Get.find<DatabaseService>().createTask(params);
+
+        int id = task.timestamp.nanoseconds;
+
+        // Creates start notification
+        await notificationPlugin.scheduleNotification(
+          id,
+          params.name,
+          params.description,
+          startTimeTask(params),
+          'Task Reminder',
+        );
+
+        // Creates end notification
+        await notificationPlugin.scheduleNotification(
+          id + 1,
+          params.name + ", Deadline Reached",
+          params.description,
+          endTimeTask(params),
+          'Task Reminder',
+        );
 
         setState(NotifierState.isIdle);
 

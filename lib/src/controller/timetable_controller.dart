@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../models/timetable.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 import '../views/screens/create_timetable_screen.dart';
 import '../views/screens/timetable_info_screen.dart';
 
@@ -48,9 +48,12 @@ class TimetableController extends Notifier {
       Get.to(CreateTimetableScreen()).then(onGoBack);
 
   void openTimetableInfoScreen(Timetable timetable) {
-    Get.bottomSheet(TimetableInfoScreen(
-      timetable: timetable,
-      onGoBackCallback: onGoBack,
-    )).then((onGoBack));
+    Get.bottomSheet(
+      TimetableInfoScreen(
+        timetable: timetable,
+        onGoBackCallback: onGoBack,
+      ),
+      isScrollControlled: true,
+    ).then((onGoBack));
   }
 }

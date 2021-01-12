@@ -1,8 +1,9 @@
-import 'package:my_study_pal/src/models/study_goal.dart';
-
 import '../../models/app_user.dart';
+import '../../models/focus_mode.dart';
+import '../../models/focus_mode_params.dart';
 import '../../models/school_schedule.dart';
 import '../../models/school_schedule_params.dart';
+import '../../models/study_goal.dart';
 import '../../models/study_goal_params.dart';
 import '../../models/task.dart';
 import '../../models/task_params.dart';
@@ -15,12 +16,17 @@ abstract class DatabaseService {
   Future<void> createUserWithId(String userId,
       {String emailAddress, String firstName, String lastName});
 
+  Future<void> createUserWithGoogle(String userId,
+      {String emailAddress, String firstName, String lastName});
+
   Future<void> updateUserWithId(
     String userId, {
     String firstName,
     String lastName,
     String institution,
     String course,
+    String photoUrl,
+    String name,
   });
 
   // task
@@ -56,7 +62,7 @@ abstract class DatabaseService {
 
   Future<List<SchoolSchedule>> getAllSchedules();
 
-  //Study Goals
+  // Study Goals
   Future<StudyGoal> createStudyGoal(StudyGoalParams params);
 
   Future<void> updateStudyGoal(String scheduleId, StudyGoalParams params);
@@ -64,4 +70,7 @@ abstract class DatabaseService {
   Future<void> deleteStudyGoal(String scheduleId);
 
   Future<List<StudyGoal>> getAllStudyGoals();
+
+  // focus mode
+  Future<FocusMode> createFocusMode(FocusModeParams params);
 }

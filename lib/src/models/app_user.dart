@@ -7,6 +7,7 @@ class AppUser {
   final String lastName;
   final String institution;
   final String course;
+  final String photoUrl;
 
   AppUser({
     this.id,
@@ -15,6 +16,7 @@ class AppUser {
     this.lastName,
     this.institution,
     this.course,
+    this.photoUrl,
   });
 
   factory AppUser.fromDocumentSnapshot(DocumentSnapshot snapshot) => AppUser(
@@ -24,5 +26,6 @@ class AppUser {
         lastName: snapshot.data()['lastName'] ?? '',
         institution: snapshot.data()['institution'] ?? '',
         course: snapshot.data()['course'] ?? '',
+        photoUrl: snapshot.data()['photoUrl'] ?? '',
       );
 }

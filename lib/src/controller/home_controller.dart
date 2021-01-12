@@ -2,6 +2,7 @@ import '../core/notifier.dart';
 import '../models/app_user.dart';
 
 class HomeController extends Notifier {
+  // final User user1;
   final AppUser user;
   HomeController({this.user});
 

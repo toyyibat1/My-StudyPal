@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../core/dateTimeUtils.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
 import '../models/task.dart';
 import '../models/task_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
+import 'local_notification_controller.dart';
 
 class EditTaskController extends Notifier with ValidationMixin {
   EditTaskController(this.task);
@@ -103,7 +105,7 @@ class EditTaskController extends Notifier with ValidationMixin {
 
   void goBack() => Get.back();
 
-  void updateTask(String taskId) async {
+  Future<void> updateTask(String taskId) async {
     Get.focusScope.unfocus();
 
     if (_formKey.currentState.validate()) {
@@ -121,6 +123,29 @@ class EditTaskController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().updateTask(taskId, params);
+        int id = task.timestamp.nanoseconds;
+
+        // cancels start notification
+        await notificationPlugin.cancelNotification(id);
+        // cancels end notification
+        await notificationPlugin.cancelNotification(id + 1);
+
+        // updates start notification
+        await notificationPlugin.scheduleNotification(
+          id,
+          params.name,
+          params.description,
+          startTimeTask(params),
+          'Task Reminder',
+        );
+        // updates end notification
+        await notificationPlugin.scheduleNotification(
+          id + 1,
+          params.name,
+          params.description,
+          endTimeTask(params),
+          'Task Reminder',
+        );
 
         setState(NotifierState.isIdle);
 

@@ -1,15 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../core/failure.dart';
 import '../../models/app_user.dart';
+import '../../models/forgot_password_params.dart';
 import '../../models/signin_params.dart';
 import '../../models/signup_params.dart';
 import '../../models/update_user_params.dart';
-import '../database/firebase_firestore_service.dart';
+import '../database_service/firebase_firestore_service.dart';
 import 'auth_service.dart';
 
 class FirebaseAuthService implements AuthService {
   final _auth = FirebaseAuth.instance;
+  final _facebookAuth = FacebookAuth.instance;
+  final _googleAuth = GoogleSignIn();
 
   @override
   Future<AppUser> getAuthenticatedUser() async {
@@ -30,9 +36,12 @@ class FirebaseAuthService implements AuthService {
         email: params.emailAddress,
         password: params.password,
       );
-
-      // Get user id to create a custom user object in firestore
-      String userId = userCredential.user.uid;
+     
+     try {
+        await userCredential.user.sendEmailVerification();
+        // Get user id to create a custom user object in firestore
+        print("email verified");
+       String userId = userCredential.user.uid;
 
       await FirebaseFirestoreService().createUserWithId(
         userId,
@@ -42,6 +51,11 @@ class FirebaseAuthService implements AuthService {
       );
 
       return await FirebaseFirestoreService().getUserWithId(userId);
+        
+     } catch (e) {
+        print("An error occured while trying to send email verification");
+        print(e.message);
+     }  
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'email-already-in-use') {
         throw Failure('Email Address is Already Registered');
@@ -62,6 +76,10 @@ class FirebaseAuthService implements AuthService {
         password: params.password,
       );
 
+     if (userCredential.user.emailVerified) 
+      //return await userCredential.uid;
+      return null;
+     
       String userId = userCredential.user.uid;
 
       return await FirebaseFirestoreService().getUserWithId(userId);
@@ -82,14 +100,22 @@ class FirebaseAuthService implements AuthService {
     try {
       User user = _auth.currentUser;
 
-      await FirebaseFirestoreService().updateUserWithId(
-        user.uid,
-        firstName: params.firstName,
-        lastName: params.lastName,
-        course: params.course,
-        institution: params.institution,
-      );
+      await FirebaseFirestoreService().updateUserWithId(user.uid,
+          firstName: params.firstName,
+          lastName: params.lastName,
+          course: params.course,
+          institution: params.institution,
+          photoUrl: params.photoUrl);
     } on FirebaseAuthException catch (ex) {
+      throw Failure(ex.message);
+    }
+  }
+
+  @override
+  Future<void> forgotPassword(ForgotPasswordParams params) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: params.emailAddress);
+    } catch (ex) {
       throw Failure(ex.message);
     }
   }
@@ -100,6 +126,174 @@ class FirebaseAuthService implements AuthService {
       return await _auth.signOut();
     } on FirebaseAuthException {
       throw Failure('Something went wrong');
+    }
+  }
+
+  @override
+  Future<void> signOutWithFacebook() async {
+    try {
+      return await FacebookAuth.instance.logOut();
+    } on Exception {
+      throw Failure('Something went wrong');
+    }
+  }
+
+  @override
+  Future<void> signOutWithGoogle() async {
+    try {
+      return await _googleAuth.signOut();
+    } on Exception {
+      throw Failure('Something went wrong');
+    }
+  }
+
+  @override
+  Future<AppUser> signUpWithGoogle() async {
+    await Firebase.initializeApp();
+
+    try {
+      GoogleSignInAccount googleSignInAccount = await _googleAuth.signIn();
+      GoogleSignInAuthentication googleAuth =
+          await googleSignInAccount.authentication;
+
+      AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      User user = (await _auth.signInWithCredential(credential)).user;
+
+      String userId = user.uid;
+      String name = user.displayName;
+      String emailAddress = user.email;
+
+      int firstSpace = name.indexOf(" ");
+      String firstName = name.substring(0, firstSpace);
+      String lastName = name.substring(firstSpace).trim();
+
+      await FirebaseFirestoreService().createUserWithId(
+        user.uid,
+        firstName: firstName,
+        lastName: lastName,
+        emailAddress: emailAddress,
+      );
+
+      return await FirebaseFirestoreService().getUserWithId(userId);
+    } catch (ex) {
+      throw Failure(ex.message);
+    }
+  }
+
+  @override
+  Future<AppUser> signUpWithFacebook() async {
+    try {
+      AccessToken accessToken = await _facebookAuth.login();
+      OAuthCredential credential =
+          FacebookAuthProvider.credential(accessToken.token);
+      User user = (await _auth.signInWithCredential(credential)).user;
+
+      String userId = user.uid;
+      String name = user.displayName;
+      String emailAddress = user.email;
+
+      int firstSpace = name.indexOf(" ");
+      String firstName = name.substring(0, firstSpace);
+      String lastName = name.substring(firstSpace).trim();
+
+      await FirebaseFirestoreService().createUserWithId(
+        userId,
+        firstName: firstName,
+        lastName: lastName,
+        emailAddress: emailAddress,
+      );
+
+      return await FirebaseFirestoreService().getUserWithId(userId);
+    } on FacebookAuthException catch (e) {
+      switch (e.errorCode) {
+        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+          print("You have a previous login operation in progress");
+          break;
+        case FacebookAuthErrorCode.CANCELLED:
+          print("login cancelled");
+          break;
+        case FacebookAuthErrorCode.FAILED:
+          print("login failed");
+          break;
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future<AppUser> signInWithFacebook() async {
+    try {
+      AccessToken accessToken = await _facebookAuth.login();
+
+      OAuthCredential credential =
+          FacebookAuthProvider.credential(accessToken.token);
+
+      User user = (await _auth.signInWithCredential(credential)).user;
+
+      AppUser appUser =
+          await FirebaseFirestoreService().getUserWithId(user.uid);
+
+      if (appUser != null) {
+        return appUser;
+      } else {
+        await _auth.signOut();
+        throw Failure(
+            'You don\'t have an account with us. Please signup to continue');
+      }
+    } on FacebookAuthException catch (e) {
+      switch (e.errorCode) {
+        case FacebookAuthErrorCode.OPERATION_IN_PROGRESS:
+          throw Failure("You have a previous login operation in progress");
+          break;
+        case FacebookAuthErrorCode.CANCELLED:
+          throw Failure("login cancelled");
+          break;
+        case FacebookAuthErrorCode.FAILED:
+          throw Failure("login failed");
+          break;
+      }
+    } on Exception catch (e) {
+      throw Failure(e.toString());
+    }
+    return null;
+  }
+
+  @override
+  Future<AppUser> signInWithGoogle() async {
+    try {
+      GoogleSignInAccount googleSignInAccount = await _googleAuth.signIn();
+      GoogleSignInAuthentication googleAuth =
+          await googleSignInAccount.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      User user = (await _auth.signInWithCredential(credential)).user;
+
+      AppUser appUser =
+          await FirebaseFirestoreService().getUserWithId(user.uid);
+
+      if (appUser != null) {
+        return appUser;
+      } else {
+        await _auth.signOut();
+        throw Failure(
+            'You don\'t have an account with us. Please signup to continue');
+      }
+    } on FirebaseAuthException catch (ex) {
+      if (ex.code == 'user-disabled') {
+        throw Failure('User has been disabled');
+      } else if (ex.code == 'not signup') {
+        throw Failure('Please signup to continue');
+      } else if (ex.code == 'user-not-found') {
+        throw Failure('User not found');
+      }
+      return null;
     }
   }
 }

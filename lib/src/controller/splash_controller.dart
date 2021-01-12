@@ -4,9 +4,9 @@ import 'package:get/state_manager.dart';
 import '../models/app_user.dart';
 import '../services/auth_service/auth_service.dart';
 import '../services/startup_service/startup_service.dart';
+import '../views/screens/create_account_screen.dart';
 import '../views/screens/home_screen.dart';
 import '../views/screens/onboarding_screen.dart';
-import '../views/screens/signin_screen.dart';
 
 class SplashController extends GetxController {
   @override
@@ -23,7 +23,7 @@ class SplashController extends GetxController {
     if (onboardingViewed) {
       AppUser user = await Get.find<AuthService>().getAuthenticatedUser();
       if (user == null) {
-        Get.off(SigninScreen());
+        Get.off(CreateAccountScreen());
       } else {
         Get.off(HomeScreen(user: user));
       }

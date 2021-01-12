@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
+import 'package:my_study_pal/src/core/dateTimeUtils.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -9,7 +11,7 @@ import '../core/validation_mixin.dart';
 import '../models/timetable.dart';
 import '../models/timetable_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 
 class EditTimetableController extends Notifier with ValidationMixin {
   EditTimetableController(this.timetable);
@@ -35,6 +37,7 @@ class EditTimetableController extends Notifier with ValidationMixin {
   TextEditingController get endTimeController => _endTimeController;
 
   GlobalKey<FormState> get formKey => _formKey;
+  int _radioValue;
 
   @override
   void onInit() {
@@ -103,6 +106,54 @@ class EditTimetableController extends Notifier with ValidationMixin {
 
         await Get.find<DatabaseService>().updateTimetable(timetableId, params);
 
+        int id = timetable.timestamp.nanoseconds;
+
+        // cancels before start notification
+        await notificationPlugin.cancelNotification(id);
+        // cancels start notification
+        await notificationPlugin.cancelNotification(id + 4);
+
+        TimeOfDay startTime;
+//Before Start time
+        if (_radioValue == 0) {
+          startTime = plusMinutes(params.startTime, 16);
+        } else if (_radioValue == 1) {
+          startTime = plusMinutes(params.startTime, 31);
+        } else if (_radioValue == 2) {
+          startTime = plusMinutes(params.startTime, 61);
+        } else if (_radioValue.isNull) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else {
+          startTime = plusMinutes(params.startTime, 0);
+        }
+
+        await notificationPlugin.weeklyNotification(
+          id,
+          params.day,
+          params.subject,
+          startDayTimeTable(params),
+          startTimeTimetable(startTime),
+          'Timetable Reminder',
+        );
+
+// Exact Start time
+        if (_radioValue == 0) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else if (_radioValue == 1) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else if (_radioValue == 2) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else {
+          startTime = plusMinutes(params.startTime, 0);
+        }
+        await notificationPlugin.weeklyNotification(
+          id + 4,
+          params.day,
+          params.subject,
+          startDayTimeTable(params),
+          startTimeTimetable(startTime),
+          'Timetable Reminder',
+        );
         setState(NotifierState.isIdle);
 
         Get.back();

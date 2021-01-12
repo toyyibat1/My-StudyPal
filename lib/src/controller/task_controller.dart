@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../models/task.dart';
-import '../services/database/database_service.dart';
+import '../services/database_service/database_service.dart';
 import '../views/screens/create_task_screen.dart';
 import '../views/screens/task_info_screen.dart';
 
@@ -72,9 +72,12 @@ class TaskController extends Notifier {
   void navigateToCreateTask() => Get.to(CreateTaskScreen()).then(onGoBack);
 
   void openTaskInfoScreen(Task task) {
-    Get.bottomSheet(TaskInfoScreen(
-      task: task,
-      onGoBackCallback: onGoBack,
-    )).then((onGoBack));
+    Get.bottomSheet(
+      TaskInfoScreen(
+        task: task,
+        onGoBackCallback: onGoBack,
+      ),
+      isScrollControlled: true,
+    ).then((onGoBack));
   }
 }
