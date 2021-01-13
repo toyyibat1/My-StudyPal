@@ -83,7 +83,8 @@ class FirebaseAuthService implements AuthService {
       String userId = userCredential.user.uid;
       return await FirebaseFirestoreService().getUserWithId(userId);
      }else {
-       throw Failure('User email not verified');
+       await userCredential.user.sendEmailVerification();
+       throw Failure('User email not verified');    
      }
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'user-disabled') {
