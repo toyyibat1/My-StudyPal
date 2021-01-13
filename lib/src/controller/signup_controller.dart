@@ -9,7 +9,7 @@ import '../models/app_user.dart';
 import '../models/signup_params.dart';
 import '../services/auth_service/auth_service.dart';
 import '../services/data_connection_service/data_connection_service.dart';
-import '../views/screens/home_screen.dart';
+import '../views/screens/email_verifications_screen.dart';
 import '../views/screens/signin_screen.dart';
 
 class SignupController extends Notifier with ValidationMixin {
@@ -69,11 +69,11 @@ class SignupController extends Notifier with ValidationMixin {
           lastName: _lastNameController.text.trim(),
         );
 
-        AppUser user = await Get.find<AuthService>().signUp(params);
+        await Get.find<AuthService>().signUp(params);
 
         setState(NotifierState.isIdle);
 
-        Get.off(HomeScreen(user: user));
+        Get.off(EmailVerificationScreen());
       } on Failure catch (f) {
         setState(NotifierState.isIdle);
         Get.snackbar(
@@ -87,5 +87,9 @@ class SignupController extends Notifier with ValidationMixin {
 
       setState(NotifierState.isIdle);
     }
+  }
+
+  void verifyAndContinue() async {
+    Get.off(SigninScreen());
   }
 }

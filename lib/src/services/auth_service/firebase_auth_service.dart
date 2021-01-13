@@ -40,7 +40,7 @@ class FirebaseAuthService implements AuthService {
      try {
         await userCredential.user.sendEmailVerification();
         // Get user id to create a custom user object in firestore
-        print("email verified");
+        print("Email Sent");
        String userId = userCredential.user.uid;
 
       await FirebaseFirestoreService().createUserWithId(
@@ -66,6 +66,7 @@ class FirebaseAuthService implements AuthService {
       }
       return null;
     }
+    return null;
   }
 
   @override
@@ -75,14 +76,15 @@ class FirebaseAuthService implements AuthService {
         email: params.emailAddress,
         password: params.password,
       );
-
-     if (userCredential.user.emailVerified) 
+     if (userCredential.user.emailVerified) {
       //return await userCredential.uid;
-      return null;
+      //return null;
      
       String userId = userCredential.user.uid;
-
       return await FirebaseFirestoreService().getUserWithId(userId);
+     }else {
+       throw Failure('User email not verified');
+     }
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'user-disabled') {
         throw Failure('User has been disabled');
