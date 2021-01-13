@@ -115,7 +115,6 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           location: _timetableLocationController.text,
           startTime: _pickedStartTime,
         );
-
         Timetable timetable =
             await Get.find<DatabaseService>().createTimetable(params);
 

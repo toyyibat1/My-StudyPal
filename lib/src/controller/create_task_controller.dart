@@ -109,28 +109,50 @@ class CreateTaskController extends Notifier with ValidationMixin {
           name: _taskNameController.text,
           startTime: _pickedStartTime,
         );
+        if (startTimeTask(params) < endTimeTask(params) &&
+            startTimeTask(params) > DateTime.now()) {
+          Task task = await Get.find<DatabaseService>().createTask(params);
 
-        Task task = await Get.find<DatabaseService>().createTask(params);
+          int id = task.timestamp.nanoseconds;
 
-        int id = task.timestamp.nanoseconds;
+          // Creates start notification
+          await notificationPlugin.scheduleNotification(
+            id,
+            params.name,
+            params.description,
+            startTimeTask(params),
+            'Task Reminder',
+          );
 
-        // Creates start notification
-        await notificationPlugin.scheduleNotification(
-          id,
-          params.name,
-          params.description,
-          startTimeTask(params),
-          'Task Reminder',
-        );
-
-        // Creates end notification
-        await notificationPlugin.scheduleNotification(
-          id + 1,
-          params.name + ", Deadline Reached",
-          params.description,
-          endTimeTask(params),
-          'Task Reminder',
-        );
+          // Creates end notification
+          await notificationPlugin.scheduleNotification(
+            id + 1,
+            params.name + ", Deadline Reached",
+            params.description,
+            endTimeTask(params),
+            'Task Reminder',
+          );
+        } else if (startTimeTask(params).hour == endTimeTask(params).hour) {
+          setState(NotifierState.isIdle);
+          Get.snackbar(
+            'Error',
+            'Start time and end time cannot be the same',
+            duration: Duration(seconds: 5),
+            colorText: Get.theme.colorScheme.onError,
+            backgroundColor: Get.theme.errorColor,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        } else if (startTimeTask(params).hour == endTimeTask(params).hour) {
+          setState(NotifierState.isIdle);
+          Get.snackbar(
+            'Error',
+            'Start time and end time cannot be the same',
+            duration: Duration(seconds: 5),
+            colorText: Get.theme.colorScheme.onError,
+            backgroundColor: Get.theme.errorColor,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
 
         setState(NotifierState.isIdle);
 
