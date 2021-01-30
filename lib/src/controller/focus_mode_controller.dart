@@ -102,6 +102,7 @@ class FocusModeController extends Notifier with ValidationMixin {
           endTime: _pickedEndTime,
           startTime: _pickedStartTime,
         );
+
         await Get.find<DatabaseService>().createFocusMode(params);
 
         if (focusModeToggle) {

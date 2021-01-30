@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/models/badges_params.dart';
 
 import '../core/dateTimeUtils.dart';
 import '../core/failure.dart';
@@ -115,8 +116,14 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           location: _timetableLocationController.text,
           startTime: _pickedStartTime,
         );
+        TimetableBadgesParams timetableBadgesParams =
+            TimetableBadgesParams(timetableBadges: "Timetable Created");
+
         Timetable timetable =
             await Get.find<DatabaseService>().createTimetable(params);
+
+        await Get.find<DatabaseService>()
+            .createTimetableBadges(timetableBadgesParams);
 
         int id = timetable.timestamp.nanoseconds;
 

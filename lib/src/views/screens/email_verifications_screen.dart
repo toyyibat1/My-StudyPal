@@ -4,7 +4,6 @@ import 'package:my_study_pal/src/controller/signup_controller.dart';
 
 import '../../core/constants.dart';
 import '../../core/images.dart';
-import '../../core/notifier.dart';
 import '../widgets/app_button.dart';
 import '../widgets/transparent_statusbar.dart';
 
@@ -33,8 +32,8 @@ class EmailVerificationScreen extends StatelessWidget {
                     ),
                     kLargeVerticalSpacing,
                     AppButton(
-                    label: 'Continue',
-                    onPressed: controller.verifyAndContinue),
+                        label: 'Continue',
+                        onPressed: controller.verifyAndContinue),
                     kSmallVerticalSpacing,
                   ],
                 ),
@@ -47,19 +46,18 @@ class EmailVerificationScreen extends StatelessWidget {
   }
 
   Widget get header => Column(
-    children: [
-      Image.asset(
-        logo2,
-        width: 65.0,
-      ),
-      kMediumVerticalSpacing,
-      Text(
-        "Verify your Email to finish signing up for MyStudyPadi",
-        textAlign: TextAlign.center,
-        style: kHeadingTextStyle,
-      ),
-      kSmallVerticalSpacing,
-    ],
-  );
-
+        children: [
+          Image.asset(
+            logo2,
+            width: 65.0,
+          ),
+          kMediumVerticalSpacing,
+          Text(
+            "Verify your Email to finish signing up for MyStudyPadi",
+            textAlign: TextAlign.center,
+            style: kHeadingTextStyle,
+          ),
+          kSmallVerticalSpacing,
+        ],
+      );
 }

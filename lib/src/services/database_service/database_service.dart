@@ -1,3 +1,6 @@
+import 'package:my_study_pal/src/models/badges.dart';
+import 'package:my_study_pal/src/models/badges_params.dart';
+
 import '../../models/app_user.dart';
 import '../../models/focus_mode.dart';
 import '../../models/focus_mode_params.dart';
@@ -73,4 +76,14 @@ abstract class DatabaseService {
 
   // focus mode
   Future<FocusMode> createFocusMode(FocusModeParams params);
+
+//  badges
+  Future<TaskBadges> createTaskBadges(TaskBadgesParams taskBadgesParams);
+  Future<StudyGoalBadges> createStudyGoalBadges(
+      StudyGoalBadgesParams studyGoalBadgesParams);
+  Future<SchoolScheduleBadges> createSchoolScheduleBadges(
+      SchoolScheduleBadgesParams schoolScheduleBadgesParams);
+  Future<TimetableBadges> createTimetableBadges(
+      TimetableBadgesParams timetableBadgesParams);
+  Future<List<TaskBadges>> getTaskBadges();
 }

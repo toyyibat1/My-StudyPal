@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_study_pal/src/controller/local_notification_controller.dart';
+import 'package:my_study_pal/src/models/badges_params.dart';
 import 'package:my_study_pal/src/models/study_goal.dart';
 import 'package:my_study_pal/src/services/database_service/database_service.dart';
 
@@ -65,9 +66,14 @@ class CreateStudyGoalController extends Notifier with ValidationMixin {
           goal: _goalController.text,
           date: _pickedDate,
         );
+        StudyGoalBadgesParams studyGoalBadgesParams =
+            StudyGoalBadgesParams(studyGoalBadges: "StudyGoal Created");
 
         StudyGoal studyGoal =
             await Get.find<DatabaseService>().createStudyGoal(params);
+
+        await Get.find<DatabaseService>()
+            .createStudyGoalBadges(studyGoalBadgesParams);
         int id = studyGoal.timestamp.nanoseconds;
 
         await notificationPlugin.scheduleNotification(

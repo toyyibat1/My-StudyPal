@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../../controller/dashboard_controller.dart';
 import '../../core/constants.dart';
 import '../../core/notifier.dart';
@@ -93,15 +92,16 @@ class DashboardScreen extends StatelessWidget {
             backgroundColor: Color(0xff102A67),
             child: ClipOval(
               child: new SizedBox(
-                width: 60.0,
-                height: 60.0,
-                child: Image.file(File(controller.user.photoUrl), fit: BoxFit.cover) ?? Text(
-                  controller.user.firstName[0],
-                  style: kHeadingTextStyle,
-                )
-              ),
-              ),
+                  width: 60.0,
+                  height: 60.0,
+                  child: Image.file(File(controller.user.photoUrl),
+                          fit: BoxFit.cover) ??
+                      Text(
+                        controller.user.firstName[0],
+                        style: kHeadingTextStyle,
+                      )),
             ),
+          ),
         ],
       ),
     );
@@ -130,30 +130,3 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 }
-
-//List<Task> pendingTasks = [
-//  Task(
-//    id: "1",
-//    name: "Reading about Ethics",
-//    description: 'I want to read about Ethics',
-//    date: DateTime.now(),
-//    startTime: TimeOfDay.now(),
-//    endTime: TimeOfDay.now(),
-//  ),
-//  Task(
-//    id: "2",
-//    name: "Reading about Ethics",
-//    description: 'I want to read about Ethics',
-//    date: DateTime.now(),
-//    startTime: TimeOfDay.now(),
-//    endTime: TimeOfDay.now(),
-//  ),
-//  Task(
-//    id: "3",
-//    name: "Reading about Ethics",
-//    description: 'I want to read about Ethics',
-//    date: DateTime.now(),
-//    startTime: TimeOfDay.now(),
-//    endTime: TimeOfDay.now(),
-//  ),
-//];

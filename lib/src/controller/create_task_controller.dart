@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:my_study_pal/src/models/badges.dart';
+import 'package:my_study_pal/src/models/badges_params.dart';
 
 import '../core/dateTimeUtils.dart';
 import '../core/failure.dart';
@@ -18,6 +20,10 @@ class CreateTaskController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;
   TimeOfDay _pickedEndTime;
   DateTime _pickedDate;
+
+//  badges
+  List<TaskBadges> _tasksBadges = [];
+  List<TaskBadges> get tasksBadges => _tasksBadges;
 
   final _taskNameController = TextEditingController();
   final _taskDescriptionController = TextEditingController();
@@ -93,6 +99,11 @@ class CreateTaskController extends Notifier with ValidationMixin {
 
   void goBack() => Get.back();
 
+//  badges
+  void getTaskBadges() async {
+    _tasksBadges = await Get.find<DatabaseService>().getTaskBadges();
+  }
+
   void createTask() async {
     Get.focusScope.unfocus();
 
@@ -109,56 +120,69 @@ class CreateTaskController extends Notifier with ValidationMixin {
           name: _taskNameController.text,
           startTime: _pickedStartTime,
         );
-        if (startTimeTask(params) < endTimeTask(params) &&
-            startTimeTask(params) > DateTime.now()) {
-          Task task = await Get.find<DatabaseService>().createTask(params);
+//        Converting Date time to integer
+//        int startTaskValidate = startTimeTask(params).year +
+//            startTimeTask(params).hour +
+//            startTimeTask(params).minute;
+//
+//        int endTaskValidate = startTimeTask(params).year +
+//            endTimeTask(params).hour +
+//            endTimeTask(params).minute;
+//
+//        if (startTaskValidate < endTaskValidate) {
+        TaskBadgesParams taskBadgesParams =
+            TaskBadgesParams(taskBadges: "task Created");
 
-          int id = task.timestamp.nanoseconds;
+        Task task = await Get.find<DatabaseService>().createTask(params);
+        await Get.find<DatabaseService>().createTaskBadges(taskBadgesParams);
 
-          // Creates start notification
-          await notificationPlugin.scheduleNotification(
-            id,
-            params.name,
-            params.description,
-            startTimeTask(params),
-            'Task Reminder',
-          );
+        int id = task.timestamp.nanoseconds;
 
-          // Creates end notification
-          await notificationPlugin.scheduleNotification(
-            id + 1,
-            params.name + ", Deadline Reached",
-            params.description,
-            endTimeTask(params),
-            'Task Reminder',
-          );
-        } else if (startTimeTask(params).hour == endTimeTask(params).hour) {
-          setState(NotifierState.isIdle);
-          Get.snackbar(
-            'Error',
-            'Start time and end time cannot be the same',
-            duration: Duration(seconds: 5),
-            colorText: Get.theme.colorScheme.onError,
-            backgroundColor: Get.theme.errorColor,
-            snackPosition: SnackPosition.BOTTOM,
-          );
-        } else if (startTimeTask(params).hour == endTimeTask(params).hour) {
-          setState(NotifierState.isIdle);
-          Get.snackbar(
-            'Error',
-            'Start time and end time cannot be the same',
-            duration: Duration(seconds: 5),
-            colorText: Get.theme.colorScheme.onError,
-            backgroundColor: Get.theme.errorColor,
-            snackPosition: SnackPosition.BOTTOM,
-          );
-        }
+        // Creates start notification
+        await notificationPlugin.scheduleNotification(
+          id,
+          params.name,
+          params.description,
+          startTimeTask(params),
+          'Task Reminder',
+        );
 
+        // Creates end notification
+        await notificationPlugin.scheduleNotification(
+          id + 1,
+          params.name + ", Deadline Reached",
+          params.description,
+          endTimeTask(params),
+          'Task Reminder',
+        );
+//        } else if (startTaskValidate == endTaskValidate) {
+
+//          Get.snackbar(
+//            'Error',
+//            'Start time and end time cannot be the same',
+//            colorText: Get.theme.colorScheme.onError,
+//            backgroundColor: Get.theme.errorColor,
+//            snackPosition: SnackPosition.BOTTOM,
+//          );
+//        } else if (startTaskValidate > endTaskValidate) {
+//        print("startTaskValidate > endTaskValidate");
+//        Get.snackbar(
+//          'Error',
+//          "End time must be later than start time",
+//          colorText: Get.theme.colorScheme.onError,
+//          backgroundColor: Get.theme.errorColor,
+//          snackPosition: SnackPosition.BOTTOM,
+//        );
+//        }
+
+//        setState(NotifierState.isIdle);
+        print(_tasksBadges);
         setState(NotifierState.isIdle);
 
         Get.back();
       } on Failure catch (f) {
         setState(NotifierState.isIdle);
+
         Get.snackbar(
           'Error',
           f.message,
