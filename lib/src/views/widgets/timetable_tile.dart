@@ -72,7 +72,7 @@ class TimetableTile extends StatelessWidget {
                                   ),
                                   SizedBox(width: 12),
                                   Icon(Icons.location_on_outlined, size: 20),
-                                  SizedBox(width: 6),
+                                  SizedBox(width: 3),
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width / 4,
