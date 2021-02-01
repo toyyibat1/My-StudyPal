@@ -7,6 +7,7 @@ class AppButton extends StatelessWidget {
   final Color textColor;
   final bool isLoading;
   final String label;
+  final EdgeInsets padding;
 
   const AppButton({
     Key key,
@@ -14,6 +15,9 @@ class AppButton extends StatelessWidget {
     this.color = kPrimaryColor,
     this.textColor = Colors.white,
     this.isLoading = false,
+    this.padding = const EdgeInsets.symmetric(
+        vertical: 16,
+    ),
     @required this.label,
   }) : super(key: key);
 
@@ -23,9 +27,7 @@ class AppButton extends StatelessWidget {
       onPressed: onPressed,
       color: color,
       textColor: textColor,
-      padding: EdgeInsets.symmetric(
-        vertical: 16,
-      ),
+      padding: padding,
       child: isLoading
           ? SizedBox(
               width: 25.0,

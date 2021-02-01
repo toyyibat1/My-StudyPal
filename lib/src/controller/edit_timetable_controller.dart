@@ -37,6 +37,7 @@ class EditTimetableController extends Notifier with ValidationMixin {
   TextEditingController get endTimeController => _endTimeController;
 
   GlobalKey<FormState> get formKey => _formKey;
+  int _radioValue;
 
   @override
   void onInit() {
@@ -104,15 +105,55 @@ class EditTimetableController extends Notifier with ValidationMixin {
         );
 
         await Get.find<DatabaseService>().updateTimetable(timetableId, params);
+
         int id = timetable.timestamp.nanoseconds;
+
+        // cancels before start notification
         await notificationPlugin.cancelNotification(id);
+        // cancels start notification
+        await notificationPlugin.cancelNotification(id + 4);
+
+        TimeOfDay startTime;
+//Before Start time
+        if (_radioValue == 0) {
+          startTime = plusMinutes(params.startTime, 16);
+        } else if (_radioValue == 1) {
+          startTime = plusMinutes(params.startTime, 31);
+        } else if (_radioValue == 2) {
+          startTime = plusMinutes(params.startTime, 61);
+        } else if (_radioValue.isNull) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else {
+          startTime = plusMinutes(params.startTime, 0);
+        }
+
         await notificationPlugin.weeklyNotification(
-            id,
-            params.day,
-            params.subject,
-            startDayTimeTable(day, params),
-            startTimeTimetable(time, params),
-            'Timetable Reminder');
+          id,
+          params.day,
+          params.subject,
+          startDayTimeTable(params),
+          startTimeTimetable(startTime),
+          'Timetable Reminder',
+        );
+
+// Exact Start time
+        if (_radioValue == 0) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else if (_radioValue == 1) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else if (_radioValue == 2) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else {
+          startTime = plusMinutes(params.startTime, 0);
+        }
+        await notificationPlugin.weeklyNotification(
+          id + 4,
+          params.day,
+          params.subject,
+          startDayTimeTable(params),
+          startTimeTimetable(startTime),
+          'Timetable Reminder',
+        );
         setState(NotifierState.isIdle);
 
         Get.back();

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
-import '../models/app_user.dart';
 import '../models/signup_params.dart';
 import '../services/auth_service/auth_service.dart';
 import '../services/data_connection_service/data_connection_service.dart';

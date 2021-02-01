@@ -36,26 +36,25 @@ class FirebaseAuthService implements AuthService {
         email: params.emailAddress,
         password: params.password,
       );
-     
-     try {
+
+      try {
         await userCredential.user.sendEmailVerification();
         // Get user id to create a custom user object in firestore
         print("Email Sent");
-       String userId = userCredential.user.uid;
+        String userId = userCredential.user.uid;
 
-      await FirebaseFirestoreService().createUserWithId(
-        userId,
-        firstName: params.firstName,
-        lastName: params.lastName,
-        emailAddress: params.emailAddress,
-      );
+        await FirebaseFirestoreService().createUserWithId(
+          userId,
+          firstName: params.firstName,
+          lastName: params.lastName,
+          emailAddress: params.emailAddress,
+        );
 
-      return await FirebaseFirestoreService().getUserWithId(userId);
-        
-     } catch (e) {
+        return await FirebaseFirestoreService().getUserWithId(userId);
+      } catch (e) {
         print("An error occured while trying to send email verification");
         print(e.message);
-     }  
+      }
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'email-already-in-use') {
         throw Failure('Email Address is Already Registered');
@@ -76,16 +75,17 @@ class FirebaseAuthService implements AuthService {
         email: params.emailAddress,
         password: params.password,
       );
-     if (userCredential.user.emailVerified) {
-      //return await userCredential.uid;
-      //return null;
-     
-      String userId = userCredential.user.uid;
-      return await FirebaseFirestoreService().getUserWithId(userId);
-     }else {
-       await userCredential.user.sendEmailVerification();
-       throw Failure('User email not verified, Please check your email Address for email Verifications');    
-     }
+      if (userCredential.user.emailVerified) {
+        //return await userCredential.uid;
+        //return null;
+
+        String userId = userCredential.user.uid;
+        return await FirebaseFirestoreService().getUserWithId(userId);
+      } else {
+        await userCredential.user.sendEmailVerification();
+        throw Failure(
+            'User email not verified, Verification link has been sent to your email');
+      }
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'user-disabled') {
         throw Failure('User has been disabled');

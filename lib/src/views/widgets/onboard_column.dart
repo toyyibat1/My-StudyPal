@@ -22,7 +22,7 @@ class OnboardColumn extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SvgPicture.asset(imgPath),
-          Spacer(flex: 3),
+          Spacer(flex: 4),
           titletext,
           Spacer(),
           Text(

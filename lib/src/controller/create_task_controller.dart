@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:my_study_pal/src/core/dateTimeUtils.dart';
-import 'package:my_study_pal/src/models/task.dart';
+import 'package:my_study_pal/src/models/badges.dart';
+import 'package:my_study_pal/src/models/badges_params.dart';
 
+import '../core/dateTimeUtils.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/task.dart';
 import '../models/task_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database_service/database_service.dart';
@@ -18,6 +20,10 @@ class CreateTaskController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;
   TimeOfDay _pickedEndTime;
   DateTime _pickedDate;
+
+//  badges
+  List<TaskBadges> _tasksBadges = [];
+  List<TaskBadges> get tasksBadges => _tasksBadges;
 
   final _taskNameController = TextEditingController();
   final _taskDescriptionController = TextEditingController();
@@ -93,6 +99,11 @@ class CreateTaskController extends Notifier with ValidationMixin {
 
   void goBack() => Get.back();
 
+//  badges
+  void getTaskBadges() async {
+    _tasksBadges = await Get.find<DatabaseService>().getTaskBadges();
+  }
+
   void createTask() async {
     Get.focusScope.unfocus();
 
@@ -109,26 +120,69 @@ class CreateTaskController extends Notifier with ValidationMixin {
           name: _taskNameController.text,
           startTime: _pickedStartTime,
         );
+//        Converting Date time to integer
+//        int startTaskValidate = startTimeTask(params).year +
+//            startTimeTask(params).hour +
+//            startTimeTask(params).minute;
+//
+//        int endTaskValidate = startTimeTask(params).year +
+//            endTimeTask(params).hour +
+//            endTimeTask(params).minute;
+//
+//        if (startTaskValidate < endTaskValidate) {
+        TaskBadgesParams taskBadgesParams =
+            TaskBadgesParams(taskBadges: "task Created");
 
         Task task = await Get.find<DatabaseService>().createTask(params);
+        await Get.find<DatabaseService>().createTaskBadges(taskBadgesParams);
 
         int id = task.timestamp.nanoseconds;
-//        Creates start notification
-        await notificationPlugin.scheduleNotification(id, params.name,
-            params.description, startTimeTask(date, params), 'Task Reminder');
 
-//        Creates end notification
+        // Creates start notification
         await notificationPlugin.scheduleNotification(
-            id + 1,
-            params.name + ", Deadline Reached",
-            params.description,
-            endTimeTask(date, params),
-            'Task Reminder');
+          id,
+          params.name,
+          params.description,
+          startTimeTask(params),
+          'Task Reminder',
+        );
+
+        // Creates end notification
+        await notificationPlugin.scheduleNotification(
+          id + 1,
+          params.name + ", Deadline Reached",
+          params.description,
+          endTimeTask(params),
+          'Task Reminder',
+        );
+//        } else if (startTaskValidate == endTaskValidate) {
+
+//          Get.snackbar(
+//            'Error',
+//            'Start time and end time cannot be the same',
+//            colorText: Get.theme.colorScheme.onError,
+//            backgroundColor: Get.theme.errorColor,
+//            snackPosition: SnackPosition.BOTTOM,
+//          );
+//        } else if (startTaskValidate > endTaskValidate) {
+//        print("startTaskValidate > endTaskValidate");
+//        Get.snackbar(
+//          'Error',
+//          "End time must be later than start time",
+//          colorText: Get.theme.colorScheme.onError,
+//          backgroundColor: Get.theme.errorColor,
+//          snackPosition: SnackPosition.BOTTOM,
+//        );
+//        }
+
+//        setState(NotifierState.isIdle);
+        print(_tasksBadges);
         setState(NotifierState.isIdle);
 
         Get.back();
       } on Failure catch (f) {
         setState(NotifierState.isIdle);
+
         Get.snackbar(
           'Error',
           f.message,

@@ -3,16 +3,17 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/controller/local_notification_controller.dart';
-import 'package:my_study_pal/src/core/dateTimeUtils.dart';
-import 'package:my_study_pal/src/models/timetable.dart';
+import 'package:my_study_pal/src/models/badges_params.dart';
 
+import '../core/dateTimeUtils.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../core/validation_mixin.dart';
+import '../models/timetable.dart';
 import '../models/timetable_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database_service/database_service.dart';
+import 'local_notification_controller.dart';
 
 class CreateTimetableController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;
@@ -115,20 +116,58 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           location: _timetableLocationController.text,
           startTime: _pickedStartTime,
         );
+        TimetableBadgesParams timetableBadgesParams =
+            TimetableBadgesParams(timetableBadges: "Timetable Created");
 
         Timetable timetable =
             await Get.find<DatabaseService>().createTimetable(params);
 
+        await Get.find<DatabaseService>()
+            .createTimetableBadges(timetableBadgesParams);
+
         int id = timetable.timestamp.nanoseconds;
 
-        await notificationPlugin.weeklyNotification(
-            id,
-            params.day,
-            params.subject,
-            startDayTimeTable(day, params),
-            startTimeTimetable(notificationTime, params),
-            'Timetable Reminder');
+        TimeOfDay startTime;
+//Before Start time
+        if (_radioValue == 0) {
+          startTime = plusMinutes(params.startTime, 16);
+        } else if (_radioValue == 1) {
+          startTime = plusMinutes(params.startTime, 31);
+        } else if (_radioValue == 2) {
+          startTime = plusMinutes(params.startTime, 61);
+        } else if (_radioValue.isNull) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else {
+          startTime = plusMinutes(params.startTime, 0);
+        }
 
+        await notificationPlugin.weeklyNotification(
+          id,
+          params.day,
+          params.subject,
+          startDayTimeTable(params),
+          startTimeTimetable(startTime),
+          'Timetable Reminder',
+        );
+
+// Exact Start time
+        if (_radioValue == 0) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else if (_radioValue == 1) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else if (_radioValue == 2) {
+          startTime = plusMinutes(params.startTime, 0);
+        } else {
+          startTime = plusMinutes(params.startTime, 0);
+        }
+        await notificationPlugin.weeklyNotification(
+          id + 4,
+          params.day,
+          params.subject,
+          startDayTimeTable(params),
+          startTimeTimetable(startTime),
+          'Timetable Reminder',
+        );
         setState(NotifierState.isIdle);
 
         Get.back();

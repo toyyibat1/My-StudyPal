@@ -1,10 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_study_pal/src/models/forgot_password_params.dart';
 import 'package:my_study_pal/src/views/screens/create_account_screen.dart';
 import 'package:my_study_pal/src/views/screens/forgot_password.dart';
-import 'package:my_study_pal/src/views/screens/signin_screen.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
