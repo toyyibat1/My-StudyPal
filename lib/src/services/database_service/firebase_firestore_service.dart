@@ -540,4 +540,36 @@ class FirebaseFirestoreService implements DatabaseService {
 
     return FocusMode.fromDocumentSnapshot(snapshot);
   }
+
+
+  @override
+  Future<List<StudyGoalBadges>> getAllStudyGoalBadges() async{
+    User user = FirebaseAuth.instance.currentUser;
+
+    List <StudyGoalBadges> goals = [];
+    List<QueryDocumentSnapshot> snapshot =
+    (await userCollection.doc(user.uid).collection("badges").where("studyGoal", isEqualTo: "StudyGoal Created")
+    .get())
+        .docs;
+
+    snapshot.forEach((goal)=> goals.add(StudyGoalBadges.fromDocumentSnapshot(goal)),
+    );
+    
+    return goals;
+  }
+  @override
+  Future<List<TimetableBadges>> getAllTimeTableBadges() async{
+    User user = FirebaseAuth.instance.currentUser;
+
+    List <TimetableBadges> timetables = [];
+    List<QueryDocumentSnapshot> snapshot =
+    (await userCollection.doc(user.uid).collection("badges").where("timetable", isEqualTo: "Timetable Created")
+    .get())
+        .docs;
+
+    snapshot.forEach((timetable)=> timetables.add(TimetableBadges.fromDocumentSnapshot(timetable)),
+    );
+    
+    return timetables;
+  }
 }
