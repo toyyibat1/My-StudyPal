@@ -2,15 +2,12 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:my_study_pal/src/models/badges.dart';
-import 'package:my_study_pal/src/models/badges_params.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
 import '../models/app_user.dart';
-import '../models/task.dart';
 import '../services/auth_service/auth_service.dart';
 import '../services/database_service/database_service.dart';
-import 'local_notification_controller.dart';
 
 class BadgeController extends Notifier {
   AppUser _user;
@@ -97,26 +94,5 @@ class BadgeController extends Notifier {
     setState(NotifierState.isIdle);
   }
 
-  void createBadge() async {
-    String badgeTitle = "Task Ace";
-    String descriptions = "Well-done, Padi! You just completed your first two tasks!";
-        
-      if((completedTaskBadges.length == 2)){    
-       // await Get.find<DataConnectionService>().checkConnection();
-        await notificationPlugin.showNotification(badgeTitle, descriptions, "");
-        BadgesParams params =
-            BadgesParams(badgeTitle: badgeTitle,
-            desc: descriptions);
-
-       await Get.find<DatabaseService>().createBadges(params);
-
-      } else if(completedTaskBadges.length == 10) {
-        String badgeTitle = "Task Skipper";
-        String descriptions = "Impressive, Padi! You completed 10 tasks!";
-        await notificationPlugin.showNotification(badgeTitle, descriptions, "");
-      } else {
-        return null;
-      }
-  }
 
 }
