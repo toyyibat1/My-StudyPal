@@ -62,10 +62,11 @@ class ProfileScreen extends StatelessWidget {
                 child: new SizedBox(
                   width: 70.0,
                   height: 70.0,
-                  child: Image.file(File(controller.user.photoUrl), fit: BoxFit.cover) ?? Text(
+                  child: Image.file(File(controller.user.photoUrl)) ==  null ? Text(
                     controller.user.firstName[0],
-                    style: kHeadingTextStyle,
-                  )
+                    style: kHeadingTextStyle.copyWith(color: Colors.white),
+                  ):
+                  Image.file(File(controller.user.photoUrl), fit: BoxFit.cover),
                 ),
                 ),
               ),

@@ -47,14 +47,19 @@ class CreateTaskController extends Notifier with ValidationMixin {
     _pickedStartTime = TimeOfDay.now();
     _pickedEndTime = TimeOfDay.now();
     _pickedDate = DateTime.now();
+    getTaskBadges();
     super.onInit();
+  }
+  FutureOr onGoBack(dynamic value) async {
+    getTaskBadges();
+    update();
   }
 
   Future<Null> selectStartTime(BuildContext context) async {
     Get.focusScope.unfocus();
 
     TimeOfDay _time = await showTimePicker(
-      context: context,
+      context: context, 
       initialTime: _pickedStartTime,
     );
 
@@ -102,6 +107,9 @@ class CreateTaskController extends Notifier with ValidationMixin {
 //  badges
   void getTaskBadges() async {
     _tasksBadges = await Get.find<DatabaseService>().getTaskBadges();
+    if(_tasksBadges.length >= 2){
+      print("taskBadges${_tasksBadges.length}");
+    }
   }
 
   void createTask() async {

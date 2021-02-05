@@ -78,7 +78,13 @@ abstract class DatabaseService {
   Future<FocusMode> createFocusMode(FocusModeParams params);
 
 //  badges
+
+  Future<Badge> createBadges(BadgesParams params);
+
+  Future<List<Badge>> getAllBadges();
+
   Future<TaskBadges> createTaskBadges(TaskBadgesParams taskBadgesParams);
+  Future<CompletedTaskBadges> completedTaskBadges(CompletedTaskBadgesParams completedtaskBadgesParams);
   Future<StudyGoalBadges> createStudyGoalBadges(
       StudyGoalBadgesParams studyGoalBadgesParams);
   Future<SchoolScheduleBadges> createSchoolScheduleBadges(
@@ -86,4 +92,7 @@ abstract class DatabaseService {
   Future<TimetableBadges> createTimetableBadges(
       TimetableBadgesParams timetableBadgesParams);
   Future<List<TaskBadges>> getTaskBadges();
+
+  Future<List<CompletedTaskBadges>> getCompletedTaskBadges();
+  //Future<List<Task>> getCompletedTasks();
 }

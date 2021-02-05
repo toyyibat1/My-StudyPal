@@ -240,6 +240,28 @@ class FirebaseFirestoreService implements DatabaseService {
     return TaskBadges.fromDocumentSnapshot(snapshot);
   }
 
+  Future<Badge> createBadges(BadgesParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+    DocumentReference reference =
+      await userCollection.doc(user.uid).collection('badgesList').add({
+        'badgeTitle': params.badgeTitle,
+        'desc': params.desc
+      });
+      DocumentSnapshot snapshot = await reference.get();
+
+      return Badge.fromDocumentSnapshot(snapshot);
+  }
+  Future<CompletedTaskBadges> completedTaskBadges(CompletedTaskBadgesParams params) async {
+    User user = FirebaseAuth.instance.currentUser;
+    DocumentReference reference =
+        await userCollection.doc(user.uid).collection('badges').add({
+      'completedtask': params.completedtaskBadges,
+    });
+    DocumentSnapshot snapshot = await reference.get();
+
+    return CompletedTaskBadges.fromDocumentSnapshot(snapshot);
+  }
+
   Future<TimetableBadges> createTimetableBadges(
       TimetableBadgesParams params) async {
     User user = FirebaseAuth.instance.currentUser;
@@ -291,10 +313,45 @@ class FirebaseFirestoreService implements DatabaseService {
     snapshot.forEach(
       (card) => cards.add(TaskBadges.fromDocumentSnapshot(card)),
     );
-
+    
     return cards;
   }
 
+  @override
+  Future<List<Badge>> getAllBadges() async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    List<Badge> badges = [];
+
+    List<QueryDocumentSnapshot> snapshot = (await userCollection
+    .doc(user.uid)
+    .collection("badgesList")
+    .get()).docs;
+
+    snapshot.forEach((badge)=> badges.add(Badge.fromDocumentSnapshot(badge)),
+    );
+    return badges;
+  }
+
+    Future<List<CompletedTaskBadges>> getCompletedTaskBadges() async {
+    User user = FirebaseAuth.instance.currentUser;
+
+    List<CompletedTaskBadges> cards = [];
+
+    List<QueryDocumentSnapshot> snapshot = (await userCollection
+            .doc(user.uid)
+            .collection("badges")
+            .where("completedtask", isEqualTo: "CompletedTask Created")
+            .get())
+        .docs;
+
+
+    snapshot.forEach(
+      (card) => cards.add(CompletedTaskBadges.fromDocumentSnapshot(card)),
+    );
+    
+    return cards;
+  }
   @override
   Future<void> updateTimetable(
       String timetableId, TimetableParams params) async {
