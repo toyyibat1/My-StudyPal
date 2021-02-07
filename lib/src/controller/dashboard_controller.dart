@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:my_study_pal/src/models/badges.dart';
 import 'package:my_study_pal/src/models/badges_params.dart';
 
+import '../core/badges.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
-import '../core/badges.dart';
 import '../models/app_user.dart';
 import '../models/task.dart';
 import '../services/auth_service/auth_service.dart';
@@ -68,60 +68,60 @@ class DashboardController extends Notifier {
         barrierDismissible: false,
       ).then(onGoBack);
 
-      if(newStatus == true){
+      if (newStatus == true) {
         CompletedTaskBadgesParams completedtaskBadgesParams =
-            CompletedTaskBadgesParams(completedtaskBadges: "CompletedTask Created");
+            CompletedTaskBadgesParams(
+                completedtaskBadges: "CompletedTask Created");
 
-      await Get.find<DatabaseService>().completedTaskBadges(completedtaskBadgesParams);
-        
-      if(_completedTaskBadges.length == 1){    
-        
-        BadgesParams params =
-            BadgesParams(badgeTitle: complete2TaskBadgeTitle,
-            desc: complete2TaskDescription);
+        await Get.find<DatabaseService>()
+            .completedTaskBadges(completedtaskBadgesParams);
 
-       await Get.find<DatabaseService>().createBadges(params);
-       await notificationPlugin.showNotification(complete2TaskBadgeTitle, complete2TaskDescription, "");
-      } else if(_completedTaskBadges.length == 9) {
-        
-        BadgesParams params =
-            BadgesParams(badgeTitle: complete10TaskBadgeTitle,
-            desc: complete10TaskDescription);
+        if (_completedTaskBadges.length == 1) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: complete2TaskBadgeTitle,
+              desc: complete2TaskDescription);
 
-       await Get.find<DatabaseService>().createBadges(params);
-       await notificationPlugin.showNotification(complete10TaskBadgeTitle, complete10TaskDescription, "");
-      }
-        else if(_completedTaskBadges.length == 24) {
-        BadgesParams params =
-            BadgesParams(badgeTitle: complete25TaskBadgeTitle,
-            desc: complete25TaskDescription);
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(
+              complete2TaskBadgeTitle, complete2TaskDescription, "");
+        } else if (_completedTaskBadges.length == 9) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: complete10TaskBadgeTitle,
+              desc: complete10TaskDescription);
 
-       await Get.find<DatabaseService>().createBadges(params);
-       await notificationPlugin.showNotification(complete25TaskBadgeTitle, complete25TaskDescription, "");
-        }
-        else if(_completedTaskBadges.length == 49) {
-        BadgesParams params =
-            BadgesParams(badgeTitle: complete50TaskBadgeTitle,
-            desc: complete50TaskDescription);
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(
+              complete10TaskBadgeTitle, complete10TaskDescription, "");
+        } else if (_completedTaskBadges.length == 24) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: complete25TaskBadgeTitle,
+              desc: complete25TaskDescription);
 
-       await Get.find<DatabaseService>().createBadges(params);
-       await notificationPlugin.showNotification(complete50TaskBadgeTitle, complete50TaskDescription, "");
-        }
-        else if(_completedTaskBadges.length == 99) {
-        BadgesParams params =
-            BadgesParams(badgeTitle: complete100TaskBadgeTitle,
-            desc: complete100TaskDescription);
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(
+              complete25TaskBadgeTitle, complete25TaskDescription, "");
+        } else if (_completedTaskBadges.length == 49) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: complete50TaskBadgeTitle,
+              desc: complete50TaskDescription);
 
-       await Get.find<DatabaseService>().createBadges(params);
-       await notificationPlugin.showNotification(complete100TaskBadgeTitle, complete100TaskDescription, "");
-        }
-        else {
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(
+              complete50TaskBadgeTitle, complete50TaskDescription, "");
+        } else if (_completedTaskBadges.length == 99) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: complete100TaskBadgeTitle,
+              desc: complete100TaskDescription);
+
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(
+              complete100TaskBadgeTitle, complete100TaskDescription, "");
+        } else {
           print("false");
         }
       } else {
         print("false");
-      }   
-
+      }
 
       await Get.find<DatabaseService>().changeTaskStatus(taskId, newStatus);
 
@@ -157,18 +157,14 @@ class DashboardController extends Notifier {
     }
     setState(NotifierState.isIdle);
   }
-   void getCompletedTaskBadges() async {
+
+  void getCompletedTaskBadges() async {
     setState(NotifierState.isLoading);
     try {
-      _completedTaskBadges = await Get.find<DatabaseService>().getCompletedTaskBadges();
+      _completedTaskBadges =
+          await Get.find<DatabaseService>().getCompletedTaskBadges();
       print(_completedTaskBadges);
-      // if(completedTaskBadges.length == 2){
-      //   await notificationPlugin.showNotification("Task completed", "Badged", "");
-      // } else if(completedTasks.length == 10) {
-      //   await notificationPlugin.showNotification("Task completed", "Badged", "");
-      // } else {
-      //   return null;
-      // }
+
       setState(NotifierState.isIdle);
     } on Failure catch (f) {
       setState(NotifierState.isIdle);
