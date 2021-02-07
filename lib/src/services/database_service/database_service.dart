@@ -93,6 +93,10 @@ abstract class DatabaseService {
       TimetableBadgesParams timetableBadgesParams);
   Future<List<TaskBadges>> getTaskBadges();
 
+  Future<List<StudyGoalBadges>> getAllStudyGoalBadges();
+
+  Future<List<TimetableBadges>> getAllTimeTableBadges();
+
   Future<List<CompletedTaskBadges>> getCompletedTaskBadges();
-  //Future<List<Task>> getCompletedTasks();
+
 }

@@ -14,6 +14,9 @@ import '../models/timetable_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database_service/database_service.dart';
 import 'local_notification_controller.dart';
+import 'package:my_study_pal/src/models/badges.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
+import '../core/badges.dart';
 
 class CreateTimetableController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;
@@ -41,11 +44,17 @@ class CreateTimetableController extends Notifier with ValidationMixin {
   GlobalKey<FormState> get formKey => _formKey;
   int get radioValue => _radioValue;
 
+  //badges 
+  List<TimetableBadges> _timetableBadges = [];
+
+  List<TimetableBadges> get timetableBadges  => _timetableBadges;
+
   @override
   void onInit() {
     _pickedStartTime = TimeOfDay.now();
     _pickedEndTime = TimeOfDay.now();
     _timetableDayController.text = 'Monday';
+    getAllTimeTableBadges();
     super.onInit();
   }
 
@@ -168,6 +177,50 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           startTimeTimetable(startTime),
           'Timetable Reminder',
         );
+
+        if(_timetableBadges.length == 1){        
+            BadgesParams params =
+                BadgesParams(badgeTitle: create2TimetableBadgeTitle,
+                desc: create2TimetableDescription);
+
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(create2TimetableBadgeTitle, create2TimetableDescription, "");
+          } else if(_timetableBadges.length == 9) {
+        
+            BadgesParams params =
+                BadgesParams(badgeTitle: create10TimetableBadgeTitle,
+                desc: create10TimetableDescription);
+
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(create10TimetableBadgeTitle, create10TimetableDescription, "");
+          }
+          else if(_timetableBadges.length == 24) {
+          BadgesParams params =
+              BadgesParams(badgeTitle: create25TimetableBadgeTitle,
+              desc: create25TimetableDescription);
+
+        await Get.find<DatabaseService>().createBadges(params);
+        await notificationPlugin.showNotification(create25GoalBadgeTitle, create25TimetableDescription, "");
+          }
+            else if(_timetableBadges.length == 49) {
+            BadgesParams params =
+                BadgesParams(badgeTitle: create50TimetableBadgeTitle,
+                desc: create50TimetableDescription);
+
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(create50TimetableBadgeTitle, create50TimetableDescription, "");
+            }
+            else if(_timetableBadges.length == 99) {
+            BadgesParams params =
+                BadgesParams(badgeTitle: create100TimetableBadgeTitle,
+                desc: create100TimetableDescription);
+
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(create100TimetableBadgeTitle, create100TimetableDescription, "");
+            }
+            else {
+              print("false");
+            }
         setState(NotifierState.isIdle);
 
         Get.back();
@@ -184,4 +237,24 @@ class CreateTimetableController extends Notifier with ValidationMixin {
       setState(NotifierState.isIdle);
     }
   }
+   void getAllTimeTableBadges() async {
+    setState(NotifierState.isLoading);
+    try {
+      _timetableBadges = await Get.find<DatabaseService>().getAllTimeTableBadges();
+      print(_timetableBadges);
+
+      setState(NotifierState.isIdle);
+    } on Failure catch (f) {
+      setState(NotifierState.isIdle);
+      Get.snackbar(
+        'Error',
+        f.message,
+        colorText: Get.theme.colorScheme.onError,
+        backgroundColor: Get.theme.errorColor,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+    setState(NotifierState.isIdle);
+  }
+
 }

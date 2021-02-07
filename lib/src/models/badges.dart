@@ -35,24 +35,24 @@ class CompletedTaskBadges {
 }
 
 class TimetableBadges {
-  final String timetableBadge;
+  final String timetable;
 
-  TimetableBadges({this.timetableBadge});
+  TimetableBadges({this.timetable});
 
   factory TimetableBadges.fromDocumentSnapshot(DocumentSnapshot snapshot) =>
       TimetableBadges(
-        timetableBadge: snapshot.data()['timetableBadge'],
+        timetable: snapshot.data()['timetable'],
       );
 }
 
 class StudyGoalBadges {
-  final String studyGoalBadge;
+  final String studyGoal;
 
-  StudyGoalBadges({this.studyGoalBadge});
+  StudyGoalBadges({this.studyGoal});
 
   factory StudyGoalBadges.fromDocumentSnapshot(DocumentSnapshot snapshot) =>
       StudyGoalBadges(
-        studyGoalBadge: snapshot.data()['studyGoalBadge'],
+        studyGoal: snapshot.data()['studyGoal'],
       );
 }
 

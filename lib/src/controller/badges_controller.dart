@@ -93,6 +93,4 @@ class BadgeController extends Notifier {
     }
     setState(NotifierState.isIdle);
   }
-
-
 }
