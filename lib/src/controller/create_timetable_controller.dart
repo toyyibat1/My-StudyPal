@@ -125,7 +125,18 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           location: _timetableLocationController.text,
           startTime: _pickedStartTime,
         );
-        TimetableBadgesParams timetableBadgesParams =
+
+                  //        Converting Date time to integer
+       int startTimeTableValidate = startTimeTable(params).year +
+           startTimeTable(params).hour +
+           startTimeTable(params).minute;
+
+       int endTimeTableValidate = endTimeTable(params).year +
+           endTimeTable(params).hour +
+           endTimeTable(params).minute;
+
+       if (startTimeTableValidate < endTimeTableValidate) {
+         TimetableBadgesParams timetableBadgesParams =
             TimetableBadgesParams(timetableBadges: "Timetable Created");
 
         Timetable timetable =
@@ -178,6 +189,29 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           'Timetable Reminder',
         );
 
+       } else if (startTimeTableValidate == endTimeTableValidate) {
+         setState(NotifierState.isIdle);
+         return Get.snackbar(
+           'Error',
+           'Start time and end time cannot be the same',
+           colorText: Get.theme.colorScheme.onError,
+           backgroundColor: Get.theme.errorColor,
+           snackPosition: SnackPosition.BOTTOM,
+         );
+       // return setState(NotifierState.isIdle);
+       } else if (startTimeTableValidate > endTimeTableValidate) {
+       print("startTaskValidate > endTaskValidate");
+       setState(NotifierState.isIdle);
+       return Get.snackbar(
+         'Error',
+         "End time must be later than start time",
+         colorText: Get.theme.colorScheme.onError,
+         backgroundColor: Get.theme.errorColor,
+         snackPosition: SnackPosition.BOTTOM,
+       );
+       
+       }
+      
         if(_timetableBadges.length == 1){        
             BadgesParams params =
                 BadgesParams(badgeTitle: create2TimetableBadgeTitle,
