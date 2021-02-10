@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/controller/badges_controller.dart';
 import 'package:my_study_pal/src/core/constants.dart';
+import 'package:my_study_pal/src/core/images.dart';
 import 'package:my_study_pal/src/models/badges.dart';
 
 class BadgeTile extends StatelessWidget {
@@ -24,13 +25,9 @@ class BadgeTile extends StatelessWidget {
             color: Color(0xFFF4F4F4),
             child: Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 35,
-                  child: Image.asset(
-                    "assets/badge.PNG",
-                    width: 36,
-                  ),
+                Image.asset(
+                  badge,
+                  width: 80,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(

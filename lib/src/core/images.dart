@@ -7,7 +7,7 @@ const goal = 'assets/goals.png';
 const goal1 = 'assets/goal.png';
 const invite = 'assets/invites.png';
 const mark = 'assets/mark.png';
-const badge = 'assets/badge.png';
+const badge = 'assets/Badges1.png';
 
 const onboarding1 = 'assets/onboarding1.svg';
 const onboarding2 = 'assets/onboarding2.svg';
