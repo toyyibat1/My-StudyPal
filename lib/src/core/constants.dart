@@ -20,6 +20,10 @@ const kHeadingTextStyle = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.w700,
 );
+const kHeading2TextStyle = TextStyle(
+  fontSize: 30,
+  fontWeight: FontWeight.w700,
+);
 
 const kBodyText1TextStyle = TextStyle(
   color: kBlackColor,

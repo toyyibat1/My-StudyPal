@@ -120,6 +120,7 @@ class CreateTaskController extends Notifier with ValidationMixin {
 
       try {
         await Get.find<DataConnectionService>().checkConnection();
+        
 
         TaskParams params = TaskParams(
           date: _pickedDate,
@@ -128,25 +129,24 @@ class CreateTaskController extends Notifier with ValidationMixin {
           name: _taskNameController.text,
           startTime: _pickedStartTime,
         );
-//        Converting Date time to integer
-//        int startTaskValidate = startTimeTask(params).year +
-//            startTimeTask(params).hour +
-//            startTimeTask(params).minute;
-//
-//        int endTaskValidate = startTimeTask(params).year +
-//            endTimeTask(params).hour +
-//            endTimeTask(params).minute;
-//
-//        if (startTaskValidate < endTaskValidate) {
-        TaskBadgesParams taskBadgesParams =
+               //        Converting Date time to integer
+       int startTaskValidate = startTimeTask(params).year +
+           startTimeTask(params).hour +
+           startTimeTask(params).minute;
+
+       int endTaskValidate = endTimeTask(params).year +
+           endTimeTask(params).hour +
+           endTimeTask(params).minute;
+
+       if (startTaskValidate < endTaskValidate) {
+         TaskBadgesParams taskBadgesParams =
             TaskBadgesParams(taskBadges: "task Created");
 
         Task task = await Get.find<DatabaseService>().createTask(params);
         await Get.find<DatabaseService>().createTaskBadges(taskBadgesParams);
 
         int id = task.timestamp.nanoseconds;
-
-        // Creates start notification
+                // Creates start notification
         await notificationPlugin.scheduleNotification(
           id,
           params.name,
@@ -163,25 +163,29 @@ class CreateTaskController extends Notifier with ValidationMixin {
           endTimeTask(params),
           'Task Reminder',
         );
-//        } else if (startTaskValidate == endTaskValidate) {
-
-//          Get.snackbar(
-//            'Error',
-//            'Start time and end time cannot be the same',
-//            colorText: Get.theme.colorScheme.onError,
-//            backgroundColor: Get.theme.errorColor,
-//            snackPosition: SnackPosition.BOTTOM,
-//          );
-//        } else if (startTaskValidate > endTaskValidate) {
-//        print("startTaskValidate > endTaskValidate");
-//        Get.snackbar(
-//          'Error',
-//          "End time must be later than start time",
-//          colorText: Get.theme.colorScheme.onError,
-//          backgroundColor: Get.theme.errorColor,
-//          snackPosition: SnackPosition.BOTTOM,
-//        );
-//        }
+       } else if (startTaskValidate == endTaskValidate) {
+         setState(NotifierState.isIdle);
+         return Get.snackbar(
+           'Error',
+           'Start time and end time cannot be the same',
+           colorText: Get.theme.colorScheme.onError,
+           backgroundColor: Get.theme.errorColor,
+           snackPosition: SnackPosition.BOTTOM,
+         );
+       // return setState(NotifierState.isIdle);
+       } else if (startTaskValidate > endTaskValidate) {
+       print("startTaskValidate > endTaskValidate");
+       setState(NotifierState.isIdle);
+       return Get.snackbar(
+         'Error',
+         "End time must be later than start time",
+         colorText: Get.theme.colorScheme.onError,
+         backgroundColor: Get.theme.errorColor,
+         snackPosition: SnackPosition.BOTTOM,
+       );
+       
+       }
+      
 
 //        setState(NotifierState.isIdle);
         print(_tasksBadges);
