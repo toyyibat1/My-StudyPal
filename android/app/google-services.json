@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:59409505153:android:e15db79634297d152a6680",
         "android_client_info": {
-          "package_name": "com.example.my_study_pal"
+          "package_name": "com.studypadi.app"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "59409505153-gonne99959ec02abn66prnq7bd9osgf5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.my_study_pal",
+            "package_name": "com.studypadi.app",
             "certificate_hash": "92e5051e47d2dbc9045abf4eb431edfd292f4ca3"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "59409505153-ubqm0cr7pu5h1lgt62rnnlvvoq07s855.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.my_study_pal",
+            "package_name": "com.studypadi.app",
             "certificate_hash": "b5aee2ee92dea46bedd4a0f3515b4f7078dc9ab8"
           }
         },

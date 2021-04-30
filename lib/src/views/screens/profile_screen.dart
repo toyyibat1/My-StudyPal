@@ -62,14 +62,23 @@ class ProfileScreen extends StatelessWidget {
                 child: new SizedBox(
                   width: 70.0,
                   height: 70.0,
-                  child: Image.file(File(controller.user.photoUrl)) ==  null ? Text(
-                    controller.user.firstName[0],
-                    style: kHeadingTextStyle.copyWith(color: Colors.white),
-                  ):
-                  Image.file(File(controller.user.photoUrl), fit: BoxFit.cover),
-                ),
+                  child: Image.file(File(controller.user.photoUrl)) == null
+                      ? CircleAvatar(
+                          backgroundColor: Color(0xFFEEEBF3),
+                          radius: 40,
+                          child: Text(
+                            controller.user.firstName[0],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                            ),
+                          ),
+                        )
+                      : Image.file(File(controller.user.photoUrl),
+                          fit: BoxFit.cover),
                 ),
               ),
+            ),
             title: '${controller.user.firstName} ${controller.user.lastName}',
             email: controller.user.emailAddress,
             subtitle: Text(controller.user.institution),
