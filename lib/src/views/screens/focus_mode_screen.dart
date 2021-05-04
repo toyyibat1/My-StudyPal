@@ -10,18 +10,34 @@ import '../../core/constants.dart';
 class FocusModeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: GetBuilder<FocusModeController>(
-            init: FocusModeController(),
-            builder: (controller) => Column(
-                  children: [
-                    header(context),
-                    kExtraLargeVerticalSpacing,
-                    form(context, controller)
-                  ],
-                )),
-      ),
+    return GetBuilder<FocusModeController>(
+      init: FocusModeController(),
+      builder: (controller) => (Scaffold(
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          leading: GestureDetector(
+            onTap: controller.goBack,
+            child: Icon(Icons.arrow_back_ios, color: Colors.white),
+          ),
+          title: Text(
+            'Focus Mode',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+          elevation: 0,
+        ),
+        body: SafeArea(
+            child: Column(
+          children: [
+//            header(context),
+            kExtraLargeVerticalSpacing,
+            form(context, controller)
+          ],
+        )),
+      )),
     );
   }
 

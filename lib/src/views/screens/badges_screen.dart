@@ -17,10 +17,26 @@ class BadgesScreen extends StatelessWidget {
     return GetBuilder<BadgeController>(
         init: BadgeController()..getAuthenticatedUser(),
         builder: (controller) => Scaffold(
+              appBar: AppBar(
+                backgroundColor: kPrimaryColor,
+                leading: GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Icon(Icons.arrow_back_ios, color: Colors.white),
+                ),
+                title: Text(
+                  'Badges',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                elevation: 0,
+              ),
               body: SafeArea(
                 child: Column(
                   children: [
-                    header(context),
+//                    header(context),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
