@@ -31,7 +31,7 @@ class AppTile extends StatelessWidget {
             Icon(leading, color: kPrimaryColor) ?? Container(),
             leading == null ? Container() : SizedBox(width: 24),
             Container(
-              width: MediaQuery.of(context).size.width * 0.66,
+              width: MediaQuery.of(context).size.width * 0.55,
               child: Text(
                 title,
                 style: TextStyle(

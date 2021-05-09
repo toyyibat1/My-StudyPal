@@ -102,7 +102,42 @@ class FocusModeController extends Notifier with ValidationMixin {
           endTime: _pickedEndTime,
           startTime: _pickedStartTime,
         );
-        await Get.find<DatabaseService>().createFocusMode(params);
+
+        
+                  //        Converting Date time to integer
+       int startTimeFocusModeValidate = startTimeFocusMode(params).year +
+           startTimeFocusMode(params).hour +
+           startTimeFocusMode(params).minute;
+
+       int endTimeFocusModeValidate = endTimeFocusMode(params).year +
+           endTimeFocusMode(params).hour +
+           endTimeFocusMode(params).minute;
+
+       if (startTimeFocusModeValidate < endTimeFocusModeValidate) {
+         await Get.find<DatabaseService>().createFocusMode(params);
+
+       } else if (startTimeFocusModeValidate == endTimeFocusModeValidate) {
+         setState(NotifierState.isIdle);
+         return Get.snackbar(
+           'Error',
+           'Start time and end time cannot be the same',
+           colorText: Get.theme.colorScheme.onError,
+           backgroundColor: Get.theme.errorColor,
+           snackPosition: SnackPosition.BOTTOM,
+         );
+       // return setState(NotifierState.isIdle);
+       } else if (startTimeFocusModeValidate > endTimeFocusModeValidate) {
+       print("startTaskValidate > endTaskValidate");
+       setState(NotifierState.isIdle);
+       return Get.snackbar(
+         'Error',
+         "End time must be later than start time",
+         colorText: Get.theme.colorScheme.onError,
+         backgroundColor: Get.theme.errorColor,
+         snackPosition: SnackPosition.BOTTOM,
+       );
+       
+       }
 
         if (focusModeToggle) {
           if (await FlutterDnd.isNotificationPolicyAccessGranted) {

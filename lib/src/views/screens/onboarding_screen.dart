@@ -134,7 +134,7 @@ class OnboardingScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 64),
                   onPressed: controller.signUp,
-                )
+                ),
               ],
             ),
           ),

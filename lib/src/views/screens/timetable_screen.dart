@@ -14,11 +14,23 @@ class TimetableScreen extends StatelessWidget {
     return GetBuilder<TimetableController>(
       init: TimetableController(),
       builder: (controller) => Scaffold(
+        appBar: AppBar(
+          title: Center(
+              child: Text(
+            'Timetable',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          )),
+          backgroundColor: kPrimaryColor2,
+        ),
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [
-              header,
+//              header,
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),

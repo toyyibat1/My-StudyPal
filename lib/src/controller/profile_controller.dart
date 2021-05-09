@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/views/widgets/app_button.dart';
 
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -59,16 +61,39 @@ class ProfileController extends Notifier with ValidationMixin {
 
   void signOut() async {
     await Get.find<AuthService>().signOut();
-    Get.off(SigninScreen());
+    Get.offAll(SigninScreen());
+  }
+
+  void confirmSignOut() {
+    Get.defaultDialog(
+      title: "Signing out",
+      content: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
+        child: Text(
+            "Hey ${_user.firstName}, Are you sure you want to exit the app?"),
+      ),
+//      onConfirm: signOut,
+//      onCancel: Get.back,
+      actions: [
+        AppButton(
+            onPressed: () {
+              signOut();
+//              signOutWithFacebook();
+//              signOutWithGoogle();
+            },
+            label: "Yes"),
+        AppButton(onPressed: () => Get.back(), label: "No"),
+      ],
+    );
   }
 
   void signOutWithGoogle() async {
     await Get.find<AuthService>().signOutWithGoogle();
-    Get.off(CreateAccountScreen());
+    Get.offAll(CreateAccountScreen());
   }
 
   void signOutWithFacebook() async {
     await Get.find<AuthService>().signOutWithFacebook();
-    Get.off(CreateAccountScreen());
+    Get.offAll(CreateAccountScreen());
   }
 }

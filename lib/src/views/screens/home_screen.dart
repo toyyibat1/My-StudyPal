@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,28 +23,36 @@ class HomeScreen extends StatelessWidget {
     ProfileScreen(),
   ];
 
+  final userCollection = FirebaseFirestore.instance.collection('users');
+
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
-      child: GetBuilder<HomeController>(
-        init: HomeController(user: user),
-        builder: (controller) => Scaffold(
-          body: _children[controller.currentPage],
-          bottomNavigationBar: NavBar(
-            backgroundColor: Colors.white,
-            color: Colors.black54,
-            selectedColor: kPrimaryColor2,
-            onTabSelected: controller.onTabSelected,
-            items: [
-              NavBarItem(iconData: Icons.home, text: 'Home'),
-              NavBarItem(iconData: Icons.today, text: 'Tasks'),
-              NavBarItem(
-                  iconData: Icons.my_library_books_rounded, text: 'Timetable'),
-              NavBarItem(iconData: Icons.person_outline, text: 'Profile'),
-            ],
-          ),
-        ),
-      ),
+      child: StreamBuilder(
+          stream: userCollection.snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            return GetBuilder<HomeController>(
+              init: HomeController(user: user),
+              builder: (controller) => Scaffold(
+                body: _children[controller.currentPage],
+                bottomNavigationBar: NavBar(
+                  backgroundColor: Colors.white,
+                  color: Colors.black54,
+                  selectedColor: kPrimaryColor2,
+                  onTabSelected: controller.onTabSelected,
+                  items: [
+                    NavBarItem(iconData: Icons.home, text: 'Home'),
+                    NavBarItem(iconData: Icons.today, text: 'Tasks'),
+                    NavBarItem(
+                        iconData: Icons.my_library_books_rounded,
+                        text: 'Timetable'),
+                    NavBarItem(iconData: Icons.person_outline, text: 'Profile'),
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }

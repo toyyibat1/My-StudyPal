@@ -13,6 +13,10 @@ import '../core/validation_mixin.dart';
 import '../models/app_user.dart';
 import '../models/update_user_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
+import '../services/database_service/database_service.dart';
+import 'local_notification_controller.dart';
+import '../models/badges_params.dart';
+import '../core/badges.dart';
 
 class EditProfileController extends Notifier with ValidationMixin {
   EditProfileController(this.user);
@@ -97,6 +101,17 @@ class EditProfileController extends Notifier with ValidationMixin {
         await Get.find<AuthService>().updateUser(params);
         await notificationPlugin.showNotification(params.firstName,
             'Profile Sucessfully Updated! ', 'Profile Updated');
+
+        // if(user.institution != null && user.course !=null){        
+        //     BadgesParams params =
+        //         BadgesParams(badgeTitle:profile1BadgeTitle,
+        //         desc: profile1Description);
+
+        //   await Get.find<DatabaseService>().createBadges(params);
+        //   await notificationPlugin.showNotification(profile1BadgeTitle, profile1Description, "");
+        //   } else {
+        //     return null;
+        //   }
 
         setState(NotifierState.isIdle);
 

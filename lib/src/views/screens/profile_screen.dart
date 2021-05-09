@@ -15,12 +15,25 @@ class ProfileScreen extends StatelessWidget {
     return GetBuilder<ProfileController>(
       init: ProfileController()..getAuthenticatedUser(),
       builder: (controller) => Scaffold(
+        appBar: AppBar(
+          title: Center(
+              child: Text(
+            'My Profile',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          )),
+          elevation: 0,
+          backgroundColor: kPrimaryColor2,
+        ),
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              header,
+//              header,
               Expanded(
                   child: controller.state == NotifierState.isLoading
                       ? Center(child: CircularProgressIndicator())
@@ -62,13 +75,23 @@ class ProfileScreen extends StatelessWidget {
                 child: new SizedBox(
                   width: 70.0,
                   height: 70.0,
-                  child: Image.file(File(controller.user.photoUrl), fit: BoxFit.cover) ?? Text(
-                    controller.user.firstName[0],
-                    style: kHeadingTextStyle,
-                  )
-                ),
+                  child: Image.file(File(controller.user.photoUrl)) == null
+                      ? CircleAvatar(
+                          backgroundColor: Color(0xFFEEEBF3),
+                          radius: 40,
+                          child: Text(
+                            controller.user.firstName[0],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                            ),
+                          ),
+                        )
+                      : Image.file(File(controller.user.photoUrl),
+                          fit: BoxFit.cover),
                 ),
               ),
+            ),
             title: '${controller.user.firstName} ${controller.user.lastName}',
             email: controller.user.emailAddress,
             subtitle: Text(controller.user.institution),
@@ -118,7 +141,7 @@ class ProfileScreen extends StatelessWidget {
             trailing: Icons.arrow_forward_ios,
           ),
           AppTile(
-            onPressed: controller.signOut ??
+            onPressed: controller.confirmSignOut ??
                 controller.signOutWithGoogle ??
                 controller.signOutWithFacebook,
             leading: Icons.logout,

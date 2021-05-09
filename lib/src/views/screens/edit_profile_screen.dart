@@ -16,13 +16,29 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
-      child: Scaffold(
-        body: SafeArea(
-          child: GetBuilder<EditProfileController>(
-            init: EditProfileController(user),
-            builder: (controller) => Column(
+      child: GetBuilder<EditProfileController>(
+        init: EditProfileController(user),
+        builder: (controller) => Scaffold(
+          appBar: AppBar(
+            backgroundColor: kPrimaryColor,
+            leading: GestureDetector(
+              onTap: controller.goBack,
+              child: Icon(Icons.arrow_back_ios, color: Colors.white),
+            ),
+            title: Text(
+              'Edit Your Profile',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+            elevation: 0,
+          ),
+          body: SafeArea(
+            child: Column(
               children: [
-                header(context, controller),
+//                header(context, controller),
                 form(context, controller),
               ],
             ),
@@ -161,6 +177,7 @@ class EditProfileScreen extends StatelessWidget {
                       ? null
                       : controller.updateUser(),
                 ),
+                kMediumVerticalSpacing,
               ],
             ),
           ),

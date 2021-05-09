@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:my_study_pal/src/controller/local_notification_controller.dart';
 import 'package:my_study_pal/src/core/dateTimeUtils.dart';
+import 'package:my_study_pal/src/models/badges_params.dart';
 import 'package:my_study_pal/src/models/school_schedule.dart';
 
 import '../core/failure.dart';
@@ -91,9 +92,15 @@ class CreateSchoolScheduleController extends Notifier with ValidationMixin {
           startOfSemester: _startOfSemester,
           name: _nameController.text,
         );
+        SchoolScheduleBadgesParams schoolScheduleBadgesParams =
+            SchoolScheduleBadgesParams(
+                schoolScheduleBadges: "SchoolSchedule Created");
 
         SchoolSchedule schoolSchedule =
             await Get.find<DatabaseService>().createSchedule(params);
+        await Get.find<DatabaseService>()
+            .createSchoolScheduleBadges(schoolScheduleBadgesParams);
+
         int id = schoolSchedule.timestamp.nanoseconds;
 //        Creates start schedule notification
         await notificationPlugin.scheduleNotification(

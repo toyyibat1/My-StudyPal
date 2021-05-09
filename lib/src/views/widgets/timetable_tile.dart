@@ -1,11 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_study_pal/src/controller/timetable_controller.dart';
 
 import '../../controller/timetable_controller.dart';
 import '../../core/constants.dart';
 import '../../models/timetable.dart';
-
-import 'package:flutter/cupertino.dart';
-import 'package:my_study_pal/src/controller/timetable_controller.dart';
 
 class TimetableTile extends StatelessWidget {
   final int index;
@@ -72,7 +71,7 @@ class TimetableTile extends StatelessWidget {
                                   ),
                                   SizedBox(width: 12),
                                   Icon(Icons.location_on_outlined, size: 20),
-                                  SizedBox(width: 6),
+                                  SizedBox(width: 3),
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width / 4,

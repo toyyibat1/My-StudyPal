@@ -13,11 +13,27 @@ class SchoolScheduleScreen extends StatelessWidget {
     return GetBuilder<SchoolScheduleController>(
       init: SchoolScheduleController(),
       builder: (controller) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          leading: GestureDetector(
+            onTap: () => Get.back(),
+            child: Icon(Icons.arrow_back_ios, color: Colors.white),
+          ),
+          title: Text(
+            'School Schedule',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+          elevation: 0,
+        ),
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [
-              header(context),
+//              header(context),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
@@ -65,6 +81,7 @@ class SchoolScheduleScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          tooltip: "Click me to create your schedule",
           backgroundColor: kPrimaryColor,
           child: Icon(Icons.add),
           onPressed: controller.navigateToCreateSchedule,

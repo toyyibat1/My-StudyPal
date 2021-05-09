@@ -13,13 +13,29 @@ class CreateTimetableScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TransparentStatusbar(
-      child: Scaffold(
-        body: SafeArea(
-          child: GetBuilder<CreateTimetableController>(
-            init: CreateTimetableController(),
-            builder: (controller) => Column(
+      child: GetBuilder<CreateTimetableController>(
+        init: CreateTimetableController(),
+        builder: (controller) => Scaffold(
+          appBar: AppBar(
+            backgroundColor: kPrimaryColor,
+            leading: GestureDetector(
+              onTap: controller.goBack,
+              child: Icon(Icons.arrow_back_ios, color: Colors.white),
+            ),
+            title: Text(
+              'Create New Timetable',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+            elevation: 0,
+          ),
+          body: SafeArea(
+            child: Column(
               children: [
-                header(context, controller),
+//                header(context, controller),
                 form(context, controller),
               ],
             ),
