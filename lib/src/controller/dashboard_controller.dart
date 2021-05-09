@@ -75,7 +75,9 @@ class DashboardController extends Notifier {
 
         await Get.find<DatabaseService>()
             .completedTaskBadges(completedtaskBadgesParams);
-
+        BadgesParams(
+            badgeTitle: complete2TaskBadgeTitle,
+            desc: complete2TaskDescription);
         if (_completedTaskBadges.length == 1) {
           BadgesParams params = BadgesParams(
               badgeTitle: complete2TaskBadgeTitle,

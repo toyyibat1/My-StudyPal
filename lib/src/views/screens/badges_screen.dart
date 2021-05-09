@@ -83,11 +83,12 @@ class BadgesScreen extends StatelessWidget {
                                           ),
                                         )
                                       : ListView.builder(
-                                          itemCount: controller.badges.length,
+                                          itemCount:
+                                              BadgeTile().allBadgesList.length,
                                           itemBuilder: (context, index) {
                                             return BadgeTile(
                                               index: index,
-                                              badges: controller.badges,
+                                              badges: BadgeTile().allBadgesList,
                                               controller: controller,
                                             );
                                           },
@@ -122,7 +123,6 @@ class BadgesScreen extends StatelessWidget {
                       '${badgeController.completedTaskBadges.length}',
                       style: kBodyText2TextStyle,
                     ),
-                    // Text('${badgeController.de}')
                   ],
                 ),
               ],
@@ -162,3 +162,5 @@ class BadgesScreen extends StatelessWidget {
         ),
       );
 }
+
+List myList = [""];

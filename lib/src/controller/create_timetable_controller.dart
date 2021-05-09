@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_study_pal/src/controller/local_notification_controller.dart';
+import 'package:my_study_pal/src/models/badges.dart';
 import 'package:my_study_pal/src/models/badges_params.dart';
 
+import '../core/badges.dart';
 import '../core/dateTimeUtils.dart';
 import '../core/failure.dart';
 import '../core/notifier.dart';
@@ -14,9 +17,6 @@ import '../models/timetable_params.dart';
 import '../services/data_connection_service/data_connection_service.dart';
 import '../services/database_service/database_service.dart';
 import 'local_notification_controller.dart';
-import 'package:my_study_pal/src/models/badges.dart';
-import 'package:my_study_pal/src/controller/local_notification_controller.dart';
-import '../core/badges.dart';
 
 class CreateTimetableController extends Notifier with ValidationMixin {
   TimeOfDay _pickedStartTime;
@@ -44,10 +44,10 @@ class CreateTimetableController extends Notifier with ValidationMixin {
   GlobalKey<FormState> get formKey => _formKey;
   int get radioValue => _radioValue;
 
-  //badges 
+  //badges
   List<TimetableBadges> _timetableBadges = [];
 
-  List<TimetableBadges> get timetableBadges  => _timetableBadges;
+  List<TimetableBadges> get timetableBadges => _timetableBadges;
 
   @override
   void onInit() {
@@ -126,135 +126,142 @@ class CreateTimetableController extends Notifier with ValidationMixin {
           startTime: _pickedStartTime,
         );
 
-                  //        Converting Date time to integer
-       int startTimeTableValidate = startTimeTable(params).year +
-           startTimeTable(params).hour +
-           startTimeTable(params).minute;
+        //        Converting Date time to integer
+        int startTimeTableValidate = startTimeTable(params).year +
+            startTimeTable(params).hour +
+            startTimeTable(params).minute;
 
-       int endTimeTableValidate = endTimeTable(params).year +
-           endTimeTable(params).hour +
-           endTimeTable(params).minute;
+        int endTimeTableValidate = endTimeTable(params).year +
+            endTimeTable(params).hour +
+            endTimeTable(params).minute;
 
-       if (startTimeTableValidate < endTimeTableValidate) {
-         TimetableBadgesParams timetableBadgesParams =
-            TimetableBadgesParams(timetableBadges: "Timetable Created");
+        if (startTimeTableValidate < endTimeTableValidate) {
+          TimetableBadgesParams timetableBadgesParams =
+              TimetableBadgesParams(timetableBadges: "Timetable Created");
 
-        Timetable timetable =
-            await Get.find<DatabaseService>().createTimetable(params);
+          Timetable timetable =
+              await Get.find<DatabaseService>().createTimetable(params);
 
-        await Get.find<DatabaseService>()
-            .createTimetableBadges(timetableBadgesParams);
+          await Get.find<DatabaseService>()
+              .createTimetableBadges(timetableBadgesParams);
 
-        int id = timetable.timestamp.nanoseconds;
+          int id = timetable.timestamp.nanoseconds;
 
-        TimeOfDay startTime;
+          TimeOfDay startTime;
 //Before Start time
-        if (_radioValue == 0) {
-          startTime = plusMinutes(params.startTime, 16);
-        } else if (_radioValue == 1) {
-          startTime = plusMinutes(params.startTime, 31);
-        } else if (_radioValue == 2) {
-          startTime = plusMinutes(params.startTime, 61);
-        } else if (_radioValue.isNull) {
-          startTime = plusMinutes(params.startTime, 0);
-        } else {
-          startTime = plusMinutes(params.startTime, 0);
-        }
+          if (_radioValue == 0) {
+            startTime = plusMinutes(params.startTime, 16);
+          } else if (_radioValue == 1) {
+            startTime = plusMinutes(params.startTime, 31);
+          } else if (_radioValue == 2) {
+            startTime = plusMinutes(params.startTime, 61);
+          } else if (_radioValue.isNull) {
+            startTime = plusMinutes(params.startTime, 0);
+          } else {
+            startTime = plusMinutes(params.startTime, 0);
+          }
 
-        await notificationPlugin.weeklyNotification(
-          id,
-          params.day,
-          params.subject,
-          startDayTimeTable(params),
-          startTimeTimetable(startTime),
-          'Timetable Reminder',
-        );
+          await notificationPlugin.weeklyNotification(
+            id,
+            params.day,
+            params.subject,
+            startDayTimeTable(params),
+            startTimeTimetable(startTime),
+            'Timetable Reminder',
+          );
 
 // Exact Start time
-        if (_radioValue == 0) {
-          startTime = plusMinutes(params.startTime, 0);
-        } else if (_radioValue == 1) {
-          startTime = plusMinutes(params.startTime, 0);
-        } else if (_radioValue == 2) {
-          startTime = plusMinutes(params.startTime, 0);
-        } else {
-          startTime = plusMinutes(params.startTime, 0);
-        }
-        await notificationPlugin.weeklyNotification(
-          id + 4,
-          params.day,
-          params.subject,
-          startDayTimeTable(params),
-          startTimeTimetable(startTime),
-          'Timetable Reminder',
-        );
-
-       } else if (startTimeTableValidate == endTimeTableValidate) {
-         setState(NotifierState.isIdle);
-         return Get.snackbar(
-           'Error',
-           'Start time and end time cannot be the same',
-           colorText: Get.theme.colorScheme.onError,
-           backgroundColor: Get.theme.errorColor,
-           snackPosition: SnackPosition.BOTTOM,
-         );
-       // return setState(NotifierState.isIdle);
-       } else if (startTimeTableValidate > endTimeTableValidate) {
-       print("startTaskValidate > endTaskValidate");
-       setState(NotifierState.isIdle);
-       return Get.snackbar(
-         'Error',
-         "End time must be later than start time",
-         colorText: Get.theme.colorScheme.onError,
-         backgroundColor: Get.theme.errorColor,
-         snackPosition: SnackPosition.BOTTOM,
-       );
-       
-       }
-      
-        if(_timetableBadges.length == 1){        
-            BadgesParams params =
-                BadgesParams(badgeTitle: create2TimetableBadgeTitle,
-                desc: create2TimetableDescription);
-
-          await Get.find<DatabaseService>().createBadges(params);
-          await notificationPlugin.showNotification(create2TimetableBadgeTitle, create2TimetableDescription, "");
-          } else if(_timetableBadges.length == 9) {
-        
-            BadgesParams params =
-                BadgesParams(badgeTitle: create10TimetableBadgeTitle,
-                desc: create10TimetableDescription);
-
-          await Get.find<DatabaseService>().createBadges(params);
-          await notificationPlugin.showNotification(create10TimetableBadgeTitle, create10TimetableDescription, "");
+          if (_radioValue == 0) {
+            startTime = plusMinutes(params.startTime, 0);
+          } else if (_radioValue == 1) {
+            startTime = plusMinutes(params.startTime, 0);
+          } else if (_radioValue == 2) {
+            startTime = plusMinutes(params.startTime, 0);
+          } else {
+            startTime = plusMinutes(params.startTime, 0);
           }
-          else if(_timetableBadges.length == 24) {
-          BadgesParams params =
-              BadgesParams(badgeTitle: create25TimetableBadgeTitle,
+          await notificationPlugin.weeklyNotification(
+            id + 4,
+            params.day,
+            params.subject,
+            startDayTimeTable(params),
+            startTimeTimetable(startTime),
+            'Timetable Reminder',
+          );
+        } else if (startTimeTableValidate == endTimeTableValidate) {
+          setState(NotifierState.isIdle);
+          return Get.snackbar(
+            'Error',
+            'Start time and end time cannot be the same',
+            colorText: Get.theme.colorScheme.onError,
+            backgroundColor: Get.theme.errorColor,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+          // return setState(NotifierState.isIdle);
+        } else if (startTimeTableValidate > endTimeTableValidate) {
+          print("startTaskValidate > endTaskValidate");
+          setState(NotifierState.isIdle);
+          return Get.snackbar(
+            'Error',
+            "End time must be later than start time",
+            colorText: Get.theme.colorScheme.onError,
+            backgroundColor: Get.theme.errorColor,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+
+        BadgesParams(
+            badgeTitle: create2TimetableBadgeTitle,
+            desc: create2TimetableDescription);
+        await Get.find<DatabaseService>().createBadges(BadgesParams());
+
+        if (_timetableBadges.length == 1) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: create2TimetableBadgeTitle,
+              desc: create2TimetableDescription);
+
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(
+              create2TimetableBadgeTitle, create2TimetableDescription, "");
+        } else if (_timetableBadges.length == 9) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: create10TimetableBadgeTitle,
+              desc: create10TimetableDescription);
+
+          BadgesParams(
+              badgeTitle: create10TimetableBadgeTitle,
+              desc: create10TimetableDescription);
+
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(
+              create10TimetableBadgeTitle, create10TimetableDescription, "");
+        } else if (_timetableBadges.length == 24) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: create25TimetableBadgeTitle,
               desc: create25TimetableDescription);
 
-        await Get.find<DatabaseService>().createBadges(params);
-        await notificationPlugin.showNotification(create25GoalBadgeTitle, create25TimetableDescription, "");
-          }
-            else if(_timetableBadges.length == 49) {
-            BadgesParams params =
-                BadgesParams(badgeTitle: create50TimetableBadgeTitle,
-                desc: create50TimetableDescription);
+          await Get.find<DatabaseService>().createBadges(params);
+          await notificationPlugin.showNotification(
+              create25GoalBadgeTitle, create25TimetableDescription, "");
+        } else if (_timetableBadges.length == 49) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: create50TimetableBadgeTitle,
+              desc: create50TimetableDescription);
 
           await Get.find<DatabaseService>().createBadges(params);
-          await notificationPlugin.showNotification(create50TimetableBadgeTitle, create50TimetableDescription, "");
-            }
-            else if(_timetableBadges.length == 99) {
-            BadgesParams params =
-                BadgesParams(badgeTitle: create100TimetableBadgeTitle,
-                desc: create100TimetableDescription);
+          await notificationPlugin.showNotification(
+              create50TimetableBadgeTitle, create50TimetableDescription, "");
+        } else if (_timetableBadges.length == 99) {
+          BadgesParams params = BadgesParams(
+              badgeTitle: create100TimetableBadgeTitle,
+              desc: create100TimetableDescription);
 
           await Get.find<DatabaseService>().createBadges(params);
-          await notificationPlugin.showNotification(create100TimetableBadgeTitle, create100TimetableDescription, "");
-            }
-            else {
-              print("false");
-            }
+          await notificationPlugin.showNotification(
+              create100TimetableBadgeTitle, create100TimetableDescription, "");
+        } else {
+          print("false");
+        }
         setState(NotifierState.isIdle);
 
         Get.back();
@@ -271,10 +278,12 @@ class CreateTimetableController extends Notifier with ValidationMixin {
       setState(NotifierState.isIdle);
     }
   }
-   void getAllTimeTableBadges() async {
+
+  void getAllTimeTableBadges() async {
     setState(NotifierState.isLoading);
     try {
-      _timetableBadges = await Get.find<DatabaseService>().getAllTimeTableBadges();
+      _timetableBadges =
+          await Get.find<DatabaseService>().getAllTimeTableBadges();
       print(_timetableBadges);
 
       setState(NotifierState.isIdle);
@@ -290,5 +299,4 @@ class CreateTimetableController extends Notifier with ValidationMixin {
     }
     setState(NotifierState.isIdle);
   }
-
 }

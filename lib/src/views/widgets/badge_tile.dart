@@ -1,16 +1,59 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_study_pal/src/controller/badges_controller.dart';
+import 'package:my_study_pal/src/core/badges.dart';
 import 'package:my_study_pal/src/core/constants.dart';
 import 'package:my_study_pal/src/core/images.dart';
-import 'package:my_study_pal/src/models/badges.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
+
+class GetAllBadges {
+  String badgeTitle;
+  String badgeDesc;
+  int maxLength;
+  int currentLength;
+  GetAllBadges(
+      {@required this.badgeTitle,
+      @required this.badgeDesc,
+      @required this.currentLength,
+      @required this.maxLength});
+}
 
 class BadgeTile extends StatelessWidget {
+  final List<GetAllBadges> allBadgesList = [
+    GetAllBadges(
+        badgeDesc: profileDescription,
+        badgeTitle: profileBadgeTitle,
+        currentLength: 4,
+        maxLength: 7),
+    GetAllBadges(
+        badgeDesc: profileDescription,
+        badgeTitle: profileBadgeTitle,
+        currentLength: 4,
+        maxLength: 7),
+    GetAllBadges(
+        badgeTitle: complete10TaskBadgeTitle,
+        badgeDesc: complete10TaskDescription,
+        currentLength: 4,
+        maxLength: 7),
+    GetAllBadges(
+        badgeTitle: complete25TaskBadgeTitle,
+        badgeDesc: complete25TaskDescription,
+        currentLength: 4,
+        maxLength: 7)
+  ];
   final int index;
-  final List<Badge> badges;
+  final List<GetAllBadges> badges;
   final BadgeController controller;
+  final String badgeTitle;
+  final String badgeDesc;
 
-  const BadgeTile({Key key, this.controller, this.badges, this.index})
+  BadgeTile(
+      {Key key,
+      this.controller,
+      this.badges,
+      this.index,
+      this.badgeTitle,
+      this.badgeDesc})
       : super(key: key);
 
   @override
@@ -49,10 +92,23 @@ class BadgeTile extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width / 1.6,
                         child: Text(
-                          badges[index].desc,
+                          badges[index].badgeDesc,
                           style: kLabelText,
                           overflow: TextOverflow.ellipsis,
                         ),
+                      ),
+                      Row(
+                        children: [
+                          StepProgressIndicator(
+                            totalSteps: badges[index].maxLength,
+                            currentStep: badges[index].currentLength,
+                          ),
+                          kSmallHorizontalSpacing,
+                          Text(
+                            "${badges[index].currentLength}/${badges[index].maxLength}",
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          )
+                        ],
                       ),
                     ],
                   ),
